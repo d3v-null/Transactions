@@ -8,3 +8,5 @@ MySQL database files
 Images
 <h3>/src/</h3>
 Source code
+<h3>/test/</h3>
+Acceptance test files
