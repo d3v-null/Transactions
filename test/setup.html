@@ -1,0 +1,31 @@
+<?php $con=mysqli_connect("swedishclubofwa.org","USERNAME","PASSWORD","transactions");
+if (mysqli_connect_errno())  {  echo "Failed to connect to MySQL: " . mysqli_connect_error(); }
+mysqli_query($con,"INSERT INTO Status (StatusID, Name) 
+VALUES (1, “Pending”)");
+mysqli_query($con,"INSERT INTO Status (StatusID, Name) 
+VALUES (2, “Processed”)");
+mysqli_query($con,"INSERT INTO Status (StatusID, Name) 
+VALUES (3, “Void”)");
+mysqli_query($con,"INSERT INTO History (TransactionID, Description, Comment, Associated Party, StatusID, RecordDate, Value) 
+VALUES (1, “Jimmy Neutron’s membership”, “paid in meatballs”, “Jimmy Neutron”, 2, “5/9/2013”, 10)");
+mysqli_query($con,"INSERT INTO History (TransactionID, Description, Comment, Associated Party, StatusID, RecordDate, Value) 
+VALUES (1, “Jombles Notronbo’s family membership”, “”, “Jombles Notronbo”,1, “5/9/2013”, 40)");
+mysqli_query($con,"INSERT INTO History (TransactionID, Description, Comment, Associated Party, StatusID, RecordDate, Value) 
+VALUES (1, “Jombles Notronbo’s family membership”, “”, “Jombles Notronbo”,2, “6/9/2013”, 40)");
+mysqli_query($con,"INSERT INTO Categories (CategoryID, MetaCategory, SubCategory) 
+VALUES (1, “Membership”, “Single”)");
+mysqli_query($con,"INSERT INTO Categories (CategoryID, MetaCategory, SubCategory) 
+VALUES (2, “Membership”, “Family”)");
+mysqli_query($con,"INSERT INTO Categories (CategoryID, MetaCategory, SubCategory) 
+VALUES (3, “Event”, “Oktoberfest”)");
+mysqli_query($con,"INSERT INTO Categories (CategoryID, MetaCategory, SubCategory) 
+VALUES (4, “Event”, “Midsommar”)");
+mysqli_query($con,"INSERT INTO Categories (CategoryID, MetaCategory, SubCategory) 
+VALUES (5, “Expense”, “Admin”)");
+mysqli_query($con,"INSERT INTO Categories (CategoryID, MetaCategory, SubCategory) 
+VALUES (6, “Year”, “2013”)");
+mysqli_query($con,"INSERT INTO Categorization (CategorizationID, TransactionID, CategoryID) 
+VALUES (1, 1, 1)");
+mysqli_query($con,"INSERT INTO Categorization (CategorizationID, TransactionID, CategoryID) 
+VALUES (2, 2, 2)");
+?>
