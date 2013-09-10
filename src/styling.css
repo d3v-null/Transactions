@@ -13,10 +13,12 @@ table
 	width: 480px;
 }
 
+/*******************************************************************/
+/* Tables */
+
+/*Transaction Table*/
 #transaction-list
 	{
-	font-family= "Calibri", "Lucida Sans Unicode", Sans-Serif;
-	font-size: 12px;
 	width: 480px;
 	text-align: left;
 	background-color:#E6F5F5;
@@ -55,6 +57,54 @@ table
 	<![endif]-->
 
 }
+/***************************************************************/
+/* Page */
+#page
+{
+	overflow:hidden;
+	background-color: black;
+
+}
+
+/***************************************************************/
+/* Content */
+#content
+{
+	float: left;
+	margin: 20px 50px;
+	background-color: #F3F3F3;
+	border: 2px solid #777;
+}
+
+/***************************************************************/
+/* Side pane */
+#sidebar
+{
+	height: 100%;
+	float: left;
+	width: 200px;
+	padding: 20px;
+	background: url(images/bg.jpg) repeat-y;
+}
+
+
+
+/***************************************************************/
+html, body
+{
+	height: 100%;
+}
+
+body
+{
+	font-family: 'Calibri', 'Lucida Sans Unicode', Sans-Serif;
+	margin: 20px;
+	border: 1px;
+	font-size:12pt;
+	border-top: 70px solid white;
+
+}
+
 
 thead, tr, th, td, tbody
 {
@@ -65,10 +115,17 @@ thead, tr, th, td, tbody
 
 }
 
-body
-{
-	margin: 20px;
+/* a {
+	color: #4575D4;
+} */
+
+a:hover {
+	color: #05296E;
+	text-decoration: none;
 }
+
+
+
 
 
 #softBorder
@@ -79,21 +136,4 @@ body
 	border-radius: 9px;
 
 }
-
-#blueGradient
-{
-	background-image: linear-gradient(bottom, rgb(125,219,184) 22%, rgb(46,157,194) 61%, rgb(32,142,176) 83%);
-	background-image: -o-linear-gradient(bottom, rgb(125,219,184) 22%, rgb(46,157,194) 61%, rgb(32,142,176) 83%);
-	background-image: -moz-linear-gradient(bottom, rgb(125,219,184) 22%, rgb(46,157,194) 61%, rgb(32,142,176) 83%);
-	background-image: -webkit-linear-gradient(bottom, rgb(125,219,184) 22%, rgb(46,157,194) 61%, rgb(32,142,176) 83%);
-	background-image: -ms-linear-gradient(bottom, rgb(125,219,184) 22%, rgb(46,157,194) 61%, rgb(32,142,176) 83%);
-
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.22, rgb(125,219,184)),
-		color-stop(0.61, rgb(46,157,194)),
-		color-stop(0.83, rgb(32,142,176))
-	);
 }
