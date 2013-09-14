@@ -4,39 +4,35 @@
 
 
 <?php
-	// Connect to database
-	
+	$debug = True
 	// Create connection
-	$connection =mysql_connect("localhost","test","test") or die("Could not connect");
+	$connection =mysql_connect("localhost","transaction","password") or die("Could not connect");
+	mysql_select_db("transaction") or die("Unable to coonnect to transaction database");
+	if ($debug){
+		echo "<strong>Connected to transaction database!";
+	}
 
-	mysql_select_db("test") or die("Unable to select database");
-
-	//echo "Connected to database! <br><br>";
-
-	$sql="CREATE TABLE Tester
+	/*$sql="CREATE TABLE Tester
 	(
 	PID INT NOT NULL AUTO_INCREMENT,
 	TransactionName CHAR(15),
 	Description CHAR(225),
 	Amount INT,
 	PRIMARY KEY (PID, TransactionName)
-	)";
+	)";*/
 
 	//$sql="DROP TABLE Tester";
 	//mysql_query($sql) or die(mysql_error());
 ?>
 
 <head>
-	<title>TAB TITLE</title>
+    <title>Transaction History</title>
     
     <style type="text/css" media="screen">
         @import url("style2.css");
         @import url("styling.css");
-
     </style>
-
 	<script>
-
 		// Expand function
 		function expand(showMe)
 		{
@@ -47,108 +43,141 @@
 
 			document.getElementById(showMe).style.display = display;
 		}
-
 	</script>
 </head>
 
 <body onload="expand('moreSearch')">
-    
     <div id="page">
-        
-    
         <div id="main">
-        
             <div id="box">
-                <h1>General Ledger</h1>
-                
-					
-				<div id="content">
-
-					<table id='search-box'> 
-						<tr>
-							<th>Advanced Search</th>
-						</tr>
-						<tr>
-							<td>Searching stuff </td>
-						</tr>
-						<tr>
-							<td>
-								<a href="" onclick="expand('moreSearch');return false;"style = "float:right;">More</a>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div id ='moreSearch'>
-									More searching stuff <br>
-									BTW that search button hasnt been implemented yet
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td style="float:right"><button>Search</button></td>
-						</tr>
-					</table>
-
-					<?php
-						$sql="SELECT * FROM tester";
-						$result = mysql_query($sql) or die(mysql_error());
-					?>
-
-					<table id = 'transaction-list' summary = 'List of Transactions'>
-						<thead>
-							<tr>
-								<th scope = 'col'>
-									PID
-								</th>
-								<th scope = 'col'>
-									Transaction Name
-								</th>
-								<th scope = 'col'>
-									Amount
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php
-								while($row = mysql_fetch_array($result))
-								{
-							?>
-							<tr>
-								<td>
-									<?=$row['PID'];?>
-								</td>
-								<td>
-									<a href="transaction.php?id= <?=$row['PID'];?>" onclick="expand('transactD');return false;"> <?=$row['TransactionName'];?> </a>
-								</td>
-								<td>
-									<?=$row['Amount'];?>
-								<td>
-							</tr>
-							<?php
-								}
-							?>
-						</tbody>
-					</table>
-					
-
-					<ul id="pagination">
-						<li class="previous-off"> « Previous </li>
-						<li class="active">1</li>
-						<li><a href ="?page=2">2</a></li>
-						<li><a href="?page=3">3</a></li>
-						<li><a href="?page=4">4</a></li>
-						<li><a href="?page=5">5</a></li>
-						<li><a href="?page=6">6</a></li>
-						<li><a href="?page=7">7</a></li>
-						<li class="next"><a href="?page=2">Next »</a></li>
-					</ul>					
-
-							
-
+                <h1>Transaction History</h1> <!-- We're completely avoiding the "ledger terminology - remember?" -->
+		<div id="content">
+			<!-- Search box implemented as a form instead of a table -->
+					<form method="get" action="search.php" id="Search-form">		
+			<table id="search-box">
+				<tr>
+					<th>Search</th>
+					<td><input type="submit"/></td>
+				</tr>
+				<div id="basic-options">
+					<tr>
+						<td>From date</td>
+						<td>To date</td>
+						<td>Status</td>
+					</tr>
+					<tr>
+						<td><input type="date" name="fdate"></td>
+						<td><input type="date" name="tdate"></td>
+						<td>
+							<select>
+								<?php 
+									$qry = "SELECT * FROM Statuses";
+									$result = mysql_query($qry) or die(mysql_error());
+									while($row = mysql_fetch_array($result){
+										echo "<option value=\"" . $row['Name'] . "\">" . $row['Name'] . "</option>";
+									}
+								?>
+							</select>
+						</td>
+					</tr>
 				</div>
+				<div id="advanced-options">
+					<!-- expand -->
+				</div>
+				<tr>
+					<td>"expand / collapse advanced search options"</td>
+				</tr>
+			</table>
+		</form>
+		
+		<!-- old search table
 
-				<!-- end content!-->
-                
+			<table id='search-box'> 
+				<tr>
+					<th>Advanced Search</th>
+				</tr>
+				<tr>
+					<td>Searching stuff </td>
+				</tr>
+				<tr>
+					<td>
+						<a href="" onclick="expand('moreSearch');return false;"style = "float:right;">More</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div id ='moreSearch'>
+							More searching stuff <br>
+							BTW that search button hasnt been implemented yet
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="float:right"><button>Search</button></td>
+				</tr>
+			</table>
+		-->
+
+			<?php
+				$sql="SELECT * FROM tester";
+				$result = mysql_query($sql) or die(mysql_error());
+			?>
+
+			<table id = 'transaction-list' summary = 'List of Transactions'>
+				<thead>
+					<tr>
+						<th scope = 'col'>
+							PID
+						</th>
+						<th scope = 'col'>
+							Transaction Name
+						</th>
+						<th scope = 'col'>
+							Amount
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+						while($row = mysql_fetch_array($result))
+						{
+					?>
+					<tr>
+						<td>
+							<?=$row['PID'];?>
+						</td>
+						<td>
+							<a href="transaction.php?id= <?=$row['PID'];?>" onclick="expand('transactD');return false;"> <?=$row['TransactionName'];?> </a>
+						</td>
+						<td>
+							<?=$row['Amount'];?>
+						<td>
+					</tr>
+					<?php
+						}
+					?>
+				</tbody>
+			</table>
+			
+
+			<ul id="pagination">
+				<li class="previous-off"> « Previous </li>
+				<li class="active">1</li>
+				<li><a href ="?page=2">2</a></li>
+				<li><a href="?page=3">3</a></li>
+				<li><a href="?page=4">4</a></li>
+				<li><a href="?page=5">5</a></li>
+				<li><a href="?page=6">6</a></li>
+				<li><a href="?page=7">7</a></li>
+				<li class="next"><a href="?page=2">Next »</a></li>
+			</ul>					
+
+					
+
+		</div>
+
+		<!-- end content!-->
+
        
             </div><!-- end box -->
             
