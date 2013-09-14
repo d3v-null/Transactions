@@ -49,46 +49,48 @@
 <body onload="expand('moreSearch')">
     <div id="page">
         <div id="main">
-            <div id="box">
+            <div id="box"><!-- We're completely avoiding the "ledger terminology - remember?" -->
                 <h1>Transaction History</h1> <!-- We're completely avoiding the "ledger terminology - remember?" -->
 		<div id="content">
 			<!-- Search box implemented as a form instead of a table -->
-					<form method="get" action="search.php" id="Search-form">		
-			<table id="search-box">
-				<tr>
-					<th>Search</th>
-					<td><input type="submit"/></td>
-				</tr>
-				<div id="basic-options">
-					<tr>
-						<td>From date</td>
-						<td>To date</td>
-						<td>Status</td>
-					</tr>
-					<tr>
-						<td><input type="date" name="fdate"></td>
-						<td><input type="date" name="tdate"></td>
-						<td>
-							<select>
-								<?php 
+			<form method="get" action="search.html" id="Search-form">		
+				<table id="search-box">
+					<thead>
+						<tr>
+							<th>Search</th>
+							<td><input type="submit"/></td>
+						</tr>
+					</thead>
+					<tbody>
+						<div id="basic-options">
+						<tr>
+							<td>From date</td>
+							<td>To date</td>
+							<td>Status</td>
+						</tr>
+						<tr>
+							<td><input type="date" name="fdate"></td>
+							<td><input type="date" name="tdate"></td>
+							<td>
+								<select><?php 
 									$qry = "SELECT * FROM Statuses";
 									$result = mysql_query($qry) or die(mysql_error());
 									while($row = mysql_fetch_array($result){
 										echo "<option value=\"" . $row['Name'] . "\">" . $row['Name'] . "</option>";
 									}
-								?>
-							</select>
-						</td>
-					</tr>
-				</div>
-				<div id="advanced-options">
-					<!-- expand -->
-				</div>
-				<tr>
-					<td>"expand / collapse advanced search options"</td>
-				</tr>
-			</table>
-		</form>
+								?></select>
+							</td>
+						</tr>
+						</div>
+						<div id="advanced-options">
+						<!-- to do: more options -->
+						</div>
+						<tr>
+							<td>"expand / collapse advanced search options"</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
 		
 		<!-- old search table
 
