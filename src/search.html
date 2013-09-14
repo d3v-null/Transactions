@@ -120,11 +120,28 @@
 			</table>
 		-->
 
+			<!-- old test code
 			<?php
 				$sql="SELECT * FROM tester";
 				$result = mysql_query($sql) or die(mysql_error());
 			?>
+			-->
+			
+			<?php
+			    $sql="SELECT * FROM Histories"
+			    $result = mysql_query($sql) or die(mysql_error());
+			?>
 
+            <table id="transaction-list" summary = "List of Transactions">
+                <thead>
+                    <td>Transaction ID</td>
+                    <td>Date</td>
+                    <td>Description</td>
+                    <td>status</td>
+                    <td>Amount</td>
+                </thead>
+            
+            <!-- old table - does not conform to NF2, also scope attribute is not supported in html5
 			<table id = 'transaction-list' summary = 'List of Transactions'>
 				<thead>
 					<tr>
@@ -160,9 +177,12 @@
 					?>
 				</tbody>
 			</table>
+			-->
 			
-
-			<ul id="pagination">
+			
+			
+			<!-- There's absolutely no way we're doing static pagination, sorry :P
+			<ul id="pagination"> 
 				<li class="previous-off"> « Previous </li>
 				<li class="active">1</li>
 				<li><a href ="?page=2">2</a></li>
@@ -172,13 +192,12 @@
 				<li><a href="?page=6">6</a></li>
 				<li><a href="?page=7">7</a></li>
 				<li class="next"><a href="?page=2">Next »</a></li>
-			</ul>					
+			</ul> -->
+			
 
 					
 
-		</div>
-
-		<!-- end content!-->
+		</div>	<!-- end content!-->
 
        
             </div><!-- end box -->
