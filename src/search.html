@@ -47,172 +47,170 @@
 </head>
 
 <body onload="expand('advanced-options')">
-    <div id="page">
-        <div id="main">
-            <div id="box"><!-- We're completely avoiding the "ledger terminology - remember?" -->
-                <h1>Transaction History</h1> <!-- We're completely avoiding the "ledger terminology - remember?" -->
-        		<div id="content">
-        			<!-- Search box implemented as a form instead of a table -->
-        			<form method="get" action="search.html" id="Search-form">		
-        				<table id="search-box">
-        					<thead>
-        						<tr>
-        							<th>Search</th>
-        							<td><input type="submit"/></td>
-        						</tr>
-        					</thead>
-        					<tbody>
-        						<div id="basic-options">
-        						<tr>
-        							<td>From date</td>
-        							<td>To date</td>
-        							<td>Status</td>
-        						</tr>
-        						<tr>
-        							<td><input type="date" name="fdate"></td>
-        							<td><input type="date" name="tdate"></td>
-        							<td>
-        								<select><?php 
-        									$qry = "SELECT * FROM Statuses";
-        									$statuses = mysql_query($qry) or die(mysql_error());
-        									while($row = mysql_fetch_array($statuses){
-        										echo "<option value=\"" . $row['Name'] . "\">" . $row['Name'] . "</option>";
-        									}
-        								?></select>
-        							</td>
-        						</tr>
-        						</div>
-        						<div id="advanced-options">
-        						<!-- to do: more options -->
-        						</div>
-        						<tr>
-        							<td>"expand / collapse advanced search options"</td>
-        						</tr>
-        					</tbody>
-        				</table>
-        			</form>
-        		
-        		<!-- old search table
-        
-        			<table id='search-box'> 
-        				<tr>
-        					<th>Advanced Search</th>
-        				</tr>
-        				<tr>
-        					<td>Searching stuff </td>
-        				</tr>
-        				<tr>
-        					<td>
-        						<a href="" onclick="expand('moreSearch');return false;"style = "float:right;">More</a>
-        					</td>
-        				</tr>
-        				<tr>
-        					<td>
-        						<div id ='moreSearch'>
-        							More searching stuff <br>
-        							BTW that search button hasnt been implemented yet
-        						</div>
-        					</td>
-        				</tr>
-        				<tr>
-        					<td style="float:right"><button>Search</button></td>
-        				</tr>
-        			</table>
-        		-->
-        
-        			<!-- old test code
-        			<?php
-        				$sql="SELECT * FROM tester";
-        				$result = mysql_query($sql) or die(mysql_error());
-        			?>
-        			-->
-        			
-        			<?php
-        			    $sql="SELECT DISTINCT TransactionID FROM Histories"
-        			    $transactions = mysql_query($sql) or die(mysql_error());
-        			?>
-        
-                    <table id="transaction-list" summary = "List of Transactions">
-                        <thead>
-                            <td>Transaction ID</td>
-                            <td>Date</td>
-                            <td>Description</td>
-                            <td>status</td>
-                            <td>Amount</td>
-                        </thead>
-                        <tbody>
-                        	<?php
-        						while($transaction = mysql_fetch_array($transactions))
-        						{
-        						    $sql = "
-        						        SELECT TransactionDate, Describtion, Status, Ammount
-        						        FROM Histories WHERE TransactionID = $transaction['ID'] 
-        						        ORDER BY TransactionDate
-        						    "
-        						    
-        						}
-        					?>
-        					<!-- yeah ok now I'm confused -->
-                        </tbody>
-                    
-                    <!-- old table - does not conform to NF1, also scope attribute is not supported in html5
-        			<table id = 'transaction-list' summary = 'List of Transactions'>
-        				<thead>
-        					<tr>
-        						<th scope = 'col'>
-        							PID
-        						</th>
-        						<th scope = 'col'>
-        							Transaction Name
-        						</th>
-        						<th scope = 'col'>
-        							Amount
-        						</th>
-        					</tr>
-        				</thead>
-        				<tbody>
-        					<?php
-        						while($row = mysql_fetch_array($result))
-        						{
-        					?>
-        					<tr>
-        						<td>
-        							<?=$row['PID'];?>
-        						</td>
-        						<td>
-        							<a href="transaction.php?id= <?=$row['PID'];?>" onclick="expand('transactD');return false;"> <?=$row['TransactionName'];?> </a>
-        						</td>
-        						<td>
-        							<?=$row['Amount'];?>
-        						<td>
-        					</tr>
-        					<?php
-        						}
-        					?>
-        				</tbody>
-        			</table>
-        			-->
-        			
-        			
-        			
-        			<!-- There's absolutely no way we're doing static pagination, sorry :P
-        			<ul id="pagination"> 
-        				<li class="previous-off"> « Previous </li>
-        				<li class="active">1</li>
-        				<li><a href ="?page=2">2</a></li>
-        				<li><a href="?page=3">3</a></li>
-        				<li><a href="?page=4">4</a></li>
-        				<li><a href="?page=5">5</a></li>
-        				<li><a href="?page=6">6</a></li>
-        				<li><a href="?page=7">7</a></li>
-        				<li class="next"><a href="?page=2">Next »</a></li>
-        			</ul> -->
-	            </div>	<!-- end content!-->
-            </div><!-- end box -->
-            <div id="sidebar">
-                <iframe src="/sidebar.html"
-            </div><!-- end sidebar -->
-        </div><!-- end main -->
-    </div><!-- end page -->
+<div id="main">
+    <div id="box"><!-- We're completely avoiding the "ledger terminology - remember?" -->
+        <h1>Transaction History</h1> <!-- We're completely avoiding the "ledger terminology - remember?" -->
+		<div id="content">
+			<!-- Search box implemented as a form instead of a table -->
+			<form method="get" action="search.html" id="Search-form">		
+				<table id="search-box">
+					<thead>
+						<tr>
+							<th>Search</th>
+							<td><input type="submit"/></td>
+						</tr>
+					</thead>
+					<tbody>
+						<div id="basic-options">
+						<tr>
+							<td>From date</td>
+							<td>To date</td>
+							<td>Status</td>
+						</tr>
+						<tr>
+							<td><input type="date" name="fdate"></td>
+							<td><input type="date" name="tdate"></td>
+							<td>
+								<select><?php 
+									$qry = "SELECT * FROM Statuses";
+									$statuses = mysql_query($qry) or die(mysql_error());
+									while($row = mysql_fetch_array($statuses){
+										echo "<option value=\"" . $row['Name'] . "\">" . $row['Name'] . "</option>";
+									}
+								?></select>
+							</td>
+						</tr>
+						</div>
+						<div id="advanced-options">
+						<!-- to do: more options -->
+						</div>
+						<tr>
+							<td>"expand / collapse advanced search options"</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		
+		<!-- old search table
+
+			<table id='search-box'> 
+				<tr>
+					<th>Advanced Search</th>
+				</tr>
+				<tr>
+					<td>Searching stuff </td>
+				</tr>
+				<tr>
+					<td>
+						<a href="" onclick="expand('moreSearch');return false;"style = "float:right;">More</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div id ='moreSearch'>
+							More searching stuff <br>
+							BTW that search button hasnt been implemented yet
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="float:right"><button>Search</button></td>
+				</tr>
+			</table>
+		-->
+
+			<!-- old test code
+			<?php
+				$sql="SELECT * FROM tester";
+				$result = mysql_query($sql) or die(mysql_error());
+			?>
+			-->
+			
+			<?php
+			    $sql="SELECT DISTINCT TransactionID FROM Histories"
+			    $transactions = mysql_query($sql) or die(mysql_error());
+			?>
+
+            <table id="transaction-list" summary = "List of Transactions">
+                <thead>
+                    <td>Transaction ID</td>
+                    <td>Date</td>
+                    <td>Description</td>
+                    <td>status</td>
+                    <td>Amount</td>
+                </thead>
+                <tbody>
+                	<?php
+						while($transaction = mysql_fetch_array($transactions))
+						{
+						    $sql = "
+						        SELECT TransactionDate, Describtion, Status, Ammount
+						        FROM Histories WHERE TransactionID = $transaction['ID'] 
+						        ORDER BY TransactionDate
+						    "
+						    
+						}
+					?>
+					<!-- yeah ok now I'm confused -->
+                </tbody>
+            
+            <!-- old table - does not conform to NF1, also scope attribute is not supported in html5
+			<table id = 'transaction-list' summary = 'List of Transactions'>
+				<thead>
+					<tr>
+						<th scope = 'col'>
+							PID
+						</th>
+						<th scope = 'col'>
+							Transaction Name
+						</th>
+						<th scope = 'col'>
+							Amount
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+						while($row = mysql_fetch_array($result))
+						{
+					?>
+					<tr>
+						<td>
+							<?=$row['PID'];?>
+						</td>
+						<td>
+							<a href="transaction.php?id= <?=$row['PID'];?>" onclick="expand('transactD');return false;"> <?=$row['TransactionName'];?> </a>
+						</td>
+						<td>
+							<?=$row['Amount'];?>
+						<td>
+					</tr>
+					<?php
+						}
+					?>
+				</tbody>
+			</table>
+			-->
+			
+			
+			
+			<!-- There's absolutely no way we're doing static pagination, sorry :P
+			<ul id="pagination"> 
+				<li class="previous-off"> « Previous </li>
+				<li class="active">1</li>
+				<li><a href ="?page=2">2</a></li>
+				<li><a href="?page=3">3</a></li>
+				<li><a href="?page=4">4</a></li>
+				<li><a href="?page=5">5</a></li>
+				<li><a href="?page=6">6</a></li>
+				<li><a href="?page=7">7</a></li>
+				<li class="next"><a href="?page=2">Next »</a></li>
+			</ul> -->
+            </div>	<!-- end content!-->
+    </div><!-- end box -->
+    <div id="sidebar">
+        <iframe src="/sidebar.html"
+    </div><!-- end sidebar -->
+</div><!-- end main -->
 </body>
 </html>
