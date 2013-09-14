@@ -22,13 +22,17 @@ $categoryTable = mysq_query($con,"SELECT * FROM SubCategories");
   <ul><!-- Start list -->
   while($nameCategory = mysqli_fetch_array($categoryTable))
   {
-   <li>$nameCategory['Name']<!-- Use name of caterogory here -->
-   $metaID['MetaCategoryID']<!-- Load metacategory ID -->
+   <li>$nameCategory['Name']</li><!-- Use name of caterogory here -->
+   $metaID['MetaCategoryID'];<!-- Load metacategory ID -->
     <ul>
       <!-- Select MetaCategories which has ID's compatibility -->
       $metaTable = mysq_query($con,"SELECT * FROM MetaCategories WHERE 'SubCategories.MetaCategoryID' = 'MetaCateroryID' ");
-      <li>$metaName</li><!-- Meta Category Name -->
-      </ul>
+      
+      while($nameMetaCategory = mysqli_fetch_array($metaTable))
+      {
+        <li>$nameMetaCategory['Name']</li><!-- Meta Category Name -->
+      }
+    </ul>
   </li><!-- closing list under section one -->
   }
 </ul><!-- closing whole list -->
