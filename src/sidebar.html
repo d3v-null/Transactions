@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<?php
+// Create connection
+$connection =mysql_connect("localhost","test","test") or die("Could not connect");
+
+mysql_select_db("test") or die("Unable to select database");
+
+echo "Connected to database! <br>";
+?>
+
+<html>
+<head>
+<!--Insert header here--> 
+</head>
+
+<body>
+<div id="sidebar"> SIDEBAR </div>
+<!-- Request Tables from DB -->
+$result = mysq_query($con,"SELECT * FROM SubCategories");
+
+  <ul><!-- Start list -->
+  while($row = mysqli_fetch_array($result))
+  {
+   <li>Hello<!-- Use name of caterogory here -->
+    <ul>
+      <li>Option 1.1</li><!-- Use attributes of caterogory here -->
+      <li>Option 1.2</li><!-- Use attributes of caterogory here -->
+      <li>Option 1.3</li><!-- Use attributes of caterogory here -->
+      </ul>
+  </li><!-- closing list under section one -->
+  }
+</ul><!-- closing whole list -->
+
+<div id="main"> MAIN CONTENT </div>
+
+</body>
+</html>
