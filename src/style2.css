@@ -10,14 +10,6 @@ body {
 	font: 76% Verdana,Tahoma,Arial,sans-serif;
 }
 
-table
-{
-	border:2px solid RoyalBlue;
-	-webkit-border-radius: 9px;
-	-moz-border-radius: 9px;
-	border-radius: 9px;
-	padding: 15px;
-}
 
 thead, tr, th, td, tbody
 {
@@ -81,7 +73,6 @@ a:hover {
 	background: white;
 	border: 2px solid black;/* #1569C7; */
 	height:100%;
-	
 }
 
 #box h1 {
@@ -157,6 +148,8 @@ a:hover {
 }
 
 /*-- END SIDEBAR -----------*/
+
+
 
 /*------>------ END OTHER ELEMENTS ----<----------------*/
 
