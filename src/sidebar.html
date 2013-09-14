@@ -16,6 +16,8 @@ echo "Connected to database! <br>";
 
 <body>
 <div id="sidebar"> SIDEBAR </div>
+
+<?php
 <!-- Request Tables from DB -->
 $metacategoryTable = mysq_query($con,"SELECT * FROM MetaCategories");
 
@@ -36,7 +38,7 @@ $metacategoryTable = mysq_query($con,"SELECT * FROM MetaCategories");
   </li><!-- closing list under section one -->
   }
 </ul><!-- closing whole list -->
-
+>
 <div id="main"> MAIN CONTENT </div>
 
 </body>
