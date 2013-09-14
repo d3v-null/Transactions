@@ -32,20 +32,26 @@
         </script>
     </head>
 
-    <body onload="expand('advanced-options')">
+    <body>
     <div id="main">
         <div id="box">
+			<?php 
+				<!-- mandatory search parameters -->
+				$page = (in_array("pg", $_GET)) ? $_GET["pg"] : 1;  <!-- page number -->
+				$tstr = (in_array("ts", $_GET)) ? $_GET["ts"] : 0;  <!-- Starting transaction -->
+				$tnum = (in_array("tn", $_GET)) ? $_GET["tn"] : 20; <!-- Number of transactions per page -->
+				$ocol = (in_array("oc", $_GET)) ? $_GET["oc"] : "TransactionDate"; <!-- Order by column -->
+				$odir = (in_array("tn", $_GET)) ? $_GET["tn"] : "DESC"; <!-- Order direction -->
+			?>
+				
             <h1>Transaction History</h1>
             <div id="content">
                 <form <table class="bordered" method="get" action="search.html" id="search-form">        
                     <h2>Search</h2>
-                    <input type="submit" id="search-update"/>
-                    <!-- hidden field: page number -->
-                    <input type="hidden" name="pg" <?php if in_array("pg") echo "value=" . $_GET["pg"] else echo "value=1"; ?> />
-                    <!-- hidden field: Number of first transaction on page -->
-                    <input type="hidden" name="ts" <?php if in_array("ts") echo "value=" . $_GET["ts"] ;?> />
-                    <!-- hidden field: Number of transactions to display per page -->
-                    <input type="hidden" name="tn" <?php if in_array("tn") echo "value=" . $_GET["tn"] else echo "value=20";?> />
+                    <input type="submit" id="search-update"/>                   
+                    <input type="hidden" name="pg" value=<?php echo $page;?>/>          
+                    <input type="hidden" name="ts" value=<?php echo $tstr;?>/>
+                    <input type="hidden" name="tn" value=<?php echo $tnum;?>/>
                     <table id="basic-options">
                         <thead>
                             <tr>
@@ -56,9 +62,12 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><input type="text" name="kw" <?php if in_array("kw") echo "value=" . $_GET["kw"]; ?> /></td>
-                                <td><input type="date" name="fd" <?php if in_array("fd") echo "value=" . $_GET["fd"]; ?> /></td>
-                                <td><input type="date" name="td" <?php if in_array("td") echo "value=" . $_GET["td"]; ?> /></td>
+                                <td><input type="text" name="kw" 
+									<?php if in_array("kw", $_GET) echo "value=" . $_GET["kw"]; ?> /></td>
+                                <td><input type="date" name="fd" 
+									<?php if in_array("fd", $_GET) echo "value=" . $_GET["fd"]; ?> /></td>
+                                <td><input type="date" name="td" 
+									<?php if in_array("td", $_GET) echo "value=" . $_GET["td"]; ?> /></td>
                             </tr>
                         </tbody>
                     </table>
@@ -74,8 +83,7 @@
                                 <td>
                                     <select name="st" <?php if in_array("st") echo "value=" . $_GET["st"]; ?>>
                                         <?php         
-                                            $qry = "SELECT * FROM Statuses;";
-                                            $statuses = mysql_query($qry) or die(mysql_error());
+                                            $statuses = mysql_query("SELECT * FROM Statuses;") or die(mysql_error());
                                             while($row = mysql_fetch_array($statuses){
                                                 echo "<option value=\"" . $row['Name'] . "\">" . $row['Name'] . "</option>";
                                             }
@@ -88,15 +96,23 @@
                     <div id="expander">"Expand"</div><!-- to do: write this properly in JavaScript -->
                 </form>
                        
-                <?php                
-                    $sql="SELECT DISTINCT TransactionID FROM Histories;"
-                    $transactions = mysql_query($sql) or die(mysql_error());
+                <?php              
+					//select the transactions to display on the page
+                    $sql="
+						SELECT HistoryID 
+						FROM (
+							SELECT HistoryID, TransactionID, Max(ModificationDate)
+							FROM Histories GROUP BY TransactionID
+						)
+						ORDER BY " . $ocol . " " . $odir . "
+						LIMIT " . $tstr . ", " . $tnum . ";";
+					$histories = mysql_query($sql) or die(mysql_error());
                 ?>
 
                 <table class="bordered" id="transaction-list" summary = "List of Transactions">
                     <thead>
                         <td>Transaction ID</td>
-                        <td>Date</td>
+                        <td>Transaction Date</td>
                         <td>Description</td>
                         <td>status</td>
                         <td>Amount</td>
@@ -104,22 +120,15 @@
                     </thead>
                     <tbody>
                         <?php
-                            while($trid = mysql_fetch_array($transactions)['ID'])
+                            while($row = mysql_fetch_array($histories))
                             {
-                                $sql = "
-                                    SELECT TOP Histories.ID, Histories.TransactionDate, 
-                                    Histories.Description, Status.Name, Histories.Ammount
-                                    FROM Histories INNER JOIN Status ON Histories.Status = Status.ID
-                                    WHERE TransactionID = " . $trid . " ORDER BY TransactionDate;
-                                ";
-                                $latest = mysql_fetch_array(mysql_query($sql)) or die(mysql_error());
                         ?>
                             <tr id = >
                                 <td><? echo $transaction['ID']; ?></td>
                                 <td><? echo $latest['Histories.TransactionDate']; ?></td>
                                 <td><? echo $latest['Histories.Description']; ?></td>
                                 <td><? echo $latest['Status.Name']; ?></td>
-                                <td><? echo $latest['Histories.Ammount']; ?></td>
+                                <td><? echo $latest['Histories.Amount']; ?></td>
                                 <td><a href="transaction.php?hid=<? echo $trid; ?>">edit</a></td>
                             </tr>
                         <?php
