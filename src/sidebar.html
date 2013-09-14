@@ -18,6 +18,23 @@ echo "Connected to database! <br>";
 <div id="sidebar"> SIDEBAR </div>
 
 <?php
+  <!-- Set script responsable for toggle -->
+  
+  <script type="text/javascript">
+
+  function toggleMe(clickAction){
+      var action=document.getElementById(clickAction);
+      if(!action)return true;
+      if(action.style.display=="none"){
+          action.style.display="block"
+      }
+      else{
+          action.style.display="none"
+      }
+      return true;
+  }
+  </script>
+  
   <!-- Request Tables from DB -->
   $metacategoryTable = mysq_query($con,"SELECT * FROM MetaCategories");
 
