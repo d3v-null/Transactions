@@ -53,7 +53,7 @@
         <div id="content">
             <!-- Search box implemented as a form instead of a table -->
             <form method="get" action="search.html" id="Search-form">        
-                <table id="search-box">
+                <table class="bordered" id="search-box">
                     <thead>
                         <tr>
                             <th>Search</th>
@@ -131,7 +131,7 @@
                 $transactions = mysql_query($sql) or die(mysql_error());
             ?>
 
-            <table id="transaction-list" summary = "List of Transactions">
+            <table class="bordered" id="transaction-list" summary = "List of Transactions">
                 <thead>
                     <td>Transaction ID</td>
                     <td>Date</td>
