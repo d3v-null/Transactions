@@ -18,27 +18,30 @@ echo "Connected to database! <br>";
 <div id="sidebar"> SIDEBAR </div>
 
 <?php
-<!-- Request Tables from DB -->
-$metacategoryTable = mysq_query($con,"SELECT * FROM MetaCategories");
+  <!-- Request Tables from DB -->
+  $metacategoryTable = mysq_query($con,"SELECT * FROM MetaCategories");
 
-  <ul><!-- Start list -->
-  while($nameMetacategory = mysqli_fetch_array($metacategoryTable))
-  {
-   <li>$nameMetacategory['Name']<!-- Use name of caterogory here -->
-   $metaID['MetaCategoryID'];<!-- Load metacategory ID -->
-    <ul>
-      <!-- Select MetaCategories which has ID's compatibility -->
-      $subTable = mysq_query($con,"SELECT * FROM SubCategories WHERE 'MetaCategories.MetaCategoryID' = 'MetaCategoryID' ");
+    <ul><!-- Start list -->
+    while($nameMetacategory = mysqli_fetch_array($metacategoryTable))
+    {
+      <li>$nameMetacategory['Name']<!-- Use name of caterogory here -->
+      $metaID['MetaCategoryID'];<!-- Load metacategory ID -->
       
-      while($nameSubCategory = mysqli_fetch_array($subTable))
-      {
-        <li>$nameSubCategory['Name']</li><!-- Meta Category Name -->
-      }
-    </ul>
-  </li><!-- closing list under section one -->
-  }
-</ul><!-- closing whole list -->
->
+      <ul>
+        <!-- Select MetaCategories which has ID's compatibility -->
+        $subTable = mysq_query($con,"SELECT * FROM SubCategories WHERE 'MetaCategories.MetaCategoryID' = 'MetaCategoryID' ");
+      
+        while($nameSubCategory = mysqli_fetch_array($subTable))
+        {
+          <li>$nameSubCategory['Name']</li><!-- Meta Category Name -->
+        }
+      </ul>
+      
+      </li><!-- closing list under section one -->
+    }
+    
+    </ul><!-- closing whole list -->
+?>
 <div id="main"> MAIN CONTENT </div>
 
 </body>
