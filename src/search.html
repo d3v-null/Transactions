@@ -1,140 +1,140 @@
 <!DOCTYPE html>
     
 <html>
-	<?php
-		$debug = True
-		// Create connection
-		$connection =mysql_connect("localhost","transaction","password") or die("Could not connect");
-		mysql_select_db("transaction") or die("Unable to coonnect to transaction database");
-		if ($debug){
-			echo "<strong>Connected to transaction database!";
-		}
-	?>
+    <?php
+        $debug = True
+        // Create connection
+        $connection =mysql_connect("localhost","transaction","password") or die("Could not connect");
+        mysql_select_db("transaction") or die("Unable to coonnect to transaction database");
+        if ($debug){
+            echo "<strong>Connected to transaction database!";
+        }
+    ?>
 
-	<head>
-		<title>Transaction History</title>
-		
-		<style type="text/css" media="screen">
-			@import url("style2.css");
-			@import url("styling.css");
-		</style>
-		<script>
-			// Expand function
-			function expand(showMe)
-			{
-				if(document.getElementById(showMe).style.display=='none')
-					display = 'block';
-				else
-					display = 'none';
+    <head>
+        <title>Transaction History</title>
+        
+        <style type="text/css" media="screen">
+            @import url("style2.css");
+            @import url("styling.css");
+        </style>
+        <script>
+            // Expand function
+            function expand(showMe)
+            {
+                if(document.getElementById(showMe).style.display=='none')
+                    display = 'block';
+                else
+                    display = 'none';
 
-				document.getElementById(showMe).style.display = display;
-			}
-		</script>
-	</head>
+                document.getElementById(showMe).style.display = display;
+            }
+        </script>
+    </head>
 
-	<body onload="expand('advanced-options')">
-	<div id="main">
-		<div id="box">
-			<h1>Transaction History</h1>
-			<div id="content">
-				<form <table class="bordered" method="get" action="search.html" id="search-form">        
-					<h2>Search</h2>
-					<input type="submit" id="search-update"/>
-					<!-- hidden field: page number -->
-					<input type="hidden" name="pg" <?php if in_array("pg") echo "value=" . $_GET["pg"] else echo "value=1"; ?> />
-					<!-- hidden field: Number of first transaction on page -->
-					<input type="hidden" name="ts" <?php if in_array("ts") echo "value=" . $_GET["ts"] ;?> />
-					<!-- hidden field: Number of transactions to display per page -->
-					<input type="hidden" name="tn" <?php if in_array("tn") echo "value=" . $_GET["tn"] else echo "value=20";?> />
-					<table id="basic-options">
-						<thead>
-							<tr>
-								<td>Keywords</td>
-								<td>From date</td>
-								<td>To date</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td><input type="text" name="kw" <?php if in_array("kw") echo "value=" . $_GET["kw"]; ?> /></td>
-								<td><input type="date" name="fd" <?php if in_array("fd") echo "value=" . $_GET["fd"]; ?> /></td>
-								<td><input type="date" name="td" <?php if in_array("td") echo "value=" . $_GET["td"]; ?> /></td>
-							</tr>
-						</tbody>
-					</table>
-					<table id="advanced-options">
-						<thead>
-							<tr>
-								<td>Status</td>
-								<!-- to do: more options -->
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<select name="st" <?php if in_array("st") echo "value=" . $_GET["st"]; ?>>
-										<?php 		
-											$qry = "SELECT * FROM Statuses;";
-											$statuses = mysql_query($qry) or die(mysql_error());
-											while($row = mysql_fetch_array($statuses){
-												echo "<option value=\"" . $row['Name'] . "\">" . $row['Name'] . "</option>";
-											}
-										?>
-									</select>
-								</td>
-							</div>
-						</tbody>
-					</table>
-					<div id="expander">"Expand"</div><!-- to do: write this properly in JavaScript -->
-				</form>
-					   
-				<?php				
-					$sql="SELECT DISTINCT TransactionID FROM Histories;"
-					$transactions = mysql_query($sql) or die(mysql_error());
-				?>
+    <body onload="expand('advanced-options')">
+    <div id="main">
+        <div id="box">
+            <h1>Transaction History</h1>
+            <div id="content">
+                <form <table class="bordered" method="get" action="search.html" id="search-form">        
+                    <h2>Search</h2>
+                    <input type="submit" id="search-update"/>
+                    <!-- hidden field: page number -->
+                    <input type="hidden" name="pg" <?php if in_array("pg") echo "value=" . $_GET["pg"] else echo "value=1"; ?> />
+                    <!-- hidden field: Number of first transaction on page -->
+                    <input type="hidden" name="ts" <?php if in_array("ts") echo "value=" . $_GET["ts"] ;?> />
+                    <!-- hidden field: Number of transactions to display per page -->
+                    <input type="hidden" name="tn" <?php if in_array("tn") echo "value=" . $_GET["tn"] else echo "value=20";?> />
+                    <table id="basic-options">
+                        <thead>
+                            <tr>
+                                <td>Keywords</td>
+                                <td>From date</td>
+                                <td>To date</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="kw" <?php if in_array("kw") echo "value=" . $_GET["kw"]; ?> /></td>
+                                <td><input type="date" name="fd" <?php if in_array("fd") echo "value=" . $_GET["fd"]; ?> /></td>
+                                <td><input type="date" name="td" <?php if in_array("td") echo "value=" . $_GET["td"]; ?> /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table id="advanced-options">
+                        <thead>
+                            <tr>
+                                <td>Status</td>
+                                <!-- to do: more options -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select name="st" <?php if in_array("st") echo "value=" . $_GET["st"]; ?>>
+                                        <?php         
+                                            $qry = "SELECT * FROM Statuses;";
+                                            $statuses = mysql_query($qry) or die(mysql_error());
+                                            while($row = mysql_fetch_array($statuses){
+                                                echo "<option value=\"" . $row['Name'] . "\">" . $row['Name'] . "</option>";
+                                            }
+                                        ?>
+                                    </select>
+                                </td>
+                            </div>
+                        </tbody>
+                    </table>
+                    <div id="expander">"Expand"</div><!-- to do: write this properly in JavaScript -->
+                </form>
+                       
+                <?php                
+                    $sql="SELECT DISTINCT TransactionID FROM Histories;"
+                    $transactions = mysql_query($sql) or die(mysql_error());
+                ?>
 
-				<table class="bordered" id="transaction-list" summary = "List of Transactions">
-					<thead>
-						<td>Transaction ID</td>
-						<td>Date</td>
-						<td>Description</td>
-						<td>status</td>
-						<td>Amount</td>
-						<td></td>
-					</thead>
-					<tbody>
-						<?php
-							while($trid = mysql_fetch_array($transactions)['ID'])
-							{
-								$sql = "
-									SELECT TOP Histories.ID, Histories.TransactionDate, 
-									Histories.Description, Status.Name, Histories.Ammount
-									FROM Histories INNER JOIN Status ON Histories.Status = Status.ID
-									WHERE TransactionID = " . $trid . " ORDER BY TransactionDate;
-								";
-								$latest = mysql_fetch_array(mysql_query($sql)) or die(mysql_error());
-						?>
-							<tr id = >
-								<td><? echo $transaction['ID']; ?></td>
-								<td><? echo $latest['Histories.TransactionDate']; ?></td>
-								<td><? echo $latest['Histories.Description']; ?></td>
-								<td><? echo $latest['Status.Name']; ?></td>
-								<td><? echo $latest['Histories.Ammount']; ?></td>
-								<td><a href="transaction.php?hid=<? echo $trid; ?>">edit</a></td>
-							</tr>
-						<?php
-							}
-						?>
-					</tbody>
-				</table>
-				<div id="pagination"> 
-					<!-- to do -->
-				</ul> -->
-			</div><!-- end content -->
-		</div><!-- end box -->
-		<div id="sidebar">
-			<iframe src="/sidebar.html"
-		</div><!-- end sidebar -->
-	</div><!-- end main -->
-	</body>
+                <table class="bordered" id="transaction-list" summary = "List of Transactions">
+                    <thead>
+                        <td>Transaction ID</td>
+                        <td>Date</td>
+                        <td>Description</td>
+                        <td>status</td>
+                        <td>Amount</td>
+                        <td></td>
+                    </thead>
+                    <tbody>
+                        <?php
+                            while($trid = mysql_fetch_array($transactions)['ID'])
+                            {
+                                $sql = "
+                                    SELECT TOP Histories.ID, Histories.TransactionDate, 
+                                    Histories.Description, Status.Name, Histories.Ammount
+                                    FROM Histories INNER JOIN Status ON Histories.Status = Status.ID
+                                    WHERE TransactionID = " . $trid . " ORDER BY TransactionDate;
+                                ";
+                                $latest = mysql_fetch_array(mysql_query($sql)) or die(mysql_error());
+                        ?>
+                            <tr id = >
+                                <td><? echo $transaction['ID']; ?></td>
+                                <td><? echo $latest['Histories.TransactionDate']; ?></td>
+                                <td><? echo $latest['Histories.Description']; ?></td>
+                                <td><? echo $latest['Status.Name']; ?></td>
+                                <td><? echo $latest['Histories.Ammount']; ?></td>
+                                <td><a href="transaction.php?hid=<? echo $trid; ?>">edit</a></td>
+                            </tr>
+                        <?php
+                            }
+                        ?>
+                    </tbody>
+                </table>
+                <div id="pagination"> 
+                    <!-- to do -->
+                </ul> -->
+            </div><!-- end content -->
+        </div><!-- end box -->
+        <div id="sidebar">
+            <iframe src="/sidebar.html"
+        </div><!-- end sidebar -->
+    </div><!-- end main -->
+    </body>
 </html>
