@@ -61,21 +61,13 @@ a:hover {
 	padding: 0;        
 	text-align: left;
 	height:100%;
-
+	
 }
 
 /*-- END MAIN ------------------*/
 
 /*-- PAGE ------------------*/
 
-#page {
-	width: 760px;
-	margin: 0 auto;
-	padding: 0px;
-	background: transparent;
-	height:100%;
-
-}
 /*-- END PAGE --------------*/
 
 
@@ -88,7 +80,8 @@ a:hover {
 	margin: 0;
 	background: white;
 	border: 2px solid black;/* #1569C7; */
-
+	height:100%;
+	
 }
 
 #box h1 {
