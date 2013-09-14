@@ -24,7 +24,7 @@ echo "Connected to database! <br>";
     <ul><!-- Start list -->
     while($nameMetacategory = mysqli_fetch_array($metacategoryTable))
     {
-      <li>$nameMetacategory['Name']<!-- Use name of caterogory here -->
+      <li>$nameMetacategory['Name']<!-- Use name of caterogory here / Code will be inserted here -->
       $metaID['MetaCategoryID'];<!-- Load metacategory ID -->
       
       <ul>
@@ -48,14 +48,14 @@ echo "Connected to database! <br>";
 
 <script type="text/javascript">
 
-function toggleMe(a){
-  var e=document.getElementById(a);
-  if(!e)return true;
-  if(e.style.display=="none"){
-      e.style.display="block"
+function toggleMe(clickAction){
+  var action=document.getElementById(clickAction);
+  if(!action)return true;
+  if(action.style.display=="none"){
+      action.style.display="block"
   }
   else{
-    e.style.display="none"
+    action.style.display="none"
   }
   return true;
 }
