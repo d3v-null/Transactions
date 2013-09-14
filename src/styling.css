@@ -1,23 +1,73 @@
 
-table
-{
-	border:2px solid RoyalBlue;
-	-webkit-border-radius: 9px;
-	-moz-border-radius: 9px;
-	border-radius: 9px;
-	padding: 15px;
-}
-
 #search-box
 {
-	width: 480px;
+	width: 100%;
 }
 
 #search-box a
 {
-	background-color:white;
+	background-color:none;
 	color:#216477;
 }
+
+/*******************************************************************/
+/* Pagination */
+
+ul
+{
+	border:0;
+	margin:0;
+	padding:0;
+}
+
+#pagination
+{
+	margin-left:40px;
+}
+
+#pagination li
+{
+	font-size:0.9em;
+	list-style:none;
+	display:inline;
+	margin-right: 2px;
+}
+
+#pagination a
+{
+	border:1px solid #479BF9;
+	padding: 2px 5px;
+	margin-right: 2px;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+#pagination a:hover
+{
+	border: 1px solid #297DDB;
+	background-color: #A0CFEC;
+}
+
+#pagination .previous-off,
+#pagination .next-off
+{
+	display:block;
+	float:left;
+	display:block;
+	margin-right: 2px;
+	padding: 3px 4px;
+	font-weight:bold;
+	color:#adaaad;
+}
+
+#pagination .active 
+{
+	float: left;
+	padding: 3px 7px;
+
+}
+
+
 
 /*******************************************************************/
 /* Tables */
@@ -25,7 +75,9 @@ table
 /*Transaction Table*/
 #transaction-list
 {
-	width: 480px;
+	width: 100%;
+	height: ;
+	margin: 20px 0;
 	text-align: left;
 	background-color:#E6F5F5;
 	color:#216477;
@@ -79,82 +131,6 @@ table
 	<![endif]-->
 
 }
-/***************************************************************/
-/* Page */
-#page
-{
-	overflow:hidden;
-	background-color: black;
-
-}
-
-/***************************************************************/
-/* Content */
-#content
-{
-	float: left;
-	margin: 20px 50px;
-	background-color: #F3F3F3;
-	border: 2px solid #777;
-}
-
-/***************************************************************/
-/* Side pane */
-#sidebar
-{
-	height: 100%;
-	float: left;
-	width: 200px;
-	padding: 20px;
-	background: url(images/bg.jpg) repeat-y;
-}
 
 
-
-/***************************************************************/
-html, body
-{
-	height: 100%;
-}
-
-body
-{
-	font-family: 'Calibri', 'Lucida Sans Unicode', Sans-Serif;
-	margin: 20px;
-	border: 1px;
-	font-size:12pt;
-	border-top: 70px solid white;
-
-}
-
-
-thead, tr, th, td, tbody
-{
-	vertical-align: baseline;
-	padding: 0px;
-	background: none repeat scroll 0% 0% transparent;
-	border: 0px none;
-
-}
-
-/* a {
-	color: #4575D4;
-} */
-
-a:hover {
-	color: #05296E;
-	text-decoration: none;
-}
-
-
-
-
-
-#softBorder
-{
-	border:2px solid RoyalBlue;
-	-webkit-border-radius: 9px;
-	-moz-border-radius: 9px;
-	border-radius: 9px;
-
-}
+/*******************************************************************/
