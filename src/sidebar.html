@@ -17,20 +17,20 @@ echo "Connected to database! <br>";
 <body>
 <div id="sidebar"> SIDEBAR </div>
 <!-- Request Tables from DB -->
-$categoryTable = mysq_query($con,"SELECT * FROM SubCategories");
+$metacategoryTable = mysq_query($con,"SELECT * FROM MetaCategories");
 
   <ul><!-- Start list -->
-  while($nameCategory = mysqli_fetch_array($categoryTable))
+  while($nameMetacategory = mysqli_fetch_array($metacategoryTable))
   {
-   <li>$nameCategory['Name']</li><!-- Use name of caterogory here -->
+   <li>$nameMetacategory['Name']<!-- Use name of caterogory here -->
    $metaID['MetaCategoryID'];<!-- Load metacategory ID -->
     <ul>
       <!-- Select MetaCategories which has ID's compatibility -->
-      $metaTable = mysq_query($con,"SELECT * FROM MetaCategories WHERE 'SubCategories.MetaCategoryID' = 'MetaCateroryID' ");
+      $subTable = mysq_query($con,"SELECT * FROM SubCategories WHERE 'MetaCategories.MetaCategoryID' = 'MetaCategoryID' ");
       
-      while($nameMetaCategory = mysqli_fetch_array($metaTable))
+      while($nameSubCategory = mysqli_fetch_array($subTable))
       {
-        <li>$nameMetaCategory['Name']</li><!-- Meta Category Name -->
+        <li>$nameSubCategory['Name']</li><!-- Meta Category Name -->
       }
     </ul>
   </li><!-- closing list under section one -->
