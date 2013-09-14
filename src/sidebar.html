@@ -41,7 +41,10 @@ echo "Connected to database! <br>";
     <ul><!-- Start list -->
     while($nameMetacategory = mysqli_fetch_array($metacategoryTable))
     {
-      <li>$nameMetacategory['Name']<!-- Use name of caterogory here / Code will be inserted here -->
+      <li>
+      //$nameMetacategory['Name']$nameMetacategory['Name']<!-- Use name of caterogory here / Code will be inserted here -->
+      //<input type="button" onclick="return toggleMe('close')" value="Toggle"><br><span id="close">
+
       $metaID['MetaCategoryID'];<!-- Load metacategory ID -->
       
       <ul>
@@ -53,7 +56,7 @@ echo "Connected to database! <br>";
           <li>$nameSubCategory['Name']</li><!-- Meta Category Name -->
         }
       </ul>
-      
+      //</span><!-- expanding/contr -->
       </li><!-- closing list under section one -->
     }
     
@@ -78,18 +81,8 @@ function toggleMe(clickAction){
 }
 </script>
 
-<input type="button" onclick="return toggleMe('para1')" value="Toggle"><br>
-<p id="para1">
-Test
-</p>
-<br>
-<input type="button" onclick="return toggleMe('para2')" value="Toggle"><br>
-<div id="para2">
-Test
-</div>
-<br>
-<input type="button" onclick="return toggleMe('para3')" value="Toggle"><br>
-<span id="para3">
+<input type="button" onclick="return toggleMe('close')" value="Toggle"><br>
+<span id="close">
 Test
 </span>
 
