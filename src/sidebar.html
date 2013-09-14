@@ -17,16 +17,16 @@ echo "Connected to database! <br>";
 <body>
 <div id="sidebar"> SIDEBAR </div>
 <!-- Request Tables from DB -->
-$result = mysq_query($con,"SELECT * FROM SubCategories");
+$resultCat = mysq_query($con,"SELECT * FROM SubCategories");
 
   <ul><!-- Start list -->
-  while($row = mysqli_fetch_array($result))
+  while($title = mysqli_fetch_array($resultCat))
   {
-   <li>Hello<!-- Use name of caterogory here -->
+   <li>$title['Name']<!-- Use name of caterogory here -->
+   $metaID['MetaCategoryID']<!-- Load metacategory ID -->
     <ul>
-      <li>Option 1.1</li><!-- Use attributes of caterogory here -->
-      <li>Option 1.2</li><!-- Use attributes of caterogory here -->
-      <li>Option 1.3</li><!-- Use attributes of caterogory here -->
+      $metaName = mysq_query($con,"SELECT * FROM MetaCategories where ");
+      <li>$metaName</li><!-- Meta Category Name -->
       </ul>
   </li><!-- closing list under section one -->
   }
