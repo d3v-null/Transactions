@@ -40,6 +40,7 @@
 				$page = (in_array("pg", $_GET)) ? $_GET["pg"] : 1;  <!-- page number -->
 				$tstr = (in_array("ts", $_GET)) ? $_GET["ts"] : 0;  <!-- Starting transaction -->
 				$tnum = (in_array("tn", $_GET)) ? $_GET["tn"] : 20; <!-- Number of transactions per page -->
+				$tfin = $tstr + $tnum;
 				$ocol = (in_array("oc", $_GET)) ? $_GET["oc"] : "TransactionDate"; <!-- Order by column -->
 				$odir = (in_array("tn", $_GET)) ? $_GET["tn"] : "DESC"; <!-- Order direction -->
 			?>
@@ -99,13 +100,15 @@
                 <?php              
 					//select the transactions to display on the page
                     $sql="
-						SELECT HistoryID 
+						SELECT HistoryID, TransactionID, TransactionDate, Description, Name
 						FROM (
-							SELECT HistoryID, TransactionID, Max(ModificationDate)
-							FROM Histories GROUP BY TransactionID
+							SELECT Histories.HistoryID, Histories.TransactionID, 
+							Histories.Max(ModificationDate), Histories.TransactionDate,							
+							Histories.Description, Statuses.Name AS latest
+							FROM Histories INNER JOIN Statuses GROUP BY Histories.TransactionID
 						)
 						ORDER BY " . $ocol . " " . $odir . "
-						LIMIT " . $tstr . ", " . $tnum . ";";
+						LIMIT " . $tstr . ", " . $tfin . ";";
 					$histories = mysql_query($sql) or die(mysql_error());
                 ?>
 
@@ -124,10 +127,10 @@
                             {
                         ?>
                             <tr id = >
-                                <td><? echo $transaction['ID']; ?></td>
-                                <td><? echo $latest['Histories.TransactionDate']; ?></td>
-                                <td><? echo $latest['Histories.Description']; ?></td>
-                                <td><? echo $latest['Status.Name']; ?></td>
+                                <td><? echo $row['TransactionID']; ?></td>
+                                <td><? echo $row['TransactionDate']; ?></td>
+                                <td><? echo $row['Description']; ?></td>
+                                <td><? echo $row['Status.Name']; ?></td>
                                 <td><? echo $latest['Histories.Amount']; ?></td>
                                 <td><a href="transaction.php?hid=<? echo $trid; ?>">edit</a></td>
                             </tr>
@@ -137,12 +140,13 @@
                     </tbody>
                 </table>
                 <div id="pagination"> 
-                    <!-- to do -->
+                    <a>Back</a><!-- to do: write this properly in JavaScript - decrements start and submits form-->
+					<a>Forward</a><!-- to do: write this properly in JavaScript - increments start and submits form-->
                 </ul> -->
             </div><!-- end content -->
         </div><!-- end box -->
         <div id="sidebar">
-            <iframe src="/sidebar.html"
+            <iframe src="/sidebar.html"/>
         </div><!-- end sidebar -->
     </div><!-- end main -->
     </body>
