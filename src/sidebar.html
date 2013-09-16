@@ -48,7 +48,7 @@ echo "Connected to database! <br>";
       $metaID['MetaCategoryID'];<!-- Load metacategory ID -->
       
       <ul>
-        <!-- Select MetaCategories which has ID's compatibility -->
+        <!-- Select MetaCategories which has IDs compatibility -->
         $subTable = mysq_query($con,"SELECT * FROM SubCategories WHERE 'MetaCategories.MetaCategoryID' = 'MetaCategoryID' ");
       
         while($nameSubCategory = mysqli_fetch_array($subTable))

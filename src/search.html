@@ -44,7 +44,12 @@
 				$ocol = (in_array("oc", $_GET)) ? $_GET["oc"] : "TransactionDate"; <!-- Order by column -->
 				$odir = (in_array("tn", $_GET)) ? $_GET["tn"] : "DESC"; <!-- Order direction -->
 			?>
-				
+			
+			<?php
+				if (isAdmin()) {
+					echo "<a>Administration</a>"
+				}
+			?>
             <h1>Transaction History</h1>
             <div id="content">
                 <form <table class="bordered" method="get" action="search.html" id="search-form">        
