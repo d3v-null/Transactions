@@ -18,46 +18,47 @@ echo "Connected to database! <br>";
 <div id="sidebar"> SIDEBAR </div>
 
 <?php
-  <!-- Set script responsable for toggle -->
-  
-  <script type="text/javascript">
+	<!-- Set script responsable for toggle -->
+	<script type="text/javascript">
 
-  function toggleMe(clickAction){
-      var action=document.getElementById(clickAction);
-      if(!action)return true;
-      if(action.style.display=="none"){
-          action.style.display="block"
-      }
-      else{
-          action.style.display="none"
-      }
+	function toggleMe(clickAction){
+		var action=document.getElementById(clickAction);
+		if(!action)return true;
+		if(action.style.display=="none"){
+			action.style.display="block"
+		}
+		else{
+			action.style.display="none"
+		}
       return true;
-  }
-  </script>
+	}
+	
+	</script>
   
-  <!-- Request Tables from DB -->
-  $metacategoryTable = mysq_query($con,"SELECT * FROM MetaCategories");
+	<!-- Request Tables from DB -->
+	$metacategoryTable = mysq_query($con,"SELECT * FROM MetaCategories");
 
     <ul><!-- Start list -->
     while($nameMetacategory = mysqli_fetch_array($metacategoryTable))
     {
-      <li>
-      //$nameMetacategory['Name']$nameMetacategory['Name']<!-- Use name of caterogory here / Code will be inserted here -->
-      //<input type="button" onclick="return toggleMe('close')" value="Toggle"><br><span id="close">
+		<li>
+		//$nameMetacategory['Name']$nameMetacategory['Name']<!-- Use name of caterogory here / Code will be inserted here -->
+		//<input type="button" onclick="return toggleMe('close')" value="Toggle"><br><span id="close">
 
-      $metaID['MetaCategoryID'];<!-- Load metacategory ID -->
+		$metaID['MetaCategoryID'];<!-- Load metacategory ID -->
       
-      <ul>
-        <!-- Select MetaCategories which has IDs compatibility -->
-        $subTable = mysq_query($con,"SELECT * FROM SubCategories WHERE 'MetaCategories.MetaCategoryID' = 'MetaCategoryID' ");
+		<ul>
+			<!-- Select MetaCategories which has IDs compatibility -->
+			$subTable = mysq_query($con,"SELECT * FROM SubCategories WHERE 'MetaCategories.MetaCategoryID' = 'MetaCategoryID' ");
       
-        while($nameSubCategory = mysqli_fetch_array($subTable))
-        {
-          <li>$nameSubCategory['Name']</li><!-- Meta Category Name -->
-        }
-      </ul>
-      //</span><!-- expanding/contr -->
-      </li><!-- closing list under section one -->
+			while($nameSubCategory = mysqli_fetch_array($subTable))
+			{
+				<li>$nameSubCategory['Name']</li><!-- Meta Category Name -->
+			}
+		</ul>
+		
+		//</span><!-- expanding/contr -->
+		</li><!-- closing list under section one -->
     }
     
     </ul><!-- closing whole list -->
@@ -85,10 +86,6 @@ function toggleMe(clickAction){
 <span id="close">
 Test
 </span>
-
-
 -->
-
-
 </body>
 </html>
