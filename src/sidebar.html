@@ -1,100 +1,91 @@
 <!DOCTYPE html>
 
+<?php
+// Create connection
+$connection =mysql_connect("localhost","test","test") or die("Could not connect");
+
+mysql_select_db("test") or die("Unable to select database");
+
+echo "Connected to database! <br>";
+?>
+
 <html>
+<head>
+<!--Insert header here--> 
+</head>
 
-	<?php
-		// Create connection
-		$connection =mysql_connect("localhost","test","test") or die("Could not connect");
+<body>
+<div id="sidebar"> SIDEBAR </div>
 
-		mysql_select_db("test") or die("Unable to select database");
+<?php
+	<!-- Set script responsable for toggle -->
+	<script type="text/javascript">
 
-		echo "Connected to database! <br>";
-	?>
-
-	<head>
-		<!--Insert header here--> 
-		<!-- Styling -->
-		
-		style type="text/css" media="screen">
-            @import url("style2.css");
-            @import url("styling.css");
-        </style>
-		
-	</head>
-
-	<body>
-		<div id="sidebar"> SIDEBAR </div>
-
-		<?php
-			<!-- Set script responsable for toggle -->
-			<script type="text/javascript">
-
-			function toggleMe(clickAction){
-				var action=document.getElementById(clickAction);
-					if(!action)return true;
-					if(action.style.display=="none"){
-						action.style.display="block"
-					}
-					else{
-						action.style.display="none"
-					}
-				return true;
-			}
+	function toggleMe(clickAction){
+		var action=document.getElementById(clickAction);
+		if(!action)return true;
+		if(action.style.display=="none"){
+			action.style.display="block"
+		}
+		else{
+			action.style.display="none"
+		}
+      return true;
+	}
 	
-			</script>
+	</script>
   
-			<!-- Request Tables from DB -->
-			$metacategoryTable = mysq_query($con,"SELECT * FROM MetaCategories");
+	<!-- Request Tables from DB -->
+	$metacategoryTable = mysq_query($con,"SELECT * FROM MetaCategories");
 
-			<ul><!-- Start list -->
-			while($nameMetacategory = mysqli_fetch_array($metacategoryTable))
+    <ul><!-- Start list -->
+    while($nameMetacategory = mysqli_fetch_array($metacategoryTable))
+    {
+		<li>
+		//$nameMetacategory['Name']$nameMetacategory['Name']<!-- Use name of caterogory here / Code will be inserted here -->
+		//<input type="button" onclick="return toggleMe('close')" value="Toggle"><br><span id="close">
+
+		$metaID['MetaCategoryID'];<!-- Load metacategory ID -->
+      
+		<ul>
+			<!-- Select MetaCategories which has IDs compatibility -->
+			$subTable = mysq_query($con,"SELECT * FROM SubCategories WHERE 'MetaCategories.MetaCategoryID' = 'MetaCategoryID' ");
+      
+			while($nameSubCategory = mysqli_fetch_array($subTable))
 			{
-				<li>
-				//$nameMetacategory['Name']$nameMetacategory['Name']<!-- Use name of caterogory here / Code will be inserted here -->
-				//<input type="button" onclick="return toggleMe('close')" value="$nameMetacategory['Name']"><br><span id="close">
-
-				$metaID['MetaCategoryID'];<!-- Load metacategory ID -->
-      
-				<ul>
-				<!-- Select MetaCategories which has IDs compatibility -->
-				$subTable = mysq_query($con,"SELECT * FROM SubCategories WHERE 'MetaCategories.MetaCategoryID' = 'MetaCategoryID' ");
-      
-				while($nameSubCategory = mysqli_fetch_array($subTable))
-				{
-					<li>$nameSubCategory['Name']</li><!-- Meta Category Name -->
-				}
-				</ul>
-		
-				//</span><!-- expanding/contr -->
-				</li><!-- closing list under section one -->
+				<li>$nameSubCategory['Name']</li><!-- Meta Category Name -->
 			}
+		</ul>
+		
+		//</span><!-- expanding/contr -->
+		</li><!-- closing list under section one -->
+    }
     
-			</ul><!-- closing whole list -->
-		?>
-		
-		<div id="main"> MAIN CONTENT </div>
+    </ul><!-- closing whole list -->
+?>
+<div id="main"> MAIN CONTENT </div>
 
-		<!-- CODE TO EXTEND/CONTRACT
+<!-- CODE TO EXTEND/CONTRACT
 
-		<script type="text/javascript">
+<script type="text/javascript">
 
-			function toggleMe(clickAction){
-				var action=document.getElementById(clickAction);
-				if(!action)return true;
-				if(action.style.display=="none"){
-					action.style.display="block"
-				}
-				else{
-					action.style.display="none"
-				}
-				return true;
-			}
-		</script>
+function toggleMe(clickAction){
+  var action=document.getElementById(clickAction);
+  if(!action)return true;
+  if(action.style.display=="none"){
+      action.style.display="block"
+  }
+  else{
+    action.style.display="none"
+  }
+  return true;
+}
+</script>
 
-		<input type="button" onclick="return toggleMe('close')" value="Toggle"><br>
-		<span id="close">
-			Test
-		</span>
+<input type="button" onclick="return toggleMe('close')" value="Toggle"><br>
+<span id="close">
+Test
+</span>
 -->
 </body>
 </html>
