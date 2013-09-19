@@ -1,38 +1,105 @@
- <!DOCTYPE html>
-
-<?php
-// Create connection
-$connection =mysql_connect("localhost","test","test") or die("Could not connect");
-
-mysql_select_db("test") or die("Unable to select database");
-
-echo "Connected to database! <br>";
-?>
-
-<html>
-	<head>
-	</head>
+<!DOCTYPE html>
 	
-	<body>
-		<?php
-			$sql = "SELECT * FROM Tester WHERE PID='" . $_GET['id'] . "'";
-			$result = mysql_query($sql) or die(mysql_error());
+<html>
+<head>
+	<title>Ledger System - Western Australia Swedish Club</title>
+    
+    <style type="text/css" media="screen">
+        @import url("style2.css");
+    </style>
 
-			echo "<table border='1'>";
+	<!-- Script responsable for toggle -->
 
-			while($row = mysql_fetch_assoc($result))
-			{
-				echo "<tr>";
-				foreach($row as $cvalue)
-				{
-					echo "<td>" ;
-					print "$cvalue\t";
-					echo "</td>";
-				}		
-				echo"</tr>";
+	<script type="text/javascript">
+		function toggleMe(clickAction){
+			var action=document.getElementById(clickAction);
+				if(!action)return true;
+				if(action.style.display=="none"){
+					action.style.display="block"
 				}
-			echo "</table>"; 
-		?>	
-		
-	</body>
+				else{
+					action.style.display="none"
+				}
+			return true;
+		}
+	</script>
+	
+	<script type="text/javascript">
+		function save(clickAction){
+			<!-- TO DO: Send -->
+		}
+	</script>
+</head>
+
+<body>
+    
+    <div id="page">
+        
+    
+        <div id="main">
+        
+            <div id="box">
+                <h1>Transaction Details</h1>
+                
+				<!-- Read DB -->
+					
+				<div id="content">
+					<p><b>Transaction ID</b>: (LOAD DB)</p>
+					<p><b>Amount (AUD$)</b>:(LOAD DB)</p>
+					<p><b>Description</b>:</p>
+					<div id="description" style="width:200px">
+					(LOAD BD)
+					</div>
+					
+					<p><b>Comment</b>:</p>					
+					<div id="comment" style="width:200px">
+					(LOAD BD)
+					</div>
+					
+					<p><b>Recorded Date</b>: (LOAD DB)</p>
+					<p><b>Payment Date</b>: (LOAD DB)</p>
+					<p><b>Responsible for Record</b>: (LOAD DB)</p>
+					<p><b>Responsible for Transaction</b>: (LOAD DB)</p>
+					<p><b>Associated Person</b>: (LOAD DB)</p>
+					<p><b>Status</b>: (LOAD DB)</p>					
+				</div>
+
+				<!-- end content!-->
+                
+				<input type="button" onclick="return toggleMe('close1')" value="Edit Transaction"><br>
+       
+            </div><!-- end box -->
+            
+            <div id="sidebar">
+				<?php include_once("sidebar.html");?>
+				
+				<h3> Sidebar <h3>
+				<!-- CHECK HOW TO DO IT DYNAMICALLY -->
+				<input type="button" onclick="return toggleMe('close1')" value="Option 1"><br>
+				<span id="close1">
+					<ul>
+						<li>Filter1</li>
+						<li>Filter2</li>
+					</ul>
+				</span>
+				
+				<input type="button" onclick="return toggleMe('close2')" value="Option 2"><br>
+				<span id="close2">
+					<ul>
+						<li>Filter1</li>
+						<li>Filter2</li>
+					</ul>
+				</span>
+			</div><!-- end sidebar -->
+            
+            
+        </div><!-- end main -->
+        
+
+       
+    </div><!-- end page -->
+    
+
+    
+</body>
 </html>
