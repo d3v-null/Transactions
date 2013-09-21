@@ -2,13 +2,14 @@
     
 <html>
     <?php
-        $debug = True
+        $debug = True;
         // Create connection
-        $connection =mysql_connect("localhost","transaction","password") or die("Could not connect");
-        mysql_select_db("transaction") or die("Unable to coonnect to transaction database");
-        if ($debug){
-            echo "<strong>Connected to transaction database!";
-        }
+		$dbhost = "localhost";
+		$dbname = "transactions";
+		$dbuser = "transactions";
+		$dbpass = "";
+		mysql_connect($dbhost,$dbuser,$dbpass) or die(mysql_error());
+		mysql_select_db($dbname) or die(mysql_error());
     ?>
 
     <head>
@@ -36,19 +37,17 @@
     <div id="main">
         <div id="box">
 			<?php 
-				<!-- mandatory search parameters -->
-				$page = (in_array("pg", $_GET)) ? $_GET["pg"] : 1;  <!-- page number -->
-				$tstr = (in_array("ts", $_GET)) ? $_GET["ts"] : 0;  <!-- Starting transaction -->
-				$tnum = (in_array("tn", $_GET)) ? $_GET["tn"] : 20; <!-- Number of transactions per page -->
+				//mandatory search parameters
+				$page = (in_array("pg", $_GET)) ? $_GET["pg"] : 1;  //<!-- page number -->
+				$tstr = (in_array("ts", $_GET)) ? $_GET["ts"] : 0;  //<!-- Starting transaction -->
+				$tnum = (in_array("tn", $_GET)) ? $_GET["tn"] : 20; //<!-- Number of transactions per page -->
 				$tfin = $tstr + $tnum;
-				$ocol = (in_array("oc", $_GET)) ? $_GET["oc"] : "TransactionDate"; <!-- Order by column -->
-				$odir = (in_array("tn", $_GET)) ? $_GET["tn"] : "DESC"; <!-- Order direction -->
+				$ocol = (in_array("oc", $_GET)) ? $_GET["oc"] : "TransactionDate"; //<!-- Order by column -->
+				$odir = (in_array("tn", $_GET)) ? $_GET["tn"] : "DESC"; //<!-- Order direction -->
 			?>
 			
 			<?php
-				if (isAdmin()) {
-					echo "<a>Administration</a>"
-				}
+				//if (isAdmin()) echo "<a>Administration</a>"
 			?>
             <h1>Transaction History</h1>
             <div id="content">
@@ -69,11 +68,11 @@
                         <tbody>
                             <tr>
                                 <td><input type="text" name="kw" 
-									<?php if in_array("kw", $_GET) echo "value=" . $_GET["kw"]; ?> /></td>
+									<?php if (in_array("kw", $_GET)) echo "value=" . $_GET["kw"]; ?> /></td>
                                 <td><input type="date" name="fd" 
-									<?php if in_array("fd", $_GET) echo "value=" . $_GET["fd"]; ?> /></td>
+									<?php if (in_array("fd", $_GET)) echo "value=" . $_GET["fd"]; ?> /></td>
                                 <td><input type="date" name="td" 
-									<?php if in_array("td", $_GET) echo "value=" . $_GET["td"]; ?> /></td>
+									<?php if (in_array("td", $_GET)) echo "value=" . $_GET["td"]; ?> /></td>
                             </tr>
                         </tbody>
                     </table>
@@ -87,10 +86,10 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <select name="st" <?php if in_array("st") echo "value=" . $_GET["st"]; ?>>
+                                    <select name="st" <?php if (in_array("st")) echo "value=" . $_GET["st"]; ?>>
                                         <?php         
                                             $statuses = mysql_query("SELECT * FROM Statuses;") or die(mysql_error());
-                                            while($row = mysql_fetch_array($statuses){
+                                            while($row = mysql_fetch_array($statuses)){
                                                 echo "<option value=\"" . $row['Name'] . "\">" . $row['Name'] . "</option>";
                                             }
                                         ?>
