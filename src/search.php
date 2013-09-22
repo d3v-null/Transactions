@@ -108,7 +108,14 @@
                    
             <?php              
                 //select the transactions to display on the page
-                $qrystate = ($st == 0)? "" : "WHERE StatusID = ".$st."\n";
+                $qry = "WHERE "
+                $qrystate = ($st == 0)? "" : 
+                    "StatusID = ".$st."\n";
+                $qrydate  = ($fd == Null OR $td == Null)? "" : 
+                    "TransactionDate BETWEEN ".$fd." AND ".$td."\n";
+                $qrykey   = ($kw == "")? "" :
+                    "Description LIKE '%".$kw."%' OR Comment LIKE '%".$kw."%'"; 
+                
                 $sql="
                     SELECT 
                         History.ID AS HistoryID,
@@ -119,13 +126,14 @@
                         Status.Name AS Status,
                         Status.ID AS StatusID
                     FROM (
-                        SELECT ID, Max(History.ModificationDate) AS ModificationDate
+                        SELECT TransactionID, Max(ModificationDate) AS ModificationDate
                         FROM History 
-                        GROUP BY ID
+                        GROUP BY TransactionID
                     ) AS Latest
-                    INNER JOIN History ON Latest.ID = History.ID
+                    INNER JOIN History ON Latest.TransactionID = History.TransactionID
+                    AND Latest.ModificationDate = History.ModificationDate
                     INNER JOIN Status ON Status.ID = History.StatusID
-                    " . $qrystate .
+                    " . $qrystate . $qrydate .
                    "ORDER BY " . $oc . " " . $od . "
                     LIMIT " . $ts . ", " . $tf . ";";
                 echo $sql;
@@ -134,8 +142,8 @@
 
             <table id="transaction-list" summary = "List of Transactions">
                 <thead>
-                    <td>Transaction ID</td>
-                    <td>Transaction Date</td>
+                    <td>Trans. ID</td>
+                    <td>Trans. Date</td>
                     <td>Description</td>
                     <td>Status</td>
                     <td>Amount</td>
@@ -152,7 +160,7 @@
                         <td><?php echo $row['Description']      ?></td>
                         <td><?php echo $row['Status']           ?></td>
                         <td><?php echo $row['Amount'] / 100     ?></td>
-                        <td><a href="transaction.php?tid=<?php echo $row['TransactionID'] ?>?Td">Edit</a></td>
+                        <td><a href="transaction.php?hid=<?php echo $row['HistoryID'] ?>>Edit</a></td>
                     </tr>
                 <?php
                     }
