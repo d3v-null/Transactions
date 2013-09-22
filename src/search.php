@@ -5,10 +5,9 @@
         $debug = True;
         // Connect to transaction database
 		$dbhost = "localhost";
-		$dbname = "transactions";
-		$dbuser = "transactions";
-		$dbpass = "";
-		mysql_connect($dbhost,$dbuser,$dbpass) or die(mysql_error());
+		$dbname = "transaction";
+		$dbuser = "root";
+		mysql_connect($dbhost,$dbuser) or die(mysql_error());
 		mysql_select_db($dbname) or die(mysql_error());
     ?>
 
@@ -51,7 +50,7 @@
 			?>
             <h1>Transaction History</h1>
             <div id="content">
-                <form <table class="bordered" method="get" action="search.html" id="search-form">        
+                <form <table class="bordered" method="get" action="search.php" id="search-form">        
                     <h2>Search</h2>
                     <input type="submit" id="search-update"/>                   
                     <input type="hidden" name="pg" value=<?php echo $page;?>/>          
@@ -86,11 +85,12 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <select name="st" <?php if (in_array("st")) echo "value=" . $_GET["st"]; ?>>
+                                    <select name="st" <?php if (in_array("st", $_GET)) echo "value=".$_GET["st"]; ?>>
+                                        <option>-- Select --</option>
                                         <?php         
-                                            $statuses = mysql_query("SELECT * FROM Statuses;") or die(mysql_error());
+                                            $statuses = mysql_query("SELECT * FROM Status") or die(mysql_error());
                                             while($row = mysql_fetch_array($statuses)){
-                                                echo "<option value=\"" . $row['Name'] . "\">" . $row['Name'] . "</option>";
+                                                echo "<option value=".$row['ID'].">".$row['Name']."</option>";
                                             }
                                         ?>
                                     </select>
@@ -98,22 +98,33 @@
                             </div>
                         </tbody>
                     </table>
-                    <div id="expander">"Expand"</div><!-- to do: write this properly in JavaScript -->
+                    <a class="expander">Expand</a><!-- to do: write this properly in JavaScript -->
                 </form>
                        
                 <?php              
 					//select the transactions to display on the page
                     $sql="
-						SELECT HistoryID, TransactionID, TransactionDate, Description, Name
-						FROM (
-							SELECT Histories.HistoryID, Histories.TransactionID, 
-							Histories.Max(ModificationDate), Histories.TransactionDate,							
-							Histories.Description, Statuses.Name AS latest
-							FROM Histories INNER JOIN Statuses GROUP BY Histories.TransactionID
-						)
+                        SELECT 
+                            History.TransactionID AS TransactionID, 
+                            DATE(History.TransactionDate) AS TransactionDate, 
+                            History.Description AS Description, 
+                            History.Amount AS Amount, 
+                            Status.Name AS Status 
+                        FROM (
+                            SELECT TransactionID, Max(History.ModificationDate) AS ModificationDate
+                            FROM History 
+                            GROUP BY TransactionID 
+                        ) AS Latest
+                        INNER JOIN History 
+                        ON Latest.TransactionID = History.TransactionID AND Latest.ModificationDate = History.ModificationDate
+                        INNER JOIN Status
+                        ON Status.ID = History.StatusID
+                        " .
+                        ""//WHERE
+                        . "
 						ORDER BY " . $ocol . " " . $odir . "
 						LIMIT " . $tstr . ", " . $tfin . ";";
-					$histories = mysql_query($sql) or die(mysql_error());
+					$page = mysql_query($sql) or die(mysql_error());
                 ?>
 
                 <table class="bordered" id="transaction-list" summary = "List of Transactions">
@@ -121,32 +132,32 @@
                         <td>Transaction ID</td>
                         <td>Transaction Date</td>
                         <td>Description</td>
-                        <td>status</td>
+                        <td>Status</td>
                         <td>Amount</td>
                         <td></td>
                     </thead>
                     <tbody>
-                        <?php
-                            while($row = mysql_fetch_array($histories))
-                            {
-                        ?>
-                            <tr id = >
-                                <td><? echo $row['TransactionID']; ?></td>
-                                <td><? echo $row['TransactionDate']; ?></td>
-                                <td><? echo $row['Description']; ?></td>
-                                <td><? echo $row['Status.Name']; ?></td>
-                                <td><? echo $latest['Histories.Amount']; ?></td>
-                                <td><a href="transaction.php?hid=<? echo $trid; ?>">edit</a></td>
-                            </tr>
-                        <?php
-                            }
-                        ?>
+                    <?php
+                        while($row = mysql_fetch_array($page))
+                        {
+                    ?>
+                        <tr id = >
+                            <td><?php echo $row['TransactionID']    ?></td>
+                            <td><?php echo $row['TransactionDate']  ?></td>
+                            <td><?php echo $row['Description']      ?></td>
+                            <td><?php echo $row['Status']           ?></td>
+                            <td><?php echo $row['Amount'] / 100     ?></td>
+                            <td><a href="transaction.php?tid=<?php echo $row['TransactionID'] ?>?Td">Edit</a></td>
+                        </tr>
+                    <?php
+                        }
+                    ?>
                     </tbody>
                 </table>
                 <div id="pagination"> 
                     <a>Back</a><!-- to do: write this properly in JavaScript - decrements start and submits form-->
 					<a>Forward</a><!-- to do: write this properly in JavaScript - increments start and submits form-->
-                </ul> -->
+                </ul>
             </div><!-- end content -->
         </div><!-- end box -->
         <div id="sidebar">

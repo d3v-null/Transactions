@@ -59,40 +59,62 @@
     ") or die(mysql_error());
     
     If ($debug) echo "<h3>Creating History table</h3>";
-	mysql_query("     
+    mysql_query("     
         CREATE TABLE History (
-            TransactionID INT NOT NULL AUTO_INCREMENT,
+            ID INT AUTO_INCREMENT,
+            TransactionID INT NOT NULL,
             Description VARCHAR(255) NOT NULL,
             Comment TEXT,
-            RecordedDate TIMESTAMP DEFAULT NOW(),
+            ModificationDate TIMESTAMP DEFAULT NOW(),
             TransactionDate TIMESTAMP,
             PaymentDate TIMESTAMP,
-            RecordedPersonID INT NOT NULL,
+            ModificationPersonID INT NOT NULL,
             ResponsibleParty VARCHAR(255),
             AssociatedParty VARCHAR (255),
             StatusID INT NOT NULL,
             Amount INT NOT NULL,
             
-            PRIMARY KEY HistoryID (TransactionID, RecordedDate),
+            PRIMARY KEY (ID),
             FOREIGN KEY (StatusID) 
                 REFERENCES Status(ID)
                 ON DELETE CASCADE
 		);        
     ") or die(mysql_error());
     
+	// mysql_query("     
+        // CREATE TABLE History (
+            // TransactionID INT NOT NULL AUTO_INCREMENT,
+            // Description VARCHAR(255) NOT NULL,
+            // Comment TEXT,
+            // ModificationDate TIMESTAMP DEFAULT NOW(),
+            // TransactionDate TIMESTAMP,
+            // PaymentDate TIMESTAMP,
+            // ModificationPersonID INT NOT NULL,
+            // ResponsibleParty VARCHAR(255),
+            // AssociatedParty VARCHAR (255),
+            // StatusID INT NOT NULL,
+            // Amount INT NOT NULL,
+            
+            // PRIMARY KEY HistoryID (TransactionID, ModificationDate),
+            // FOREIGN KEY (StatusID) 
+                // REFERENCES Status(ID)
+                // ON DELETE CASCADE
+		// );        
+    // ") or die(mysql_error());
+    
     If ($debug) echo "<h3>Creating Categorization table</h3>";
 	mysql_query("         
         CREATE TABLE Categorization (
-            TransactionID INT NOT NULL,
-            RecordedDate TIMESTAMP NOT NULL,
+            ID INT AUTO_INCREMENT,
+            HistoryID INT NOT NULL,
             SubCategoryID INT NOT NULL,
             
-            PRIMARY KEY CategorizationID (TransactionID, RecordedDate, SubCategoryID),
-            FOREIGN KEY (TransactionID, RecordedDate)
-                REFERENCES History(TransactionID, RecordedDate)
+            PRIMARY KEY (ID),
+            FOREIGN KEY (HistoryID)
+                REFERENCES History(ID)
                 ON DELETE CASCADE,
             FOREIGN KEY (SubCategoryID)
-                REFERENCES Subcategory(ID)
+                REFERENCES SubCategory(ID)
                 ON DELETE CASCADE
         );  
     ") or die(mysql_error());
@@ -108,14 +130,14 @@
     
     If ($debug) echo "<h3>Populating History</h3>";
     mysql_query("
-        INSERT INTO History (TransactionID, Description, RecordedDate, 
+        INSERT INTO History (TransactionID, Description, ModificationDate, 
             AssociatedParty, Amount, StatusID) 
         VALUES
             (1, 'Jimmy Neutron’s membership', '2013-09-22 18:48:43','Jimmy Neutron', 1000, 
                 (SELECT ID FROM Status WHERE Name = 'Pending')),
-            (2, 'Jombles Notronbo’s family membership', '2013-09-22 18:48:43', 'Jombles Notronbo', 4000, 
-                (SELECT ID FROM Status WHERE Name = 'Pending')),
             (2, 'Jombles Notronbo’s family membership', '2013-09-22 18:48:44', 'Jombles Notronbo', 4000, 
+                (SELECT ID FROM Status WHERE Name = 'Pending')),
+            (2, 'Jombles Notronbos\' family membership', '2013-09-22 18:48:45', 'Jombles Notronbos', 4000, 
                 (SELECT ID FROM Status WHERE Name = 'Processed')); 
     ") or die(mysql_error()); 
     
@@ -141,10 +163,31 @@
     
     If ($debug) echo "<h3>Populating Categorization</h3>";
     mysql_query("   
-        INSERT INTO Categorization (TransactionID, RecordedDate, SubCategoryID) VALUES
-            (1, '2013-09-22 18:48:43', (SELECT Subcategory.ID FROM SubCategory 
-                INNER JOIN Category ON Subcategory.CategoryID=Category.ID
-                WHERE Category.Name = 'Membership' AND SubCategory.Name = 'Single'));
-        
+        INSERT INTO Categorization (HistoryID, SubCategoryID) 
+        VALUES
+            (
+                (
+                    SELECT ID FROM History 
+                    WHERE TransactionID = 1 AND ModificationDate='2013-09-22 18:48:43'
+                ),
+                (
+                    SELECT SubCategory.ID FROM SubCategory 
+                    INNER JOIN Category ON Subcategory.CategoryID = Category.ID
+                    WHERE Category.Name = 'Membership' AND SubCategory.Name = 'Single'
+                )
+            ),
+            (
+                (
+                    SELECT ID FROM History 
+                    WHERE TransactionID = 2 AND ModificationDate='2013-09-22 18:48:43'
+                ),
+                (
+                    SELECT SubCategory.ID FROM SubCategory 
+                    INNER JOIN Category ON Subcategory.CategoryID = Category.ID
+                    WHERE Category.Name = 'Membership' AND SubCategory.Name = 'Single'
+                )
+            );            
     ") or die(mysql_error()); 
+    
+     echo "<h2>Complete</h2>";
 ?>
