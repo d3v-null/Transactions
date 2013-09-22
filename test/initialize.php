@@ -111,11 +111,11 @@
         INSERT INTO History (TransactionID, Description, RecordedDate, 
             AssociatedParty, Amount, StatusID) 
         VALUES
-            (1, 'Jimmy Neutron’s membership', Null,'Jimmy Neutron', 1000, 
+            (1, 'Jimmy Neutron’s membership', '2013-09-22 18:48:43','Jimmy Neutron', 1000, 
                 (SELECT ID FROM Status WHERE Name = 'Pending')),
             (2, 'Jombles Notronbo’s family membership', '2013-09-22 18:48:43', 'Jombles Notronbo', 4000, 
                 (SELECT ID FROM Status WHERE Name = 'Pending')),
-            (2, 'Jombles Notronbo’s family membership', Null, 'Jombles Notronbo', 4000, 
+            (2, 'Jombles Notronbo’s family membership', '2013-09-22 18:48:44', 'Jombles Notronbo', 4000, 
                 (SELECT ID FROM Status WHERE Name = 'Processed')); 
     ") or die(mysql_error()); 
     
@@ -141,9 +141,10 @@
     
     If ($debug) echo "<h3>Populating Categorization</h3>";
     mysql_query("   
-        INSERT INTO Categorization (HistoryID, SubCategoryID) VALUES
-            (SELECT (SELECT ID FROM History WHERE TransactionID = 1), Subcategory.ID
-                FROM SubCategory INNER JOIN Category ON Subcategory.CategoryID=Category.ID
-                WHERE Category.Name = 'Members' AND SubCategory.Name = 'Single');
+        INSERT INTO Categorization (TransactionID, RecordedDate, SubCategoryID) VALUES
+            (1, '2013-09-22 18:48:43', (SELECT Subcategory.ID FROM SubCategory 
+                INNER JOIN Category ON Subcategory.CategoryID=Category.ID
+                WHERE Category.Name = 'Membership' AND SubCategory.Name = 'Single'));
+        
     ") or die(mysql_error()); 
 ?>
