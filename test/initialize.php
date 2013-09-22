@@ -2,111 +2,148 @@
 	 Requires access to transaction database -->
 
 <?php 
-	// Connect to transaction database
+    $debug = True;
+    If ($debug) echo "<h1>Initializing Transaction database</h1>";
+    
+	If ($debug) echo "<h2>Connecting to database</h2>";
 	$dbhost = "localhost";
 	$dbname = "transaction";
-	$dbuser = "transaction";
-	$dbpass = "";
-	mysql_connect($dbhost,$dbuser,$dbpass) or die(mysql_error());
+	$dbuser = "root";
+	mysql_connect($dbhost,$dbuser) or die(mysql_error());
 	mysql_select_db($dbname) or die(mysql_error());
 	
-    //Drop tables
+    If ($debug) echo "<h2>Dropping tables</h2>";
     mysql_query("
-        DROP TABLE IF EXISTS Categorization;
-        DROP TABLE IF EXISTS SubCategory;
-        DROP TABLE IF EXISTS MetaCategory;
-        DROP TABLE IF EXISTS Status;
-        DROP TABLE IF EXISTS History
-    ");
+        DROP TABLE IF EXISTS 
+            Categorization,
+            SubCategory, 
+            Category,
+            History,
+            Status;
+    ") or die(mysql_error());
     
-	//Status
+    If ($debug) echo "<h2>Creating tables</h2>";
+    If ($debug) echo "<h3>Creating Status table</h3>";
 	mysql_query("
 		CREATE TABLE Status (
-			ID INT AUTO_INCREMENT PRIMARY KEY,
+			ID INT AUTO_INCREMENT,
 			Name VARCHAR(50) UNIQUE NOT NULL,
-			Description VARCHAR(255)
+			Description VARCHAR(255),
+            PRIMARY KEY (ID)
 		);
-        
-		INSERT INTO statuses (Name) VALUES 
-			('Pending'),
-			('Processed'),
-			('Void');
-	");
+    ") or die(mysql_error());
     
-    //History
-	mysql_query("
-		CREATE TABLE History (
-            TransactionID INT NOT NULL AUTO_INCREMENT,
-            Description VARCHAR(255) NOT NULL,
-            Comment VARCHAR(65535),
-            RecordedDate DATETIME DEFAULT(GETDATETIME()),
-            TransactionDate DATETIME,
-            PaymentDate DATETIME,
-            RecordedPersonID INT NOT NULL,
-            ResponsibleParty VARCHAR(255),
-            AssociatedParty VARCHAR (255),
-            StatusID INT NOT NULL,
-            Amount INT NOT NULL
-            
-            PRIMARY KEY HistoryID (TransactionID, RecordedDate),
-            
-            FOREIGN KEY (StatusID) 
-                REFERENCES Status(ID)
-                ON DELETE CASCADE
-		);
-        
-        INSERT INTO History (TransactionID, Description, AssociatedParty, Amount, StatusID) 
-        VALUES
-            (
-                SELECT 1, 'Jimmy Neutron’s membership', 'Jimmy Neutron', 1000, StatusID
-                FROM Status WHERE Name = 'Pending'
-            ),
-            (
-                SELECT 2, 'Jombles Notronbo’s family membership', 'Jombles Notronbo', 4000, StatusID 
-                FROM Status WHERE Name = 'Pending'
-            ),
-            (
-                SELECT 2, 'Jombles Notronbo’s family membership', 'Jombles Notronbo', 4000, StatusID 
-                FROM Status WHERE Name = 'Processed'
-            );   
-	");
-	
-	//Category and SubCategory
-	mysql_query("
+    If ($debug) echo "<h3>Creating Category table</h3>";
+	mysql_query("   
 		CREATE TABLE Category (
-			ID INT AUTO_INCREMENT PRIMARY KEY,
+			ID INT AUTO_INCREMENT,
             Name VARCHAR(50) UNIQUE NOT NULL,
-			Description VARCHAR(255)
+			Description VARCHAR(255),
+            PRIMARY KEY (ID)
 		);
-        
+    ") or die(mysql_error());
+    
+    If ($debug) echo "<h3>Creating SubCategory table</h3>";
+	mysql_query(" 
 		CREATE TABLE SubCategory (
-			ID INT AUTO_INCREMENT PRIMARY KEY,
+			ID INT AUTO_INCREMENT,
             CategoryID INT NOT NULL,
             Name VARCHAR(50),
 			Description VARCHAR(255),
             
+            PRIMARY KEY (ID),
             FOREIGN KEY (CategoryID)
                 REFERENCES Category(ID)
                 ON DELETE CASCADE
 		);
-        
+    ") or die(mysql_error());
+    
+    If ($debug) echo "<h3>Creating History table</h3>";
+	mysql_query("     
+        CREATE TABLE History (
+            TransactionID INT NOT NULL AUTO_INCREMENT,
+            Description VARCHAR(255) NOT NULL,
+            Comment TEXT,
+            RecordedDate TIMESTAMP DEFAULT NOW(),
+            TransactionDate TIMESTAMP,
+            PaymentDate TIMESTAMP,
+            RecordedPersonID INT NOT NULL,
+            ResponsibleParty VARCHAR(255),
+            AssociatedParty VARCHAR (255),
+            StatusID INT NOT NULL,
+            Amount INT NOT NULL,
+            
+            PRIMARY KEY HistoryID (TransactionID, RecordedDate),
+            FOREIGN KEY (StatusID) 
+                REFERENCES Status(ID)
+                ON DELETE CASCADE
+		);        
+    ") or die(mysql_error());
+    
+    If ($debug) echo "<h3>Creating Categorization table</h3>";
+	mysql_query("         
+        CREATE TABLE Categorization (
+            TransactionID INT NOT NULL,
+            RecordedDate TIMESTAMP NOT NULL,
+            SubCategoryID INT NOT NULL,
+            
+            PRIMARY KEY CategorizationID (TransactionID, RecordedDate, SubCategoryID),
+            FOREIGN KEY (TransactionID, RecordedDate)
+                REFERENCES History(TransactionID, RecordedDate)
+                ON DELETE CASCADE,
+            FOREIGN KEY (SubCategoryID)
+                REFERENCES Subcategory(ID)
+                ON DELETE CASCADE
+        );  
+    ") or die(mysql_error());
+    
+    If ($debug) echo "<h2>Populating tables</h2>";
+    If ($debug) echo "<h3>Populating status</h3>";
+	mysql_query("
+		INSERT INTO Status (Name) VALUES 
+			('Pending'),
+			('Processed'),
+			('Void');
+    ") or die(mysql_error()); 
+    
+    If ($debug) echo "<h3>Populating History</h3>";
+    mysql_query("
+        INSERT INTO History (TransactionID, Description, RecordedDate, 
+            AssociatedParty, Amount, StatusID) 
+        VALUES
+            (1, 'Jimmy Neutron’s membership', Null,'Jimmy Neutron', 1000, 
+                (SELECT ID FROM Status WHERE Name = 'Pending')),
+            (2, 'Jombles Notronbo’s family membership', '2013-09-22 18:48:43', 'Jombles Notronbo', 4000, 
+                (SELECT ID FROM Status WHERE Name = 'Pending')),
+            (2, 'Jombles Notronbo’s family membership', Null, 'Jombles Notronbo', 4000, 
+                (SELECT ID FROM Status WHERE Name = 'Processed')); 
+    ") or die(mysql_error()); 
+    
+    If ($debug) echo "<h3>Populating Category</h3>";
+    mysql_query("
         INSERT INTO Category (Name) VALUES
             ('Membership'),
             ('Event'),
             ('Expense'),
             ('Year');
-            
+    ") or die(mysql_error()); 
+    
+    If ($debug) echo "<h3>Populating Subcategory</h3>";
+    mysql_query("        
         INSERT INTO Subcategory (Name, CategoryID) VALUES
-            SELECT 'Single', ID FROM Category WHERE Name = 'Membership',
-            SELECT 'Family', ID FROM Category WHERE Name = 'Membership',
-            SELECT 'Oktoberfest', ID FROM Category WHERE Name = 'Event',
-            SELECT 'Midsommar', ID FROM Category WHERE Name = 'Event',
-            SELECT 'Admin', ID FROM Category WHERE Name = 'Expense',
-            SELECT '2013', ID FROM Category WHERE Name = 'Year';
-    ");    
-
-    //Categorization
-    mysql_query("
-        CREATE TABLE Categorization (
-            
+            ('Single', (SELECT ID FROM Category WHERE Name = 'Membership')),
+            ('Family', (SELECT ID FROM Category WHERE Name = 'Membership')),
+            ('Oktoberfest', (SELECT ID FROM Category WHERE Name = 'Event')),
+            ('Midsommar', (SELECT ID FROM Category WHERE Name = 'Event')),
+            ('Admin', (SELECT ID FROM Category WHERE Name = 'Expense')),
+            ('2013', (SELECT ID FROM Category WHERE Name = 'Year'));
+    ") or die(mysql_error()); 
+    
+    If ($debug) echo "<h3>Populating Categorization</h3>";
+    mysql_query("   
+        INSERT INTO Categorization (HistoryID, SubCategoryID) VALUES
+            (SELECT (SELECT ID FROM History WHERE TransactionID = 1), Subcategory.ID
+                FROM SubCategory INNER JOIN Category ON Subcategory.CategoryID=Category.ID
+                WHERE Category.Name = 'Members' AND SubCategory.Name = 'Single');
+    ") or die(mysql_error()); 
 ?>
