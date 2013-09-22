@@ -179,7 +179,7 @@
             (
                 (
                     SELECT ID FROM History 
-                    WHERE TransactionID = 2 AND ModificationDate='2013-09-22 18:48:43'
+                    WHERE TransactionID = 2 AND ModificationDate='2013-09-22 18:48:44'
                 ),
                 (
                     SELECT SubCategory.ID FROM SubCategory 
