@@ -3,7 +3,7 @@
 <html>
     <?php
         $debug = True;
-        // Create connection
+        // Connect to transaction database
 		$dbhost = "localhost";
 		$dbname = "transactions";
 		$dbuser = "transactions";
