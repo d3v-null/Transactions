@@ -108,14 +108,29 @@
                    
             <?php              
                 //select the transactions to display on the page
-                $qry = "WHERE "
-                $qrystate = ($st == 0)? "" : 
-                    "StatusID = ".$st."\n";
-                $qrydate  = ($fd == Null OR $td == Null)? "" : 
-                    "TransactionDate BETWEEN ".$fd." AND ".$td."\n";
-                $qrykey   = ($kw == "")? "" :
-                    "Description LIKE '%".$kw."%' OR Comment LIKE '%".$kw."%'"; 
-                
+                // $qry = "WHERE ";
+                // if ($st != 0) {
+                    // $qry = $qry . "StatusID = ".$st."\nAND ";
+                    // echo "ST";
+                // }
+                // if ($fd != Null AND $td != Null) {
+                    // $qry = $qry . "TransactionDate BETWEEN ".$fd." AND ".$td."\nAND ";
+                    // echo "Date";
+                // }
+                // if ($kw != "") {
+                    // $qry = $qry . "Description LIKE '%".$kw."%' OR Comment LIKE '%".$kw."%'\nAND "; 
+                    // echo "KW";
+                // }
+                // if (substr($qry,-4) == "AND ") {
+                    // $qry = substr($qry,0,strlen($qry)-4);
+                    // echo "AND";
+                // }
+                // if ($qry == "WHERE ") {
+                    // $qry = "";
+                    // echo "where";
+                // }
+                // echo "qry: " . $qry . "--";
+                $qry="";
                 $sql="
                     SELECT 
                         History.ID AS HistoryID,
@@ -133,10 +148,10 @@
                     INNER JOIN History ON Latest.TransactionID = History.TransactionID
                     AND Latest.ModificationDate = History.ModificationDate
                     INNER JOIN Status ON Status.ID = History.StatusID
-                    " . $qrystate . $qrydate .
+                    " . $qry .
                    "ORDER BY " . $oc . " " . $od . "
                     LIMIT " . $ts . ", " . $tf . ";";
-                echo $sql;
+                //echo $sql;
                 $page = mysql_query($sql) or die(mysql_error());
             ?>
 
