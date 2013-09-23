@@ -33,7 +33,7 @@
 					$catID = $row['ID'];
 					?>
 					<dt>
-						<!-- print Category name -->
+						<!-- print Category name / Insert effect and animation -->
 						<?php echo $row['Name']; ?>
 					</dt>
 					<li>
@@ -42,7 +42,7 @@
 							$subCatTable = mysql_query("SELECT * FROM SubCategory WHERE SubCategory.CategoryID = $catID");
 							while ($subRow = mysql_fetch_array($subCatTable)) {
 								?>
-								<!-- print SubCategory name -->
+								<!-- print SubCategory name / Insert effect and animation-->
 								<dt><?php echo $subRow['Name']; ?></dt>
 								<?php
 							}// end while
