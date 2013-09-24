@@ -71,10 +71,8 @@
 			</div><!-- end box -->
 			
 			<div id="sidebar">
-			
-				<!-- to do: load sidebar -->
-
-			</div><!-- end sidebar -->
+            <?php include_once("sidebar.php");?>
+            </div>
 			
 		</div><!-- end main -->   
 

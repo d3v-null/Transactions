@@ -17,7 +17,7 @@
 <body>
 <div id='cssmenu'>
 <ul>
-	<li class='active'><a href='#'><span>Create New Category</span></a>
+	<li class='active'><a href='/src/category.php'><span>Create New Category</span></a>
 	<?php
 				// Select everything from Category
 				$catTable = mysql_query("SELECT * FROM Category");
@@ -37,7 +37,7 @@
 		 <?php
 							}
 						?>
-		<li><a href='#'><span>Add New Subcategory</span></a></li>
+		<li><a href='/src/subcategory.php'><span>Add New Subcategory</span></a></li>
 
       </ul>
    </li>
