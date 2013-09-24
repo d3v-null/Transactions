@@ -70,7 +70,25 @@
 		</div><!-- end box -->
 		
 		<div id="sidebar">
-			<?php include_once("sidebar.php");?>
+			<?php include_once("sidebar.html");?>
+			
+			<h3> Sidebar <h3>
+			<!-- CHECK HOW TO DO IT DYNAMICALLY -->
+			<input type="button" onclick="return toggleMe('close1')" value="Option 1"><br>
+			<span id="close1">
+				<ul>
+					<li>Filter1</li>
+					<li>Filter2</li>
+				</ul>
+			</span>
+			
+			<input type="button" onclick="return toggleMe('close2')" value="Option 2"><br>
+			<span id="close2">
+				<ul>
+					<li>Filter1</li>
+					<li>Filter2</li>
+				</ul>
+			</span>
 		</div><!-- end sidebar -->
 	</div><!-- end main -->  
 </body>

@@ -1,10 +1,17 @@
 <!DOCTYPE html>
+	
 <html>
-<head>
-	<link rel='stylesheet' type='text/css' href='stylessidebar.css' />
-	<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
-	<script type='text/javascript' src='menu_jquery.js'></script>
-	<?php
+	<head>
+		<title>TAB TITLE</title>
+		
+		<style type="text/css" media="screen">
+			@import url("style2.css");
+		</style>
+
+		<script>
+					<!-- script here -->
+		</script>
+		<?php
 			$debug = True;
 			// Connect to transaction database
 			$dbhost = "localhost";
@@ -13,11 +20,11 @@
 			mysql_connect($dbhost, $dbuser) or die(mysql_error());
 			mysql_select_db($dbname) or die(mysql_error());
 		?>
-</head>
-<body>
-<div id='cssmenu'>
-<ul>
-	<?php
+	</head>
+
+	<body>
+		<dl>
+			<?php
 				// Select everything from Category
 				$catTable = mysql_query("SELECT * FROM Category");
 				// For each row of Category
@@ -25,25 +32,24 @@
 					// Save Category ID
 					$catID = $row['ID'];
 					?>
-   <li class='has-sub'><a href='#'><span><?php echo $row['Name']; ?></span></a>
-      <ul>
-	  <?php
+					<dt>
+						<!-- print Category name / Insert effect and animation -->
+						<?php echo $row['Name']; ?>
+					</dt>
+					<li>
+						<?php
 							// Select everything from Category where SubCategory.CategoryID is equals to previous CategoryID
 							$subCatTable = mysql_query("SELECT * FROM SubCategory WHERE SubCategory.CategoryID = $catID");
 							while ($subRow = mysql_fetch_array($subCatTable)) {
 								?>
-         <li><a href='#'><span><?php echo $subRow['Name']; ?></span></a></li>
-		 <?php
-							}
+								<!-- print SubCategory name / Insert effect and animation-->
+								<dt><?php echo $subRow['Name']; ?></dt>
+								<?php
+							}// end while
 						?>
-
-      </ul>
-   </li>
-
-   <?php } //end while
+					</li>
+				<?php } //end while
 			?>
-</ul>
-</div>
-
-</body>
+		</dl>    
+	</body>
 </html>
