@@ -17,6 +17,7 @@
 <body>
 <div id='cssmenu'>
 <ul>
+	<li class='active'><a href='#'><span>Create New Category</span></a>
 	<?php
 				// Select everything from Category
 				$catTable = mysql_query("SELECT * FROM Category");
@@ -25,7 +26,7 @@
 					// Save Category ID
 					$catID = $row['ID'];
 					?>
-   <li class='has-sub'><a href='#'><span><?php echo $row['Name']; ?></span></a>
+   <li class='has-sub'><a href='#'><span><?php echo $row['Name']; ?>   </span></a>
       <ul>
 	  <?php
 							// Select everything from Category where SubCategory.CategoryID is equals to previous CategoryID
@@ -36,6 +37,7 @@
 		 <?php
 							}
 						?>
+		<li><a href='#'><span>Add New Subcategory</span></a></li>
 
       </ul>
    </li>
