@@ -190,7 +190,7 @@
         
     </div><!-- end box -->
     <div id="sidebar">
-        <!--<iframe src="/sidebar.html"/>-->
+        <iframe src="/src/sidebar.php"/>
     </div><!-- end sidebar -->
     </body>
 </html>
