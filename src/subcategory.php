@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>Create New Category</title>
+		<title>Create New Subcategory</title>
 		
 		<style type="text/css" media="screen">
 			@import url("style2.css");
