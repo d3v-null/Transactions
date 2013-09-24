@@ -49,8 +49,8 @@
         </form>
         
     </div><!-- end box -->
-    <div id="sidebar">
-        <!--<iframe src="/sidebar.html"/>-->
-    </div><!-- end sidebar -->
+            <div id="sidebar">
+            <?php include_once("sidebar.php");?>
+        </div>
     </body>
 </html>

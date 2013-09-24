@@ -189,8 +189,8 @@
         </form>
         
     </div><!-- end box -->
-    <div id="sidebar">
-        <iframe src="/src/sidebar.php"/>
-    </div><!-- end sidebar -->
+            <div id="sidebar">
+            <?php include_once("sidebar.php");?>
+            </div>
     </body>
 </html>
