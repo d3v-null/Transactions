@@ -65,7 +65,7 @@
 
 					<table class = "formatted">
 
-						<form name="categoryForm" action="insertCategory.php" method="post">
+						<form name="categoryForm" action="search.php" method="post">
 							<tr>
 								<td class = "categoryName">
 									Name*:
