@@ -63,16 +63,6 @@
 					
 				<div id="content">
 
-					<?php
-					
-						// Connet to database
-						$connection =mysql_connect("localhost","root","") or die("Could not connect");	
-						mysql_select_db("transaction") or die("Unable to select database!!");
-						
-						// Defining variables
-						$catName = "";						
-					?>	
-
 					<table class = "formatted">
 
 						<form name="categoryForm" action="insertCategory.php" method="post">
@@ -89,26 +79,24 @@
 									Description:
 								</td>
 								<td>
-									<input type="text" class="data" name="description" size="50" maxlength="225">
+									<input type="text" class="data" name="catDesc" size="50" maxlength="225">
 								</td>
 							</tr><tr>* This field is compulsory</tr>
 					</table>
 					<br>	
 						<button input type="submit">Save Category</button>				
 						</form>
-							<!-- !USING INSERTCATEGORY.PHP <button input type="submit" onclick="saveAction( )">Save Category</button> --> 
-							
-							<button onclick="deleteAction()">Delete Category</button>
+
 				</div>
 				<!-- end content!-->
 
 			</div><!-- end box -->
 			
 			<div id="sidebar">
-			
-				<!-- to do: load sidebar -->
-
-			</div><!-- end sidebar -->
+		
+				<?php include_once("sidebar.php");?>
+           
+       		</div><!-- end sidebar -->
 			
 		</div><!-- end main -->   
 
