@@ -42,7 +42,8 @@
 		
 		function saveAction( )
 		{
-			alert("to do: saveAction");
+			var value = document.getElementsByName("catName");
+			alert(value.length);
 		}
 		
 		function editAction( )
@@ -73,15 +74,14 @@
 					?>	
 
 					<table class = "formatted">
-						<!-- action="toMe.php" -->
 
-						<form name="categoryForm"  method="get">
+						<form name="categoryForm" action="insertCategory.php" method="post">
 							<tr>
 								<td class = "categoryName">
 									Name*:
 								</td>
 								<td>
-									<input type="text" class="data" name="catName" size="50" value=<?php echo $catName?>>
+									<input type="text" class="data" name="catName" size="50" maxlength="50">
 								</td>
 							</tr>
 							<tr>
@@ -89,13 +89,15 @@
 									Description:
 								</td>
 								<td>
-									<input type="text" class="data" name="desc" size="50">
+									<input type="text" class="data" name="description" size="50" maxlength="225">
 								</td>
 							</tr><tr>* This field is compulsory</tr>
 					</table>
-					<br>					
+					<br>	
+						<button input type="submit">Save Category</button>				
 						</form>
-							<button input type="submit" onclick="saveAction()">Save Category</button>
+							<!-- !USING INSERTCATEGORY.PHP <button input type="submit" onclick="saveAction( )">Save Category</button> --> 
+							
 							<button onclick="deleteAction()">Delete Category</button>
 				</div>
 				<!-- end content!-->
