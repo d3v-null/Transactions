@@ -117,25 +117,28 @@ mysql_select_db("test") or die("Unable to select database");
 					}
 				}
 			}
-			
-
 			<?php    
 				if(isset($_POST['SubmitButton']))
 				{
-				echo("ERERER");
-
-				$sql = "INSERT INTO Persons (FirstName) VALUES ('$input')";
-										$sql = "INSERT INTO Transaction (Description, Comment, TransactionDate, PaymentDate, ResponsibleParty, AssociatedParty, Amount) VALUES ('$_POST['Description']',
-										'$_POST['Comment']',
-										'$_POST['TransactionDate']',
-										'$_POST['PaymentDate']',
-										'$_POST['ResponsibleParty']',
-										'$_POST['AssociatedParty']',
-										'$_POST['Amount']');";
-					mysql_query($sql) or die(mysql_error());
+					$sql = "UPDATE Transaction SET Description='we'
+							WHERE ID='2'";
+					echo  $_GET['id'];
+					//mysql_query($sql) or die(mysql_error());
 				} 
 				//TODO else	
 			?> 
+
+/* 			<?php    
+				if(isset($_POST['SubmitButton']))
+				{
+				$sql="INSERT INTO Transaction (Description, Comment, TransactionDate, PaymentDate, ResponsibleParty, AssociatedParty, Amount)
+VALUES
+('$_POST[Description]','$_POST[Comment]','$_POST[TransactionDate]','$_POST[PaymentDate]','$_POST[ResponsibleParty]','$_POST[AssociatedParty]','$_POST[Amount]')";
+									
+					mysql_query($sql) or die(mysql_error());
+				} 
+				//TODO else	
+			?>  */
 		</script>	
 	
 	<body>
@@ -153,7 +156,7 @@ mysql_select_db("test") or die("Unable to select database");
 						$connection =mysql_connect("localhost","test","test") or die("Could not connect");	
 						mysql_select_db("test") or die("Unable to select database");
 
-						$sql = "SELECT * FROM Tester WHERE PID='" . $_GET['id'] . "'";
+						$sql = "SELECT * FROM Transaction WHERE ID='" . $_GET['id'] . "'";
 						$result = mysql_query($sql) or die(mysql_error());
 						$row = mysql_fetch_assoc($result);
 					?>	
@@ -177,7 +180,7 @@ mysql_select_db("test") or die("Unable to select database");
 						</tr>
 						<tr>
 							<td colspan="4" class = "spaceBelow">
-								<textarea class="data" name="Description" readonly="readonly"></textarea>
+								<textarea class="data" name="Description" readonly="readonly"><?=$row['Description'];?></textarea>
 							</td>
 							
 						</tr>
@@ -186,9 +189,9 @@ mysql_select_db("test") or die("Unable to select database");
 								Transaction Date*:
 							</td>
 							<td>
-								<input type="datetime" class="data" name="TransactionDate" size="12" value="" readonly="readonly">
+								<input type="datetime" class="data" name="TransactionDate" size="12" value="<?=$row['TransactionDate'];?>"readonly="readonly">
 							</td>
-							<td class = "transactionTitle">
+							<td class = "transactionTitle col2">
 								Amount*:
 							</td>
 							<td>
@@ -200,9 +203,9 @@ mysql_select_db("test") or die("Unable to select database");
 								Date of receipt/payment*:
 							</td>
 							<td>
-								<input type="datetime" class="data" name="PaymentDate" size="12" readonly="readonly">
+								<input type="datetime" class="data" name="PaymentDate" value="<?=$row['PaymentDate'];?>"size="12" readonly="readonly">
 							</td>
-							<td class = "transactionTitle">
+							<td class = "transactionTitle col2">
 								Type*:
 							</td>
 							<td>
@@ -215,7 +218,7 @@ mysql_select_db("test") or die("Unable to select database");
 								Responsible*:
 							</td>
 							<td>
-								<input type="text" class="data" name="ResponsibleParty" size="12" readonly="readonly">
+								<input type="text" class="data" name="ResponsibleParty" value="<?=$row['ResponsibleParty'];?>"size="12" readonly="readonly">
 							</td>
 						</tr>
 						<tr>
@@ -223,7 +226,7 @@ mysql_select_db("test") or die("Unable to select database");
 								Associated person:
 							</td>
 							<td>
-								<input type="text" class="data" name="AssociatedParty" size="12" readonly="readonly">
+								<input type="text" class="data" name="AssociatedParty" value="<?=$row['AssociatedParty'];?>"size="12" readonly="readonly">
 							</td>
 						</tr>
 						<tr>
@@ -234,7 +237,7 @@ mysql_select_db("test") or die("Unable to select database");
 						</tr>
 						<tr>
 							<td colspan = "2">
-								<textarea cols="20" class="data" name="Comment" readonly="readonly"><?=$row['Description'];?></textarea>
+								<textarea cols="20" class="data" name="Comment" readonly="readonly"><?=$row['Description'];?><?=$row['Amount'];?></textarea>
 							</td>
 						</tr>
 				</table>
@@ -250,7 +253,7 @@ mysql_select_db("test") or die("Unable to select database");
 						
 						
 						
-				     		<?php
+				     	<!--	 '<'?php/* 
 			$sql="SELECT * FROM Persons";
 			$result =   mysql_query($sql) or die(mysql_error());
 			echo "<table border='1'>";
@@ -270,8 +273,8 @@ mysql_select_db("test") or die("Unable to select database");
 			return mysql_num_rows($result);
 
 		
-		
-		?>
+		 */
+		?> -->
 		</div>
   	
 				<!-- end content!-->
@@ -296,7 +299,7 @@ mysql_select_db("test") or die("Unable to select database");
             
         </div><!-- end main -->
         
-
+			
        
     
 
