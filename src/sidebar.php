@@ -30,7 +30,7 @@
       <ul>
 	  <?php
 							// Select everything from Category where SubCategory.CategoryID is equals to previous CategoryID
-							$subCatTable = mysql_query("SELECT * FROM SubCategory WHERE SubCategory.CategoryID = $catID");
+							$subCatTable = mysql_query("SELECT * FROM SubCategory ORDER BY Name ASC WHERE SubCategory.CategoryID = $catID");
 							while ($subRow = mysql_fetch_array($subCatTable)) {
 								?>
          <li><a href='#'><span><?php echo $subRow['Name']; ?></span></a></li>
