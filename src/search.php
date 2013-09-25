@@ -9,6 +9,19 @@
 		$dbuser = "root";
 		mysql_connect($dbhost,$dbuser) or die(mysql_error());
 		mysql_select_db($dbname) or die(mysql_error());
+		
+		// Inserting new category
+		if (key_exists("catName", $_POST) && key_exists("catDesc", $_POST))
+		{
+			$catName = $_POST['catName'];
+			$description = $_POST['catDesc'];
+			
+			// Insert values
+			$slq="INSERT INTO category (Name, Description) VALUES ('$catName','$description')";
+			mysql_query($slq,$con);
+			
+			echo "One more category was inserted";
+		}
     ?>
 
     <head>
