@@ -17,7 +17,7 @@
 <body>
 <div id='cssmenu'>
 <ul>
-	<li class='active'><a href='/category.php'><span>Create New Category</span></a>
+	<li class='active'><a href='/src/category.php'><span>Create New Category</span></a>
 	<?php
 				// Select everything from Category
 				$catTable = mysql_query("SELECT * FROM Category");
