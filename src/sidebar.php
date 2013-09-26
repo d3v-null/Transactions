@@ -37,7 +37,7 @@
 		 <?php
 							}
 						?>
-		<li><a href='/src/subcategory.php'><span>Add New Subcategory</span></a></li>
+		<li><a href="subcategory.php?CategoryID=<?php echo $temp; ?>"><span>Add New Subcategory</span></a></li>
 
       </ul>
    </li>
