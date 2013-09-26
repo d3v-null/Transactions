@@ -17,7 +17,7 @@
 <body>
 <div id='cssmenu'>
 <ul>
-	<li class='active'><a href='/category.php'><span>Create New Category</span></a>
+	<li class='active'><a href='/Transactions/src/category.php'><span>Create New Category</span></a>
 	<?php
 				// Select everything from Category
 				$catTable = mysql_query("SELECT * FROM Category");
@@ -26,18 +26,18 @@
 					// Save Category ID
 					$catID = $row['ID'];
 					?>
-   <li class='has-sub'><a href='#'><span><?php echo $row['Name']; ?>   </span></a>
+   <li class='has-sub'><a href="#"><span><?php echo $row['Name']; ?>   </span></a>
       <ul>
 	  <?php
 							// Select everything from Category where SubCategory.CategoryID is equals to previous CategoryID
-							$subCatTable = mysql_query("SELECT * FROM SubCategory ORDER BY Name ASC WHERE SubCategory.CategoryID = $catID");
+							$subCatTable = mysql_query("SELECT * FROM SubCategory WHERE SubCategory.CategoryID = $catID ORDER BY Name ASC");
 							while ($subRow = mysql_fetch_array($subCatTable)) {
 								?>
-         <li><a href='#'><span><?php echo $subRow['Name']; ?></span></a></li>
+         <li><a href='#'><span><?php echo $subRow['Name'];?></span></a></li>
 		 <?php
 							}
 						?>
-		<li><a href="subcategory.php?CategoryID=<?php echo $temp; ?>"><span>Add New Subcategory</span></a></li>
+		<li><a href="subcategory.php?CategoryID=<?php echo $catID; ?>"><span>Add New Subcategory</span></a></li>
 
       </ul>
    </li>
