@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>Create New Subcategory</title>
+		<title>Create New Sub Category</title>
 		
 		<style type="text/css" media="screen">
 			@import url("style2.css");
@@ -10,15 +10,7 @@
 		</style>
 
 		<script>
-		function saveAction( )
-		{
-			// to do: save action
-		}
 		
-		function editAction( )
-		{
-			// to do: edit action
-		}
 		
 		</script>
 	</head>
@@ -27,52 +19,79 @@
 		<div id="main">
 		
 			<div id="box">
-				<h1>Create New Category</h1>
-
+				<h1>Create New Sub Category</h1>
 					
 				<div id="content">
 
-					<?php
-					
-						// Connet to database
-						$connection =mysql_connect("localhost","root","") or die("Could not connect");	
-						mysql_select_db("transaction") or die("Unable to select database!!");
-												
-					?>	
-
 					<table class = "formatted">
-						<!-- action="toMe.php" -->
+						
+						<!-- Insert Category Code -->
+						<?php
+							// Connect to transaction database
+							$dbhost = "localhost";
+							$dbname = "transaction";
+							$dbuser = "root";
+							$con    = mysql_connect($dbhost, $dbuser) or die(mysql_error());
+							mysql_select_db($dbname) or die(mysql_error());
+							
+							// Inserting new category
+							if (key_exists("subCatName", $_POST) && key_exists("subCatDesc", $_POST) && key_exists("subCatID", $_POST))
+							{
+								$catName = $_POST['subCatName'];
+								$description = $_POST['subCatDesc'];
+								$catID = $_POST['subCatID'];
+								
+								// Insert values
+								$slq="INSERT INTO subcategory (CategoryID, Name, Description) VALUES ('$catID','$catName','$description')";
+								mysql_query($slq,$con);
+								
+								echo "Subcategory ". $catName ." was successfully inserted <br><br>";
+							}
+									
+							// Close conection
+							mysql_close($con);
+						?>
 
-						<form name="categoryForm"  action="toMe.php" method="post">
+						<form name="SubCategoryForm" action="subcategory.php" method="post">
 							<tr>
-								<td class = "categoryName">
-									Name*:
+								<td class = "CategoryName">
+									Category ID:
 								</td>
 								<td>
-									<input type="text" class="data" name="Date_trans" size="50" value="">
+									<input type="text" class="data" value="<?php echo $_GET["CategoryID"]; ?>" name="subCatID" size="50" maxlength="50" readonly="readonly">
 								</td>
 							</tr>
 							<tr>
-								<td class = "categoryDescription">
+								<td class = "SubCategoryName">
+									Name*:
+								</td>
+								<td>
+									<input type="text" class="data" name="subCatName" size="50" maxlength="50">
+								</td>
+							</tr>
+							<tr>
+								<td class = "SubCategoryDescription">
 									Description:
 								</td>
 								<td>
-									<input type="text" class="data" name="Amount" size="50">
+									<input type="text" class="data" name="subCatDesc" size="50" maxlength="225">
 								</td>
 							</tr><tr>* This field is compulsory</tr>
 					</table>
-					<br>					
+					<br>	
+						<button input type="submit">Save Sub Category</button>				
 						</form>
-							<button onclick="saveAction()">Save Category</button>
-							<button onclick="deleteAction()">Delete Category</button>
+
 				</div>
 				<!-- end content!-->
 
 			</div><!-- end box -->
 			
 			<div id="sidebar">
-            <?php include_once("sidebar.php");?>
-            </div>
+		
+				<?php include_once("sidebar.php");?>
+           
+       		</div><!-- end sidebar -->
 			
 		</div><!-- end main -->   
 
