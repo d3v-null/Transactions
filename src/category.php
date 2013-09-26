@@ -10,47 +10,6 @@
 		</style>
 
 		<script>
-		// Validation functions ------ start
-		function validateForm(form)
-		{
-			var error = isEmpty(form.catName) 
-				
-			if(error != "")
-			{
-				alert("Some fields need correction: \n" + error);
-				return false;
-			}
-			return true;
-		}
-		
-		function isEmpty(field)
-		{
-			var error = "";
-			
-			var value = field.value.trim();
-			if(value == "" || value.length==0)
-			{
-				error = "Please enter a value in '" + field.name + "'\n";
-				field.style.background = '#E6CCCC';
-			}
-			else
-			{	
-				field.style.background = 'White';
-			}
-			return error;
-		}
-		
-		function saveAction( )
-		{
-			var value = document.getElementsByName("catName");
-			alert(value.length);
-		}
-		
-		function editAction( )
-		{
-			alert("to do:");
-		}
-		
 		</script>
 			
 	</head>
