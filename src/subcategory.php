@@ -52,7 +52,7 @@
 							mysql_close($con);
 						?>
 
-						<form name="SubCategoryForm" action="subcategory.php" method="post">
+						<form name="SubCategoryForm" action="subcategory.php?CategoryID=<?php echo $_GET["CategoryID"]; ?>" method="post">
 							<tr>
 								<td class = "CategoryName">
 									Category ID:
