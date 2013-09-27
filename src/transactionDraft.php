@@ -27,6 +27,7 @@ mysql_select_db("test") or die("Unable to select database");
 				+ isEmpty(form.TransactionDate)
 				+ isEmpty(form.Comment)
 				+ validateInt(form.Amount)
+				+ validateDropdown("Status")
 				+ validateRadio("Type");
 					
 				if(error != "")
@@ -67,6 +68,17 @@ mysql_select_db("test") or die("Unable to select database");
 				}
 				if(!valid)
 					error = "Please select an option for '" + id + "'\n";
+				return error;
+			}
+			
+			function validateDropdown(id)
+			{	
+				var error="";
+				var elem = document.getElementById(id);
+				if(elem.selectedIndex == 0)
+				{
+					error = "Please select an option for '" + id + "'\n";
+				}
 				return error;
 			}
 			
@@ -116,17 +128,16 @@ mysql_select_db("test") or die("Unable to select database");
 							elements[i].removeAttribute("readonly");
 					}
 				}
+				// disable/enable dropdown
+				document.getElementByName("Status").disabled=(bool=="true");
+				document.getElementByName("Type").disabled=(bool=="true");
+
 			}
-			<?php    
-				if(isset($_POST['SubmitButton']))
-				{
-					$sql = "UPDATE Transaction SET Description='we'
-							WHERE ID='2'";
-					echo  $_GET['id'];
-					//mysql_query($sql) or die(mysql_error());
-				} 
-				//TODO else	
-			?> 
+			
+			function disabledropDown(id)
+			{
+				
+			}
 
 /* 			<?php    
 				if(isset($_POST['SubmitButton']))
@@ -140,6 +151,26 @@ VALUES
 				//TODO else	
 			?>  */
 		</script>	
+		
+		<?php    
+			if(isset($_POST['update']))
+			{
+				$sql = "UPDATE Transaction ".
+						"SET Description = '" . $_POST['Description'] . "', ".
+						"TransactionDate = '" . $_POST['TransactionDate'] . "', ".
+						"Amount = '" . $_POST['Amount'] . "', ".
+						"PaymentDate = '" . $_POST['PaymentDate'] . "', ".
+						"ResponsibleParty = '" . $_POST['ResponsibleParty'] . "', ".
+						"AssociatedParty = '" . $_POST['AssociatedParty'] . "', ".
+						"Comment = '" . $_POST['Comment'] . "'" .
+						"WHERE ID = '" . $_GET['id'] . "'" ; 
+
+				$id = $_GET['id'];
+				mysql_query($sql) or die(mysql_error());
+			}
+
+			//TODO else	
+		?>  
 	
 	<body>
 		<div id="main">
@@ -153,28 +184,35 @@ VALUES
 					<?php
 					
 						// Connect to database
-						$connection =mysql_connect("localhost","test","test") or die("Could not connect");	
-						mysql_select_db("test") or die("Unable to select database");
-
 						$sql = "SELECT * FROM Transaction WHERE ID='" . $_GET['id'] . "'";
-						$result = mysql_query($sql) or die(mysql_error());
+						$result = mysql_query($sql, $connection) or die(mysql_error());
 						$row = mysql_fetch_assoc($result);
+						$statusID = $row['StatusID'];
 					?>	
 
 					<table class = "formatted">
 						<!-- action="toMe.php" -->
 
-						<form name="transactionForm"   action="" method="post">
+						<form name="transactionForm" onsubmit="return validateForm(this);" action="" method="post">
 						<tr>
 							<td  colspan = "2" class = "transactionTitle">
 								Transaction Description
 							</td>
 							<td></td>
 							<td>
-								<select>
-									<option value="" selected="selected"></option>
-									<option value="pending">Pending</option>
-									<option value="complete">Complete</option>
+								<select id="Status" disabled="true">
+									<option value=""></option>
+									<?php
+										$sql = "SELECT * FROM Status";
+										$statusIDs = mysql_query($sql, $connection) or die(mysql_error());
+ 										while($statusRow = mysql_fetch_array($statusIDs))
+										{
+											if($statusRow['ID'] == $statusID)
+												echo "<option value=" . $statusRow['ID'] . ">" . $statusRow['Name'] . "</option>";
+											else
+												echo "<option value=" . $statusRow['ID'] . " selected='selected'>" . $statusRow['Name'] . "</option>";
+										}
+									?>
 								</select>
 							</td>
 						</tr>
@@ -209,8 +247,11 @@ VALUES
 								Type*:
 							</td>
 							<td>
-								<input type="radio" class="data" name="Type" value="in">Inflow <br>
-								<input type="radio" class="data" name="Type" value="out">Outflow<br>
+								<?php
+									$checked = ($row['Inflow'] == '1') ? "checked" : "";
+								?>
+								<input type="radio" class="data" name="Type" value="in"disabled="true" checked = "<?=$checked;?>">Inflow <br>
+								<input type="radio" class="data" name="Type" value="out" disabled="true" checked = "<?=$checked;?>">Outflow<br>
 							</td>
 						</tr>
 						<tr>
@@ -237,12 +278,12 @@ VALUES
 						</tr>
 						<tr>
 							<td colspan = "2">
-								<textarea cols="20" class="data" name="Comment" readonly="readonly"><?=$row['Description'];?><?=$row['Amount'];?></textarea>
+								<textarea cols="20" class="data" name="Comment" readonly="readonly"><?=$row['Comment'];?></textarea>
 							</td>
 						</tr>
 				</table>
 						<button type="Reset">Clear</button>
-						<input type="submit" name="SubmitButton" value="Submit" class="button">
+						<input name="update" type="submit" id="update" value="Update">
 
 					</form>
 						<button onclick="setReadonly('data',false)">Edit</button>
