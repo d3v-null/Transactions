@@ -10,8 +10,18 @@
 		</style>
 
 		<script>
-		
-		
+			// Validation function ------ start
+			// http://www.w3schools.com/js/js_form_validation.asp
+			function validateForm()
+			{
+				var error = document.forms["SubCategoryForm"]["subCatName"].value;
+				
+				if (error == null || error == "")
+				{
+					alert("First Name must be filled out");
+					return false;
+				}
+			}		
 		</script>
 	</head>
 
@@ -52,7 +62,7 @@
 							mysql_close($con);
 						?>
 
-						<form name="SubCategoryForm" action="subcategory.php?CategoryID=<?php echo $_GET["CategoryID"]; ?>" method="post">
+						<form name="SubCategoryForm" action="subcategory.php?CategoryID=<?php echo $_GET["CategoryID"]; ?>" onsubmit="return validateForm()" method="post">
 							<tr>
 								<td class = "CategoryName">
 									Category ID:
