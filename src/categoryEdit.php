@@ -1,13 +1,8 @@
 <!DOCTYPE html>
-<?php
-$connection =mysql_connect("localhost","roo","") or die("Could not connect");
-
-mysql_select_db("test") or die("Unable to select database");
-?>
 
 <html>
 <head>
-	<title>Edit Category</title>
+	<title>TAB TITLE</title>
     
     <style type="text/css" media="screen">
         @import url("style2.css");
@@ -113,12 +108,14 @@ mysql_select_db("test") or die("Unable to select database");
 						$result = mysql_query($sql) or die(mysql_error());
 						$row = mysql_fetch_assoc($result);				
 						
+						// Editing Category
 						if (key_exists("Name", $_POST) && key_exists("Description", $_POST) && key_exists("id", $_GET)) // Submit was clicked
 					   	{
 					   		$name 			= $_POST['Name'];
 							$description 	= $_POST['Description'];
 							$id				= $_GET['id'];
 							
+							// Update Values
 					   		$sql = "UPDATE category SET Name = '$name' WHERE category.ID = $id";
 							mysql_query($sql) or die(mysql_error());
 							
@@ -129,12 +126,12 @@ mysql_select_db("test") or die("Unable to select database");
 					    }
 					?>	
 
-					<table class = "formatted">
-
+					<table class = "formatted">						
+						<br><tr>* This field is compulsory</tr><br>
 						<form name="transactionForm" action="categoryEdit.php?id=<?php echo $_GET['id']; ?>" method="post">
 						<tr>
 							<td colspan="4" class = "spaceBelow">
-								Name: 
+								Name*: 
 								<input type="text" class="data" name="Name" size="55"  value="<?=$row['Name'];?>" readonly="readonly">
 							</td>							
 						</tr>
@@ -149,11 +146,11 @@ mysql_select_db("test") or die("Unable to select database");
 					</form>
 						<button onclick="setReadonly('data',false)">Edit</button>
 						<button onclick="setReadonly('data',true)">Cancel</button>
-						<button onclick="deleteTable('data',true)">Delete</button>
 	
 		</div>
   	
-				<!-- end content!-->
+				<!-- end content!-->
+
             </div><!-- end box -->
             
             <div id="sidebar">
