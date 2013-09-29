@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
 $connection =mysql_connect("localhost","test","test") or die("Could not connect");
-
+// TODO : escape '\' in comment or description field
 mysql_select_db("test") or die("Unable to select database");
 ?>
 
@@ -83,16 +83,14 @@ mysql_select_db("test") or die("Unable to select database");
 			}
 			
 
-			function validateInt(field)
+						function validateInt(field)
 			{
 				var error = "";
 				
 				if((error =isEmpty(field)) == "")
 				{
 					var value = field.value;
-					var stripped = value;//fieldVal.replace(/$/g,"");
-					//document.write(stripped);
-					if(isNaN(parseInt(stripped)))	// TODO: check for special chars
+					if(isNaN(value))	// TODO: check for special chars
 					{
 						error = "Invalid characters in '" + field.name + "'\n";
 						field.style.background = '#E6CCCC';
@@ -105,74 +103,136 @@ mysql_select_db("test") or die("Unable to select database");
 				return error;
 			}
 			
-			// validate functions ----- end
 			
-			// Gets all elements with the given class name
-			//http://stackoverflow.com/questions/7410949/javascript-document-getelementsbyclassname-compatibility-with-ie
-			function setReadonly(classname, bool)
-			{
-				var regex = new RegExp('(^| )'+classname+'( |$)');
-				var elements = document.getElementsByTagName("*");
-				var size = elements.length;
+			// validate functions ----- 
+      
+          // tabs stuff ---------
+    // initialise arrays
+    // http://www.elated.com/articles/javascript-tabs/
 
-				for(var i=0; i < size; i++)
-				{
-					if(regex.test(elements[i].className))
-					{
-						if(bool)
-						{
-							elements[i].setAttribute("readonly","readonly");
-						//	elements[i].reset();	// TODO : doesnt work, fixies
-						}
-						else	
-							elements[i].removeAttribute("readonly");
-					}
-				}
-				// disable/enable dropdown
-				document.getElementByName("Status").disabled=(bool=="true");
-				document.getElementByName("Type").disabled=(bool=="true");
+    var tabLinks = new Array();
+    var contentDivs = new Array();
 
-			}
-			
-			function disabledropDown(id)
-			{
-				
-			}
+    function initialiseTabs() {
 
-/* 			<?php    
-				if(isset($_POST['SubmitButton']))
-				{
-				$sql="INSERT INTO Transaction (Description, Comment, TransactionDate, PaymentDate, ResponsibleParty, AssociatedParty, Amount)
-VALUES
-('$_POST[Description]','$_POST[Comment]','$_POST[TransactionDate]','$_POST[PaymentDate]','$_POST[ResponsibleParty]','$_POST[AssociatedParty]','$_POST[Amount]')";
-									
-					mysql_query($sql) or die(mysql_error());
-				} 
-				//TODO else	
-			?>  */
+      // Grab the tab links and content divs from the page
+      var tabs = document.getElementById("tabs").childNodes;
+      var length = tabs.length;
+      for ( var i = 0; i < length; i++ ) 
+      {
+        if ( tabs[i].nodeName == "LI" ) 
+        {
+          var tabLink = getFirstChildWithTagName( tabs[i], 'A' );
+          var id = getHash( tabLink.getAttribute('href') );
+          tabLinks[id] = tabLink;
+          contentDivs[id] = document.getElementById( id );
+        }
+      }
+
+      // Assign onclick events to the tab links, and
+      // highlight the first tab
+      var i = 0;
+
+      for ( var id in tabLinks ) 
+      {
+        tabLinks[id].onclick = showTab;
+        tabLinks[id].onfocus = function() { this.blur() };
+        if ( i == 0 )
+        {
+          tabLinks[id].className = 'selected';
+        }
+        i++;
+      }
+
+      // Hide all content divs except the first
+      var i = 0;
+
+      for ( var id in contentDivs ) 
+      {
+        if ( i != 0 ) contentDivs[id].className = 'tabContent hide';
+        i++;
+      }
+    }
+
+    function showTab() 
+    {
+      var selectedId = getHash( this.getAttribute('href') );
+
+      // Highlight the selected tab, and dim all others.
+      // Also show the selected content div, and hide all others.
+      for ( var id in contentDivs ) 
+      {
+        if ( id == selectedId ) 
+        {
+          tabLinks[id].className = 'selected';
+          contentDivs[id].className = 'tabContent';
+        } 
+        else 
+        {
+          tabLinks[id].className = '';
+          contentDivs[id].className = 'tabContent hide';
+        }
+      }
+
+        // Stop the browser following the link
+        return false;
+      }
+
+      function getFirstChildWithTagName( element, tagName ) 
+      {
+        var length = element.childNodes.length;
+        for ( var i = 0; i < length; i++ ) 
+        {
+          if ( element.childNodes[i].nodeName == tagName )    return element.childNodes[i];
+        }
+      }
+
+      function getHash( url ) 
+      {
+        var index = url.lastIndexOf ( '#' );
+        return url.substring( index + 1 );
+      }
+    
+     
 		</script>	
-		
+		<
+    
 		<?php    
-			if(isset($_POST['update']))
+    
+      // remove single and double quotes so no errors are thrown with the sql
+      function removeQuotes($string)
+      {
+        $string = str_replace("'","\'", $string);
+        return str_replace("\"", "\\\"", $string);
+      }
+      
+      
+			if(isset($_POST['submitButton']))
 			{
-				$sql = "UPDATE Transaction ".
-						"SET Description = '" . $_POST['Description'] . "', ".
-						"TransactionDate = '" . $_POST['TransactionDate'] . "', ".
-						"Amount = '" . $_POST['Amount'] . "', ".
-						"PaymentDate = '" . $_POST['PaymentDate'] . "', ".
-						"ResponsibleParty = '" . $_POST['ResponsibleParty'] . "', ".
-						"AssociatedParty = '" . $_POST['AssociatedParty'] . "', ".
-						"Comment = '" . $_POST['Comment'] . "'" .
-						"WHERE ID = '" . $_GET['id'] . "'" ; 
+				$sql = "INSERT INTO History  (Description, TransactionDate, Amount, PaymentDate, ResponsibleParty, AssociatedParty, Inflow, StatusID, Inflow, Comment)" ."VALUES (
+					'" . removeQuotes($_POST['Description']) . "', ".
+					"'" . $_POST['TransactionDate'] . "', ".
+					"'" . $_POST['Amount'] . "', ".
+					"'" . $_POST['PaymentDate'] . "', ".
+					"'" . $_POST['ResponsibleParty'] . "', ".
+					"'" . $_POST['AssociatedParty'] . "', ".
+					"'" . ($_POST['Type']=="in") . "', ".
+					"'" . $_POST['Status'] . "', ".
+					"'" . $_POST['Type'] == "in" . "', ".
+					"'" . removeQuotes($_POST['Comment']) . "')";
+					echo $sql;
 
-				$id = $_GET['id'];
-				mysql_query($sql) or die(mysql_error());
+				mysql_query($sql, $connection) or die(mysql_error());
+			} 
+			else
+			{
+				echo "EEEEH";
 			}
 
 			//TODO else	
 		?>  
 	
-	<body>
+	<body onload="initialiseTabs()">
 		<div id="main">
 		
 			<div id="box">
@@ -181,141 +241,113 @@ VALUES
 					
 				<div id="content">
 
-					<?php
-					
-						// Connect to database
-						$sql = "SELECT * FROM Transaction WHERE ID='" . $_GET['id'] . "'";
-						$result = mysql_query($sql, $connection) or die(mysql_error());
-						$row = mysql_fetch_assoc($result);
-						$statusID = $row['StatusID'];
-					?>	
+            <ul id="tabs">
+              <li><a href="#transInfo"> Transaction Details</a></li>
+              <li><a href="#transHistory"> Transaction History</a></li>
+            </ul>
 
-					<table class = "formatted">
-						<!-- action="toMe.php" -->
+            
+            <div class="tabContent" id="transHistory">
+              <h2>History</h2>
+              <div>
+                <p> history-y stuff!
+              </div>
+            </div>
+        
+        
+          <div class="tabContent" id="transInfo">
 
-						<form name="transactionForm" onsubmit="return validateForm(this);" action="" method="post">
-						<tr>
-							<td  colspan = "2" class = "transactionTitle">
-								Transaction Description
-							</td>
-							<td></td>
-							<td>
-								<select id="Status" disabled="true">
-									<option value=""></option>
-									<?php
-										$sql = "SELECT * FROM Status";
-										$statusIDs = mysql_query($sql, $connection) or die(mysql_error());
- 										while($statusRow = mysql_fetch_array($statusIDs))
-										{
-											if($statusRow['ID'] == $statusID)
-												echo "<option value=" . $statusRow['ID'] . ">" . $statusRow['Name'] . "</option>";
-											else
-												echo "<option value=" . $statusRow['ID'] . " selected='selected'>" . $statusRow['Name'] . "</option>";
-										}
-									?>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="4" class = "spaceBelow">
-								<textarea class="data" name="Description" readonly="readonly"><?=$row['Description'];?></textarea>
-							</td>
-							
-						</tr>
-						<tr>
-							<td class = "transactionTitle">
-								Transaction Date*:
-							</td>
-							<td>
-								<input type="datetime" class="data" name="TransactionDate" size="12" value="<?=$row['TransactionDate'];?>"readonly="readonly">
-							</td>
-							<td class = "transactionTitle col2">
-								Amount*:
-							</td>
-							<td>
-								<input type="text" class="data" name="Amount" size="8"  value="<?=$row['Amount'];?>" readonly="readonly">
-							</td>
-						</tr>
-						<tr>
-							<td class = "transactionTitle">
-								Date of receipt/payment*:
-							</td>
-							<td>
-								<input type="datetime" class="data" name="PaymentDate" value="<?=$row['PaymentDate'];?>"size="12" readonly="readonly">
-							</td>
-							<td class = "transactionTitle col2">
-								Type*:
-							</td>
-							<td>
-								<?php
-									$checked = ($row['Inflow'] == '1') ? "checked" : "";
-								?>
-								<input type="radio" class="data" name="Type" value="in"disabled="true" checked = "<?=$checked;?>">Inflow <br>
-								<input type="radio" class="data" name="Type" value="out" disabled="true" checked = "<?=$checked;?>">Outflow<br>
-							</td>
-						</tr>
-						<tr>
-							<td class = "transactionTitle">
-								Responsible*:
-							</td>
-							<td>
-								<input type="text" class="data" name="ResponsibleParty" value="<?=$row['ResponsibleParty'];?>"size="12" readonly="readonly">
-							</td>
-						</tr>
-						<tr>
-							<td class = "transactionTitle spaceBelow">
-								Associated person:
-							</td>
-							<td>
-								<input type="text" class="data" name="AssociatedParty" value="<?=$row['AssociatedParty'];?>"size="12" readonly="readonly">
-							</td>
-						</tr>
-						<tr>
-						<tr>
-							<td class = "transactionTitle">
-								Comment:
-							</td>
-						</tr>
-						<tr>
-							<td colspan = "2">
-								<textarea cols="20" class="data" name="Comment" readonly="readonly"><?=$row['Comment'];?></textarea>
-							</td>
-						</tr>
-				</table>
-						<button type="Reset">Clear</button>
-						<input name="update" type="submit" id="update" value="Update">
+            <table class = "formatted tabContent" id = "transinfo">
+              <!-- action="toMe.php" -->
 
-					</form>
-						<button onclick="setReadonly('data',false)">Edit</button>
-						<button onclick="setReadonly('data',true)">Cancel</button>
-					
-							
+              <form name="transactionForm" onsubmit="return validateForm(this);" action="" method="post">
+              <tr>
+                <td  colspan = "2" class = "transactionTitle">
+                  Transaction Description
+                </td>
+                <td></td>
+                <td>
+                  <select id="Status" name = "Status">
+                    <option value="" selected="selected"></option>
+                    <?php
+                      $sql = "SELECT * FROM Status";
+                      $statusIDs = mysql_query($sql, $connection) or die(mysql_error());
+                      while($row = mysql_fetch_array($statusIDs))
+                      {
+                        echo "<option value=" . $row['ID'] . ">" . $row['Name'] . "</option>";
+                      }
+                    ?>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4" class = "spaceBelow">
+                  <textarea class="data" name="Description" ></textarea>
+                </td>
+                
+              </tr>
+              <tr>
+                <td class = "transactionTitle">
+                  Transaction Date*:
+                </td>
+                <td>
+                  <input type="datetime" class="data" name="TransactionDate" size="12">
+                </td>
+                <td class = "transactionTitle col2">
+                  Amount*:
+                </td>
+                <td>
+                  <input type="text" class="data" name="Amount" size="8">
+                </td>
+              </tr>
+              <tr>
+                <td class = "transactionTitle">
+                  Date of receipt/payment*:
+                </td>
+                <td>
+                  <input type="datetime" class="data" name="PaymentDate" size="12" >
+                </td>
+                <td class = "transactionTitle col2">
+                  Type*:
+                </td>
+                <td>
+                  <input type="radio" class="data" name="Type" value="in">Inflow <br>
+                  <input type="radio" class="data" name="Type" value="out">Outflow<br>
+                </td>
+              </tr>
+              <tr>
+                <td class = "transactionTitle">
+                  Responsible*:
+                </td>
+                <td>
+                  <input type="text" class="data" name="ResponsibleParty" size="12" >
+                </td>
+              </tr>
+              <tr>
+                <td class = "transactionTitle spaceBelow">
+                  Associated person:
+                </td>
+                <td>
+                  <input type="text" class="data" name="AssociatedParty" size="12" >
+                </td>
+              </tr>
+              <tr>
+              <tr>
+                <td class = "transactionTitle">
+                  Comment:
+                </td>
+              </tr>
+              <tr>
+                <td colspan = "2">
+                  <textarea cols="20" class="data" name="Comment" ></textarea>
+                </td>
+              </tr>
+          </table>
+              <button type="Reset">Clear</button>
+              <input name="submitButton" type="submit" id="submitButton" value="Create">
 
-						
-						
-						
-				     	<!--	 '<'?php/* 
-			$sql="SELECT * FROM Persons";
-			$result =   mysql_query($sql) or die(mysql_error());
-			echo "<table border='1'>";
-
-			while($row = mysql_fetch_assoc($result))
-			{
-				echo "<tr>";
-				foreach($row as $cname => $cvalue)
-				{
-					echo "<td>" ;
-					print "$cname:  $cvalue\t";
-					echo "</td>";
-				}
-				echo"</tr>";
-				}
-			echo "</table>"; 
-			return mysql_num_rows($result);
-
-		
-		 */
-		?> -->
+            </form>
+        </div>
 		</div>
   	
 				<!-- end content!-->
