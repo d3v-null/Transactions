@@ -26,14 +26,14 @@
 					// Save Category ID
 					$catID = $row['ID'];
 					?>
-   <li class='has-sub'><a href="#"><span><?php echo $row['Name']; ?>   </span></a>
+   <li class='has-sub'><a href="#"><span><?php echo $row['Name']; ?></span></a>
       <ul>
 	  <?php
 							// Select everything from Category where SubCategory.CategoryID is equals to previous CategoryID
 							$subCatTable = mysql_query("SELECT * FROM SubCategory WHERE SubCategory.CategoryID = $catID ORDER BY Name ASC");
 							while ($subRow = mysql_fetch_array($subCatTable)) {
 								?>
-         <li><a href='#'><span><?php echo $subRow['Name'];?></span></a></li>
+         <li><a href="subcategoryEdit.php?id=<?php echo $row['ID']; ?>&subCatID=<?php echo $subRow['ID'];?>"><span><?php echo $subRow['Name'];?></span></a></li>
 		 <?php
 							}
 						?>
