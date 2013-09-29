@@ -11,56 +11,17 @@
 
 <script>
 
-			// Validation functions ------ start
-			function validateForm(form)
+			// Validation function ------ start
+			// http://www.w3schools.com/js/js_form_validation.asp
+			function validateForm()
 			{
-				var error = isEmpty(form.Name);
-					
-				if(error != "")
+				var error = document.forms["transactionForm"]["Name"].value;
+				
+				if (error == null || error == "")
 				{
-					alert("Some fields need correction: \n" + error);
+					alert("First Name must be filled out");
 					return false;
 				}
-				return true;
-			}
-			
-			function isEmpty(field)
-			{
-				var error = "";
-				
-				var value = field.value.trim();
-				if(value == "" || value.length==0)
-				{
-					error = "Please enter a value in '" + field.name + "'\n";
-					field.style.background = '#E6CCCC';
-				}
-				else
-				{	
-					field.style.background = 'White';
-				}
-				return error;
-			}
-			
-			function validateInt(field)
-			{
-				var error = "";
-				
-				if((error =isEmpty(field)) == "")
-				{
-					var value = field.value;
-					var stripped = value;//fieldVal.replace(/$/g,"");
-					//document.write(stripped);
-					if(isNaN(parseInt(stripped)))	// TODO: check for special chars
-					{
-						error = "Invalid characters in '" + field.name + "'\n";
-						field.style.background = '#E6CCCC';
-					}
-					else
-					{
-						field.style.background = 'White';
-					}
-				}
-				return error;
 			}
 			
 			// validate functions ----- end
@@ -128,7 +89,7 @@
 
 					<table class = "formatted">						
 						<br><tr>* This field is compulsory</tr><br>
-						<form name="transactionForm" action="categoryEdit.php?id=<?php echo $_GET['id']; ?>" method="post">
+						<form name="transactionForm" action="categoryEdit.php?id=<?php echo $_GET['id']; ?>" onsubmit="return validateForm()" method="post">
 						<tr>
 							<td colspan="4" class = "spaceBelow">
 								Name*: 
@@ -146,6 +107,7 @@
 					</form>
 						<button onclick="setReadonly('data',false)">Edit</button>
 						<button onclick="setReadonly('data',true)">Cancel</button>
+						<button onclick="deleteTable('data',true)">Delete</button>
 	
 		</div>
   	
