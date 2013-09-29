@@ -10,6 +10,18 @@
 		</style>
 
 		<script>
+			// Validation function ------ start
+			// http://www.w3schools.com/js/js_form_validation.asp
+			function validateForm()
+			{
+				var error = document.forms["categoryForm"]["catName"].value;
+				
+				if (error == null || error == "")
+				{
+					alert("First Name must be filled out");
+					return false;
+				}
+			}
 		</script>
 			
 	</head>
