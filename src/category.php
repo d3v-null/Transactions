@@ -63,7 +63,7 @@
 							mysql_close($con);
 						?>
 
-						<form name="categoryForm" action="category.php" method="post">
+						<form name="categoryForm" action="category.php" onsubmit="return validateForm()" method="post">
 							<tr>
 								<td class = "categoryName">
 									Name*:
