@@ -11,59 +11,18 @@
 
 		<script>
 
-			// Validation functions ------ start
-			function validateForm(form)
+			// Validation function
+			// http://www.w3schools.com/js/js_form_validation.asp
+			function validateForm()
 			{
-				var error = isEmpty(form.Name);
-					
-				if(error != "")
+				var error = document.forms["SubCategoryForm"]["SubCategoryName"].value;
+				
+				if (error == null || error == "")
 				{
-					alert("Some fields need correction: \n" + error);
+					alert("First Name must be filled out");
 					return false;
 				}
-				return true;
 			}
-			
-			function isEmpty(field)
-			{
-				var error = "";
-				
-				var value = field.value.trim();
-				if(value == "" || value.length==0)
-				{
-					error = "Please enter a value in '" + field.name + "'\n";
-					field.style.background = '#E6CCCC';
-				}
-				else
-				{	
-					field.style.background = 'White';
-				}
-				return error;
-			}
-			
-			function validateInt(field)
-			{
-				var error = "";
-				
-				if((error =isEmpty(field)) == "")
-				{
-					var value = field.value;
-					var stripped = value;//fieldVal.replace(/$/g,"");
-					//document.write(stripped);
-					if(isNaN(parseInt(stripped)))	// TODO: check for special chars
-					{
-						error = "Invalid characters in '" + field.name + "'\n";
-						field.style.background = '#E6CCCC';
-					}
-					else
-					{
-						field.style.background = 'White';
-					}
-				}
-				return error;
-			}
-			
-			// validate functions ----- end
 			
 			// Gets all elements with the given class name
 			//http://stackoverflow.com/questions/7410949/javascript-document-getelementsbyclassname-compatibility-with-ie
@@ -133,7 +92,7 @@
 					<table class = "formatted">
 						
 						<!-- Insert Category Code -->
-						<form name="SubCategoryForm" action="" method="post">
+						<form name="SubCategoryForm" action="" method="post" onsubmit="return validateForm()">
 							<!--<tr>
 								<td class = "SubCategoryID">
 									Subcategory ID:
