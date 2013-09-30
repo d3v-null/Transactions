@@ -331,7 +331,7 @@ VALUES
 						$sql = "SELECT * FROM History WHERE ID='" . $_GET['id'] . "'";
 						$result = mysql_query($sql, $connection) or die(mysql_error());
 						$row = mysql_fetch_assoc($result);
-						$statusID = $row['StatusID'];
+						$statusID = intval($row['StatusID']);
 					?>	
           
           <div class="tabContent" id="transInfo">
@@ -352,10 +352,10 @@ VALUES
                       $statusIDs = mysql_query($sql, $connection) or die(mysql_error());
                       while($statusRow = mysql_fetch_array($statusIDs))
                       {
-                        if($statusRow['ID'] == $statusID)
-                          echo "<option value=" . $statusRow['ID'] . ">" . $statusRow['Name'] . "</option>";
-                        else
+                        if(intval($statusRow['ID']) == ($statusID + 1))
                           echo "<option value=" . $statusRow['ID'] . " selected='selected'>" . $statusRow['Name'] . "</option>";
+                        else
+                          echo "<option value=" . $statusRow['ID'] . " >" . $statusRow['Name'] . "</option>";
                       }
                     ?>
                   </select>
