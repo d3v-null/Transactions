@@ -120,7 +120,12 @@
 						</form>
 						<button onclick="setReadonly('data',false)">Edit</button>
 						<button onclick="setReadonly('data',true)">Cancel</button>
-
+						
+						<form action="subcategoryDelete.php?id=<?php echo $_GET['id']; ?>&subCatID=<?php echo $_GET['subCatID'];?>">
+							<input type=hidden name="id" value="<?php echo $_GET['id']; ?>">
+							<input type=hidden name="subCatID" value="<?php echo $_GET['subCatID']; ?>">
+							<input type="submit" name="DeleteButton" value="Delete" class="button">
+						</form>
 				</div>
 				<!-- end content!-->
 
