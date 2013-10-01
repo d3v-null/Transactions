@@ -9,7 +9,7 @@
 		@import url("styling.css");
     </style>
 
-<script>
+	<script>
 
 			// Validation function ------ start
 			// http://www.w3schools.com/js/js_form_validation.asp
@@ -22,9 +22,13 @@
 					alert("First Name must be filled out");
 					return false;
 				}
-			}
-			
+			}			
 			// validate functions ----- end
+			
+			function deleteRow()
+			{
+				alert("First Name must be filled out");
+			}
 			
 			// Gets all elements with the given class name
 			//http://stackoverflow.com/questions/7410949/javascript-document-getelementsbyclassname-compatibility-with-ie
@@ -48,6 +52,30 @@
 					}
 				}
 			}
+			
+			// http://stackoverflow.com/questions/1586330/access-get-directly-from-javascript
+			function deleteAction() {
+			      
+		      	var parts = window.location.search.substr(1).split("&");
+				var $_GET = {};
+				for (var i = 0; i < parts.length; i++) {
+				    var temp = parts[i].split("=");
+				    $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
+				}
+				
+				// TO DO: TEST
+				//var db = openDatabase();
+				
+			    //
+			    var db = new ActiveXObject ("localhost.Connection");	
+			    db.Open("SELECT FROM category WHERE category.ID = $_GET['id']");	
+			    db.Delete;
+			    db.Close;	   	
+			    //var service = db.ConnectServer(".","root","");
+				//alert($_GET['id']);
+			    //var properties = service.ExecQuery("DELETE FROM category WHERE category.ID = $_GET['id']");
+			    			    
+			}
 		</script>	
 	
 	<body>
@@ -62,7 +90,7 @@
 					<?php
 					
 						// Connect to database
-						$connection =mysql_connect("localhost","root","") or die("Could not connect");	
+						$connection = mysql_connect("localhost","root","") or die("Could not connect");	
 						mysql_select_db("transaction") or die("Unable to select database");
 
 						$sql = "SELECT * FROM category WHERE ID='" . $_GET['id'] . "'";
@@ -85,6 +113,18 @@
 														
 							echo "Category ".$_POST['Name']." was updated.";
 					    }
+						
+						// if (key_exists("id", $_GET))
+					   	// {
+					   		// // Update Values
+					   		// $sql = "UPDATE category SET Name = '$name' WHERE category.ID = $id";
+							// mysql_query($sql) or die(mysql_error());
+// 							
+							// $sql = "UPDATE category SET Description = '$description' WHERE category.ID = $id";
+							// mysql_query($sql) or die(mysql_error());
+// 														
+							// echo "Category ".$_POST['Name']." was updated.";
+					    // }
 					?>	
 
 					<table class = "formatted">						
@@ -102,12 +142,16 @@
 								<textarea rows="3" cols="48" class="data" name="Description" readonly="readonly"><?=$row['Description'];?></textarea>
 							</td>							
 						</tr>
-				</table>
+					</table>
 						<input type="submit" name="SubmitButton" value="Submit" class="button">
 					</form>
-						<button onclick="setReadonly('data',false)">Edit</button>
-						<button onclick="setReadonly('data',true)">Cancel</button>
-						<button onclick="deleteTable('data',true)">Delete</button>
+					<button onclick="setReadonly('data',false)">Edit</button>
+					<button onclick="setReadonly('data',true)">Cancel</button>
+										
+					<form action="categoryDelete.php?id=<?php echo $_GET['id']; ?>">
+						<input type=hidden name="id" value="<?php echo $_GET['id']; ?>">
+						<input type="submit" name="DeleteButton" value="Delete" class="button">
+					</form>
 	
 		</div>
   	
