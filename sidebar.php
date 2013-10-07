@@ -25,7 +25,7 @@
                 // Save Category ID
                 $catID = $row['ID'];
                 
-                echo "<li class='has-sub'><a href='categoryEdit.php?id=".$row['ID']."'>
+                echo "<li class='has-sub'><a href='category.php?id=".$row['ID']."'>
                       <img align='right' src='images/pencil.png'/></a>".$row['Name']."</li>";
                 echo "<ul>";
                 $subCats = mysql_query("SELECT * FROM SubCategory WHERE SubCategory.CategoryID=".$catID." 

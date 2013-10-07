@@ -10,6 +10,20 @@
     // Connect to transaction database
     mysql_connect(DB_SERVER, DB_USER, DB_PASSWORD) or die(mysql_error());
     mysql_select_db(DB_NAME) or die(mysql_error());
+
+    //mandatory search parameters
+    $pg = (key_exists("pg", $_GET)) ? $_GET["pg"] : 1;    //page number
+    $ts = (key_exists("ts", $_GET)) ? $_GET["ts"] : 0;    //Starting transaction
+    $tn = (key_exists("tn", $_GET)) ? $_GET["tn"] : 20;   //Number of transactions per page
+    $tf = $ts + $tn;
+    $oc = (key_exists("oc", $_GET)) ? $_GET["oc"] : "TransactionDate"; //Order-by column
+    $od = (key_exists("od", $_GET)) ? $_GET["od"] : "DESC"; //Order direction
+
+    //Non-mandatory
+    $kw = (key_exists("kw", $_GET)) ? $_GET["kw"] : "";   //Keywords
+    $fd = (key_exists("fd", $_GET)) ? $_GET["fd"] : Null;
+    $td = (key_exists("td", $_GET)) ? $_GET["td"] : Null;
+    $st = (key_exists("st", $_GET)) ? $_GET["st"] : "0";
 ?>
 
 
@@ -30,35 +44,16 @@
     </head>
 
     <body id="main">
-        
-        <?php
-            if(DEBUG) print_r($_GET);
-
-            //mandatory search parameters
-            $pg = (key_exists("pg", $_GET)) ? $_GET["pg"] : 1;    //page number
-            $ts = (key_exists("ts", $_GET)) ? $_GET["ts"] : 0;    //Starting transaction
-            $tn = (key_exists("tn", $_GET)) ? $_GET["tn"] : 20;   //Number of transactions per page
-            $tf = $ts + $tn;
-            $oc = (key_exists("oc", $_GET)) ? $_GET["oc"] : "TransactionDate"; //Order-by column
-            $od = (key_exists("od", $_GET)) ? $_GET["od"] : "DESC"; //Order direction
-
-            //Non-mandatory
-            $kw = (key_exists("kw", $_GET)) ? $_GET["kw"] : "";   //Keywords
-            $fd = (key_exists("fd", $_GET)) ? $_GET["fd"] : Null;
-            $td = (key_exists("td", $_GET)) ? $_GET["td"] : Null;
-            $st = (key_exists("st", $_GET)) ? $_GET["st"] : "0";
-
-            //if (isAdmin()) echo "<a class=\"button-administration\">Administration</a>"
-        ?>
         <div id="box">
-        <h1 style="float:left">Transaction History</h1>
-        <!-- !!! --->
         <a href="index.php?logout=1" class="btn btn-default" style="float:right">Logout</a>
         <?php
             if ($user->isAdmin() || $user->isBoth()) {
                 echo "<a href='admin.php' style='float:right' class='btn btn-info'>Admin</a>";
             }
         ?>
+        <h1 style="float:left">Transaction History</h1>
+        <!-- !!! --->
+
         <form method="get" action="search.php" class="content">
             <div class="bordered">
             <h2 style="float:left">Search</h2>
@@ -113,11 +108,11 @@
                     </tr>
                 </tbody>
             </table>
-            <button id="search-expander"
+            <a id="search-expander"
                 onclick="showID(advanced-options);
                          hideID(search-expander);
                          showID(search-hider)">Show advanced options</button>
-            <button id="search-hider" style="display:none"
+            <a id="search-hider" style="display:none"
                 onclick="hideID(advanced-options);
                          hideID(search-hider);
                          showID(search-expander);">Hide advanced options</button>

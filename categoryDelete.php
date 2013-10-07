@@ -12,10 +12,17 @@
     mysql_select_db(DB_NAME) or die(mysql_error());
     
     if(!key_exists('id', $_GET)){
-        die("Category ID Not specified");
+        echo "<script>alert('Category ID Not specified')</script>";
+    } else if (!$user->isTreasurer()){
+        echo "<script>alert('You must have treasurer privileges to delete a category')</script>";
     } else {
         $sql="DELETE FROM category WHERE category.ID ='". $_GET['id']."'";
         mysql_query($sql) or die("cannot delete category: ".mysql_error());
     }
-    redirect("search.php");
+    
+    if($_SERVER['HTTP_REFERER']){
+        redirect($_SERVER['HTTP_REFERER']);
+    } else {
+        redirect("search.php");
+    }
 ?>
