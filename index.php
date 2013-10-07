@@ -8,7 +8,7 @@ if (isset($_GET['tkn'])) { // when a login token exists
 
 	if ($user) { // correct token, log in the user
 		$user->login();
-		redirect('searh.php');
+		redirect('search.php');
 	}
 
 	redirect('index.php'); // incorrect token
@@ -31,7 +31,7 @@ if (isset($_GET['logout'])) { // when logging out a user
 $user = new User();
 
 if($user->loggedIn()){
-	redirect('searh.php');
+	redirect('search.php');
 }
 
 

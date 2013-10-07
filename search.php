@@ -2,7 +2,6 @@
 require_once 'classes/authentication.php';
 require_once 'classes/mysql.php';
 require_once 'includes/constants.php';
-
 require_once 'includes/config.php';
 
 $user = new User();
@@ -213,11 +212,11 @@ if(!$user->loggedIn()){
 
         <!--admin link>-->
         <?php
-                if ($user->isAdmin() || $user->isBoth()) {
-                    echo "<a href='admin.php' class='btn btn-info'>Admin</a>";
-                }
+            if ($user->isAdmin() || $user->isBoth()) {
+                echo "<a href='admin.php' class='btn btn-info'>Admin</a>";
+            }
         ?>
-        <br />
+
         <a href="index.php?logout=1" class="btn btn-default">Logout</a>
 
 
