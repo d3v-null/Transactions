@@ -26,7 +26,7 @@
 					// Save Category ID
 					$catID = $row['ID'];
 					?>
-   <li class='has-sub'><a href="categoryEdit.php?id=<?php echo $row['ID']; ?>"><img align="right" src="images/pencil.png" alt="edit"/><span><?php echo $row['Name']; ?> </span></a> <?php /* link button pencil href="categoryEdit.php?id=<?php echo $row['ID']; ?>"  */ ?>
+   <li class='has-sub'><a href="categoryEdit.php?id=<?php echo $row['ID']; ?>"><span><img align="right" src="images/pencil.png" alt="edit"/><?php echo $row['Name']; ?> </span></a> <?php /* link button pencil href="categoryEdit.php?id=<?php echo $row['ID']; ?>"  */ ?>
       <ul>
 	  <?php
 							// Select everything from Category where SubCategory.CategoryID is equals to previous CategoryID
