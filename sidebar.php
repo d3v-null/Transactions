@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel='stylesheet' type='text/css' href='stylessiderbar.css' />
+	<link rel='stylesheet' type='text/css' href='/css/stylessiderbar.css' />
 	<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
-	<script type='text/javascript' src='menu_jquery.js'></script>
+	<script type='text/javascript' src='/js/menu_jquery.js'></script>
 	<?php
 			$debug = True;
 			// Connect to transaction database

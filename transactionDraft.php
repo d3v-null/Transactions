@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
 $connection =mysql_connect("localhost","test","test") or die("Could not connect");
-
+// TODO : escape '\' in comment or description field
 mysql_select_db("test") or die("Unable to select database");
 ?>
 
@@ -10,7 +10,7 @@ mysql_select_db("test") or die("Unable to select database");
 	<title>TAB TITLE</title>
     
     <style type="text/css" media="screen">
-        @import url("style2.css");
+        @import url("/css/style2.css");
 		@import url("styling.css");
     </style>
 
@@ -83,7 +83,7 @@ mysql_select_db("test") or die("Unable to select database");
 			}
 			
 
-			function validateInt(field)
+						function validateInt(field)
 			{
 				var error = "";
 				
@@ -103,64 +103,10 @@ mysql_select_db("test") or die("Unable to select database");
 				return error;
 			}
 			
-			// validate functions ----- end
-			function disableRadio(name, bool)
-			{
-				var radioButts = document.getElementsByName(name);
-        var size = radioButts.length;
-        for(var i = 0; i< size; i++)
-        {
-          if(bool)
-            radioButts[i].setAttribute("disabled", "disabled");
-          else
-            radioButts[i].removeAttribute("disabled");
-        }
-			}
-			// Gets all elements with the given class name
-			// and set to readonly if bool = true
-			function setReadonly(classname, bool)
-			{
-				var regex = new RegExp('(^| )'+classname+'( |$)');
-				var elements = document.getElementsByTagName("*");
-				var size = elements.length;
-
-				for(var i=0; i < size; i++)
-				{
-					if(regex.test(elements[i].className))
-					{
-						if(bool)
-						{
-							elements[i].setAttribute("readonly","readonly");
-						//	elements[i].reset();	// TODO : doesnt work, fixies
-						}
-						else	
-							elements[i].removeAttribute("readonly");
-					}
-				}
-        if(!bool)
-          document.getElementById("Status").removeAttribute("disabled");
-        else
-          document.getElementById("Status").setAttribute("disabled", "disabled");
-
-         disableRadio("Type", bool);
-			}
 			
-
-
-/* 			<?php    
-				if(isset($_POST['SubmitButton']))
-				{
-				$sql="INSERT INTO Transaction (Description, Comment, TransactionDate, PaymentDate, ResponsibleParty, AssociatedParty, Amount)
-VALUES
-('$_POST[Description]','$_POST[Comment]','$_POST[TransactionDate]','$_POST[PaymentDate]','$_POST[ResponsibleParty]','$_POST[AssociatedParty]','$_POST[Amount]')";
-									
-					mysql_query($sql) or die(mysql_error());
-				} 
-				//TODO else	
-			?>  */
+			// validate functions ----- 
       
-      
-                // tabs stuff ---------
+          // tabs stuff ---------
     // initialise arrays
     // http://www.elated.com/articles/javascript-tabs/
 
@@ -246,8 +192,11 @@ VALUES
         var index = url.lastIndexOf ( '#' );
         return url.substring( index + 1 );
       }
+    
+     
 		</script>	
-		
+		<
+    
 		<?php    
     
       // remove single and double quotes so no errors are thrown with the sql
@@ -256,48 +205,28 @@ VALUES
         $string = str_replace("'","\'", $string);
         return str_replace("\"", "\\\"", $string);
       }
-			if(isset($_POST['update']))
-			{
       
-          $sql = "INSERT INTO History".
-          "(".
-            "Description,". 
-            "Comment,".
-            "RecordedDate,".
-            "TransactionDate,".
-            "PaymentDate,".
-            "ResponsibleParty,".
-            "AssociatedParty,".
-            "Amount,".
-            "Inflow,".
-            "StatusID".
-          ")".
-          "SELECT".
-            "'" . removeQuotes($_POST['Description']) . "', ".
-            "'" . removeQuotes($_POST['Comment']) . "', " .
-            "CURRENT_TIMESTAMP,".
-            "'" . $_POST['TransactionDate'] . "', ".
-            "'" . $_POST['PaymentDate'] . "', ".
-            "'" . $_POST['ResponsibleParty'] . "', ".
-            "'" . $_POST['AssociatedParty'] . "', ".
-            "'" . $_POST['Amount'] . "', ".
-            "'" .  ($_POST['Type'] == "in") . "', ".
-            "'" .  $_POST['Status'] . "' ".
-          "FROM History ". 
-          "WHERE ID = '" . $_GET['id'] . "'" ; 
- 
-/* 				$sql = "UPDATE History ".
-						"SET Description = '" . removeQuotes($_POST['Description']) . "', ".
-						"TransactionDate = '" . $_POST['TransactionDate'] . "', ".
-						"Amount = '" . $_POST['Amount'] . "', ".
-						"PaymentDate = '" . $_POST['PaymentDate'] . "', ".
-						"ResponsibleParty = '" . $_POST['ResponsibleParty'] . "', ".
-						"AssociatedParty = '" . $_POST['AssociatedParty'] . "', ".
-						"Inflow = '" .  ($_POST['Type'] == "in") . "', ".
-						"Comment = '" . removeQuotes($_POST['Comment']) . "'" .
-						"WHERE ID = '" . $_GET['id'] . "'" ;  */
-        echo($sql);
-				mysql_query($sql) or die(mysql_error());
+      
+			if(isset($_POST['submitButton']))
+			{
+				$sql = "INSERT INTO History  (Description, TransactionDate, Amount, PaymentDate, ResponsibleParty, AssociatedParty, Inflow, StatusID, Inflow, Comment)" ."VALUES (
+					'" . removeQuotes($_POST['Description']) . "', ".
+					"'" . $_POST['TransactionDate'] . "', ".
+					"'" . $_POST['Amount'] . "', ".
+					"'" . $_POST['PaymentDate'] . "', ".
+					"'" . $_POST['ResponsibleParty'] . "', ".
+					"'" . $_POST['AssociatedParty'] . "', ".
+					"'" . ($_POST['Type']=="in") . "', ".
+					"'" . $_POST['Status'] . "', ".
+					"'" . $_POST['Type'] == "in" . "', ".
+					"'" . removeQuotes($_POST['Comment']) . "')";
+					echo $sql;
+
+				mysql_query($sql, $connection) or die(mysql_error());
+			} 
+			else
+			{
+				echo "EEEEH";
 			}
 
 			//TODO else	
@@ -326,16 +255,9 @@ VALUES
             </div>
         
         
-					<?php
-						// Connect to database
-						$sql = "SELECT * FROM History WHERE ID='" . $_GET['id'] . "'";
-						$result = mysql_query($sql, $connection) or die(mysql_error());
-						$row = mysql_fetch_assoc($result);
-						$statusID = intval($row['StatusID']);
-					?>	
-          
           <div class="tabContent" id="transInfo">
-            <table class = "formatted">
+
+            <table class = "formatted tabContent" id = "transinfo">
               <!-- action="toMe.php" -->
 
               <form name="transactionForm" onsubmit="return validateForm(this);" action="" method="post">
@@ -345,17 +267,14 @@ VALUES
                 </td>
                 <td></td>
                 <td>
-                  <select id="Status" disabled="disabled">
-                    <option value=""></option>
+                  <select id="Status" name = "Status">
+                    <option value="" selected="selected"></option>
                     <?php
                       $sql = "SELECT * FROM Status";
                       $statusIDs = mysql_query($sql, $connection) or die(mysql_error());
-                      while($statusRow = mysql_fetch_array($statusIDs))
+                      while($row = mysql_fetch_array($statusIDs))
                       {
-                        if(intval($statusRow['ID']) == ($statusID + 1))
-                          echo "<option value=" . $statusRow['ID'] . " selected='selected'>" . $statusRow['Name'] . "</option>";
-                        else
-                          echo "<option value=" . $statusRow['ID'] . " >" . $statusRow['Name'] . "</option>";
+                        echo "<option value=" . $row['ID'] . ">" . $row['Name'] . "</option>";
                       }
                     ?>
                   </select>
@@ -363,7 +282,7 @@ VALUES
               </tr>
               <tr>
                 <td colspan="4" class = "spaceBelow">
-                  <textarea class="data" name="Description" readonly="readonly"><?=$row['Description'];?></textarea>
+                  <textarea class="data" name="Description" ></textarea>
                 </td>
                 
               </tr>
@@ -372,13 +291,13 @@ VALUES
                   Transaction Date*:
                 </td>
                 <td>
-                  <input type="datetime" class="data" name="TransactionDate" size="12" value="<?=$row['TransactionDate'];?>"readonly="readonly">
+                  <input type="datetime" class="data" name="TransactionDate" size="12">
                 </td>
                 <td class = "transactionTitle col2">
                   Amount*:
                 </td>
                 <td>
-                  <input type="text" class="data" name="Amount" size="8"  value="<?=$row['Amount'];?>" readonly="readonly">
+                  <input type="text" class="data" name="Amount" size="8">
                 </td>
               </tr>
               <tr>
@@ -386,18 +305,14 @@ VALUES
                   Date of receipt/payment*:
                 </td>
                 <td>
-                  <input type="datetime" class="data" name="PaymentDate" value="<?=$row['PaymentDate'];?>"size="12" readonly="readonly">
+                  <input type="datetime" class="data" name="PaymentDate" size="12" >
                 </td>
                 <td class = "transactionTitle col2">
                   Type*:
                 </td>
                 <td>
-                  <?php
-                    $checked = ($row['Inflow'] == '1') ? "checked=\"checked\"" : "";
-                    $checked2 = ($checked == "") ? "checked=\"checked\"" : "";
-                  ?>
-                  <input type="radio" class="data" name="Type" value="in" disabled="disabled" <?=$checked;?>>Inflow <br>
-                  <input type="radio" class="data" name="Type" value="out" disabled="disabled" <?=$checked2;?>>Outflow<br>
+                  <input type="radio" class="data" name="Type" value="in">Inflow <br>
+                  <input type="radio" class="data" name="Type" value="out">Outflow<br>
                 </td>
               </tr>
               <tr>
@@ -405,7 +320,7 @@ VALUES
                   Responsible*:
                 </td>
                 <td>
-                  <input type="text" class="data" name="ResponsibleParty" value="<?=$row['ResponsibleParty'];?>"size="12" readonly="readonly">
+                  <input type="text" class="data" name="ResponsibleParty" size="12" >
                 </td>
               </tr>
               <tr>
@@ -413,7 +328,7 @@ VALUES
                   Associated person:
                 </td>
                 <td>
-                  <input type="text" class="data" name="AssociatedParty" value="<?=$row['AssociatedParty'];?>"size="12" readonly="readonly">
+                  <input type="text" class="data" name="AssociatedParty" size="12" >
                 </td>
               </tr>
               <tr>
@@ -424,45 +339,15 @@ VALUES
               </tr>
               <tr>
                 <td colspan = "2">
-                  <textarea cols="20" class="data" name="Comment" readonly="readonly"><?=$row['Comment'];?></textarea>
+                  <textarea cols="20" class="data" name="Comment" ></textarea>
                 </td>
               </tr>
           </table>
               <button type="Reset">Clear</button>
-              <input name="update" type="submit" id="update" value="Update">
+              <input name="submitButton" type="submit" id="submitButton" value="Create">
 
             </form>
-						<button onclick="setReadonly('data',false)">Edit</button>
-						<button onclick="setReadonly('data',true)">Cancel</button>
-          </div>
-					
-							
-
-						
-						
-						
-				     	<!--	 '<'?php/* 
-			$sql="SELECT * FROM Persons";
-			$result =   mysql_query($sql) or die(mysql_error());
-			echo "<table border='1'>";
-
-			while($row = mysql_fetch_assoc($result))
-			{
-				echo "<tr>";
-				foreach($row as $cname => $cvalue)
-				{
-					echo "<td>" ;
-					print "$cname:  $cvalue\t";
-					echo "</td>";
-				}
-				echo"</tr>";
-				}
-			echo "</table>"; 
-			return mysql_num_rows($result);
-
-		
-		 */
-		?> -->
+        </div>
 		</div>
   	
 				<!-- end content!-->

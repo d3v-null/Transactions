@@ -5,7 +5,7 @@
 	<title>Transaction System - Swedish Club of Western Australia</title>
     
     <style type="text/css" media="screen">
-        @import url("style2.css");
+        @import url("/css/style2.css");
     </style>
 
 	<!-- Script responsible for toggle -->

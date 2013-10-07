@@ -1,14 +1,17 @@
-<!DOCTYPE html>
-    
+<?php
+require_once 'classes/authentication.php';
+require_once 'classes/mysql.php';
+require_once 'includes/constants.php';
+?>
+
+
+<!DOCTYPE html> 
 <html>
     <?php
-        $debug = True;
         // Connect to transaction database
-		$dbhost = "localhost";
-		$dbname = "transaction";
-		$dbuser = "root";
-		mysql_connect($dbhost,$dbuser) or die(mysql_error());
-		mysql_select_db($dbname) or die(mysql_error());
+
+		mysql_connect(DB_SERVER, DB_USER, DB_PASSWORD) or die(mysql_error());
+		mysql_select_db(DB_NAME) or die(mysql_error());
 		
 		// Inserting new category
 		if (key_exists("catName", $_POST) && key_exists("catDesc", $_POST))
@@ -28,8 +31,8 @@
         <title>Transaction History</title>
         
         <style type="text/css" media="screen">
-            @import url("style2.css");
-            @import url("styling.css");
+            @import url("/css/style2.css");
+            @import url("/css/styling.css");
         </style>
         <script>
             // Expand function
@@ -48,7 +51,7 @@
     <body id="main">
         <div id="box">
         <?php 
-            if($debug) print_r($_GET);
+            if(DEBUG) print_r($_GET);
             
             //mandatory search parameters
             $pg = (key_exists("pg", $_GET)) ? $_GET["pg"] : 1;    //page number
@@ -121,29 +124,23 @@
                    
             <?php              
                 //select the transactions to display on the page
-                // $qry = "WHERE ";
-                // if ($st != 0) {
-                    // $qry = $qry . "StatusID = ".$st."\nAND ";
-                    // echo "ST";
-                // }
-                // if ($fd != Null AND $td != Null) {
-                    // $qry = $qry . "TransactionDate BETWEEN ".$fd." AND ".$td."\nAND ";
-                    // echo "Date";
-                // }
-                // if ($kw != "") {
-                    // $qry = $qry . "Description LIKE '%".$kw."%' OR Comment LIKE '%".$kw."%'\nAND "; 
-                    // echo "KW";
-                // }
-                // if (substr($qry,-4) == "AND ") {
-                    // $qry = substr($qry,0,strlen($qry)-4);
-                    // echo "AND";
-                // }
-                // if ($qry == "WHERE ") {
-                    // $qry = "";
-                    // echo "where";
-                // }
-                // echo "qry: " . $qry . "--";
-                $qry="";
+                $whr = "";
+                if ($st != 0) {
+                    $whr = $whr . "StatusID = ".$st."\nAND ";
+                }
+                if ($fd != Null AND $td != Null) {
+                    $whr = $whr . "TransactionDate BETWEEN ".$fd." AND ".$td."\nAND ";
+                }
+                if ($kw != "") {
+                    $whr = $whr . "Description LIKE '%".$kw."%' OR Comment LIKE '%".$kw."%'\nAND "; 
+                }
+                if (substr($whr,-4) == "AND ") {
+                    $whr = substr($whr,0,strlen($whr)-4);
+                }
+                if ($whr != "") {
+                    $whr = "WHERE " . $whr;
+                }
+                echo "qry: " . $whr . " -- ";
                 $sql="
                     SELECT 
                         History.ID AS HistoryID,
@@ -161,7 +158,7 @@
                     INNER JOIN History ON Latest.TransactionID = History.TransactionID
                     AND Latest.ModificationDate = History.ModificationDate
                     INNER JOIN Status ON Status.ID = History.StatusID
-                    " . $qry .
+                    " . $whr .
                    "ORDER BY " . $oc . " " . $od . "
                     LIMIT " . $ts . ", " . $tf . ";";
                 //echo $sql;

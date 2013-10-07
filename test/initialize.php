@@ -26,7 +26,7 @@
     If ($debug) echo "<h3>Creating Status table</h3>";
 	mysql_query("
 		CREATE TABLE Status (
-			ID INT AUTO_INCREMENT,
+			ID INT AUTO_INCREMENT, 
 			Name VARCHAR(50) UNIQUE NOT NULL,
 			Description VARCHAR(255),
             PRIMARY KEY (ID)
@@ -81,27 +81,6 @@
 		);        
     ") or die(mysql_error());
     
-	// mysql_query("     
-        // CREATE TABLE History (
-            // TransactionID INT NOT NULL AUTO_INCREMENT,
-            // Description VARCHAR(255) NOT NULL,
-            // Comment TEXT,
-            // ModificationDate TIMESTAMP DEFAULT NOW(),
-            // TransactionDate TIMESTAMP,
-            // PaymentDate TIMESTAMP,
-            // ModificationPersonID INT NOT NULL,
-            // ResponsibleParty VARCHAR(255),
-            // AssociatedParty VARCHAR (255),
-            // StatusID INT NOT NULL,
-            // Amount INT NOT NULL,
-            
-            // PRIMARY KEY HistoryID (TransactionID, ModificationDate),
-            // FOREIGN KEY (StatusID) 
-                // REFERENCES Status(ID)
-                // ON DELETE CASCADE
-		// );        
-    // ") or die(mysql_error());
-    
     If ($debug) echo "<h3>Creating Categorization table</h3>";
 	mysql_query("         
         CREATE TABLE Categorization (
@@ -117,6 +96,17 @@
                 REFERENCES SubCategory(ID)
                 ON DELETE CASCADE
         );  
+    ") or die(mysql_error());
+    
+    If ($debug) echo "<h3>Creating User table</h3>";
+	mysql_query("     
+        CREATE TABLE Users (
+            ID INT AUTO_INCREMENT,
+            username VARCHAR (20),
+            password VARCHAR (20),
+            
+            PRIMARY KEY ID 
+		);        
     ") or die(mysql_error());
     
     If ($debug) echo "<h2>Populating tables</h2>";
@@ -187,6 +177,12 @@
                     WHERE Category.Name = 'Membership' AND SubCategory.Name = 'Single'
                 )
             );            
+    ") or die(mysql_error()); 
+    
+    If ($debug) echo "<h3>Populating Users</h3>";
+    mysql_query("        
+        INSERT INTO Users (username, password) VALUES
+            ('derwent', '5f4dcc3b5aa765d61d8327deb882cf99');
     ") or die(mysql_error()); 
     
      echo "<h2>Complete</h2>";

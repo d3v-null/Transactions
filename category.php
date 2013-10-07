@@ -5,8 +5,8 @@
 		<title>Create New Category</title>
 		
 		<style type="text/css" media="screen">
-			@import url("style2.css");
-			@import url("styling.css");
+			@import url("/css/style2.css");
+			@import url("/css/styling.css");
 		</style>
 
 		<script>
