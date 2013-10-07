@@ -1,6 +1,4 @@
 <?php
-require_once 'classes/authentication.php';
-require_once 'classes/mysql.php';
 require_once 'includes/constants.php';
 require_once 'includes/config.php';
 
