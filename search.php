@@ -29,23 +29,9 @@ require_once 'includes/constants.php';
 
     <head>
         <title>Transaction History</title>
-        
-        <style type="text/css" media="screen">
-            @import url("/css/style2.css");
-            @import url("/css/styling.css");
-        </style>
-        <script>
-            // Expand function
-            function expand(showMe)
-            {
-                if(document.getElementById(showMe).style.display=='none')
-                    display = 'block';
-                else
-                    display = 'none';
-
-                document.getElementById(showMe).style.display = display;
-            }
-        </script>
+        <link rel="stylesheet" type="text/css" href="/css/style2.css">
+        <link rel="stylesheet" type="text/css" href="/css/styling.css">
+        <script src="/js/expander.js"></script>
     </head>
 
     <body id="main">
@@ -73,12 +59,15 @@ require_once 'includes/constants.php';
         <form method="get" action="search.php" class="content">        
             <div class="bordered">
             <h2 style="float:left">Search</h2>
-            <input type="submit" id="search-button" value="Update" Style="float:right">                   
-            <input type="hidden" name="pg" value=<?php echo $pg?>>          
-            <input type="hidden" name="ts" value=<?php echo $ts?>>
-            <input type="hidden" name="tn" value=<?php echo $tn?>>
-            <input type="hidden" name="oc" value=<?php echo $oc?>>          
-            <input type="hidden" name="od" value=<?php echo $od?>>
+            <input type="submit" id="search-button" value="Update" Style="float:right">  
+            <?php
+            echo "<input type='hidden' name='pg' value=".$pg.">";         
+            echo "<input type='hidden' name='ts' value=".$ts.">";
+            echo "<input type='hidden' name='tn' value=".$tn.">";
+            echo "<input type='hidden' name='oc' value=".$oc.">";       
+            echo "<input type='hidden' name='od' value=".$od.">";
+            ?>
+
             <table id="basic-options">
                 <thead>
                     <tr>
@@ -89,13 +78,15 @@ require_once 'includes/constants.php';
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type="text" name="kw" value=<?php echo $kw?>></td>
-                        <td><input type="date" name="fd" value=<?php echo $fd?>></td>
-                        <td><input type="date" name="td" value=<?php echo $td?>></td>
+                    <?php
+                    echo "<td><input type='text' name='kw' value=".$kw."></td>";
+                    echo "<td><input type='date' name='fd' value=".$fd."></td>";
+                    echo "<td><input type='date' name='td' value=".$td."></td>";
+                    ?>
                     </tr>
                 </tbody>
             </table>
-            <table id="advanced-options">
+            <table id="advanced-options" style="display:none">
                 <thead>
                     <tr>
                         <td>Status</td>
@@ -119,7 +110,14 @@ require_once 'includes/constants.php';
                     </tr>
                 </tbody>
             </table>
-            <a class="expander">Expand</a><!-- to do: write this properly in JavaScript -->
+            <button id="search-expander" 
+                onclick="showID(advanced-options); 
+                         hideID(search-expander); 
+                         showID(search-hider)">Show advanced options</button>
+            <button id="search-hider" style="display:none" 
+                onclick="hideID(advanced-options); 
+                         hideID(search-hider);
+                         showID(search-expander);">Hide advanced options</button>
             </div><!-- end bordered-->
                    
             <?php              
@@ -132,7 +130,7 @@ require_once 'includes/constants.php';
                     $whr = $whr . "TransactionDate BETWEEN ".$fd." AND ".$td."\nAND ";
                 }
                 if ($kw != "") {
-                    $whr = $whr . "Description LIKE '%".$kw."%' OR Comment LIKE '%".$kw."%'\nAND "; 
+                    $whr = $whr . "History.Description LIKE '%".$kw."%' OR Comment LIKE '%".$kw."%'\nAND "; 
                 }
                 if (substr($whr,-4) == "AND ") {
                     $whr = substr($whr,0,strlen($whr)-4);
@@ -140,7 +138,8 @@ require_once 'includes/constants.php';
                 if ($whr != "") {
                     $whr = "WHERE " . $whr;
                 }
-                echo "qry: " . $whr . " -- ";
+                echo "qry: " . $whr . "<br/>--<br/>";
+                
                 $sql="
                     SELECT 
                         History.ID AS HistoryID,
@@ -160,15 +159,16 @@ require_once 'includes/constants.php';
                     INNER JOIN Status ON Status.ID = History.StatusID
                     " . $whr .
                    "ORDER BY " . $oc . " " . $od . "
-                    LIMIT " . $ts . ", " . $tf . ";";
-                //echo $sql;
+                    LIMIT " . $ts . ", " . $tf . 
+                  ";";
+                echo "sql: " . $sql . "<br/>";
                 $page = mysql_query($sql) or die(mysql_error());
             ?>
 
             <table id="transaction-list" summary = "List of Transactions">
                 <thead>
-                    <td>Trans. ID</td>
-                    <td>Trans. Date</td>
+                    <td>Transaction<br/>ID</td>
+                    <td>Transaction<br/>Date</td>
                     <td>Description</td>
                     <td>Status</td>
                     <td>Amount</td>
@@ -178,16 +178,14 @@ require_once 'includes/constants.php';
                 <?php
                     while($row = mysql_fetch_array($page))
                     {
-                ?>
-                    <tr id = >
-                        <td><?php echo $row['TransactionID']    ?></td>
-                        <td><?php echo $row['TransactionDate']  ?></td>
-                        <td><?php echo $row['Description']      ?></td>
-                        <td><?php echo $row['Status']           ?></td>
-                        <td><?php echo $row['Amount'] / 100     ?></td>
-                        <td><a href="transaction.php?hid=<?php echo $row['HistoryID'] ?>>Edit</a></td>
-                    </tr>
-                <?php
+                        echo "<tr>";
+                        echo "<td>". $row['TransactionID'] . "</td>";
+                        echo "<td>". $row['TransactionDate'] . "</td>";
+                        echo "<td>". $row['Description']  . "</td>";
+                        echo "<td>". $row['Status'] . "</td>";
+                        echo "<td>". $row['Amount'] / 100 . "</td>";
+                        echo "<td><a id='edit' href='transaction.php?hid=" . $row['HistoryID'] . "'>Edit</a></td>";
+                        echo "</tr>";
                     }
                 ?>
                 </tbody>

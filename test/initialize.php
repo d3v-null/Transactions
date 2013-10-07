@@ -102,10 +102,10 @@
 	mysql_query("     
         CREATE TABLE Users (
             ID INT AUTO_INCREMENT,
-            username VARCHAR (20),
-            password VARCHAR (20),
+            Username VARCHAR (20),
+            Password VARCHAR (20),
             
-            PRIMARY KEY ID 
+            PRIMARY KEY (ID) 
 		);        
     ") or die(mysql_error());
     
