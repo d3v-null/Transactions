@@ -211,16 +211,14 @@ if(!$user->loggedIn()){
         </div><!-- end pagination -->
         </form>
 
-    <!--admin link>-->
-            <?php
+        <!--admin link>-->
+        <?php
                 if ($user->isAdmin() || $user->isBoth()) {
                     echo "<a href='admin.php' class='btn btn-info'>Admin</a>";
                 }
-            ?>
-            <br />
-
-            <br />
-            <a href="index.php?logout=1" class="btn btn-default">Logout</a>
+        ?>
+        <br />
+        <a href="index.php?logout=1" class="btn btn-default">Logout</a>
 
 
     </div><!-- end box -->
