@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php  
+    require_once 'includes/constants.php';
+?>
 <html>
     <?php
         // Connect to transaction database
@@ -24,8 +27,9 @@
                 $catID = $row['ID'];
                 
                 echo "<li class='has-sub'>
-                    <img href='category.php?id=". $row['ID'] . " align='right' src='images/pencil.png'/>
-                    <span>" . $row['Name'] . "</span>";
+                    <a href='category.php?id=". $row['ID'] . "'>
+                    <img align='right' src='images/pencil.png'/>
+                    </a><span>" . $row['Name'] . "</span></li>";
                 echo "<ul>";
                 $subCatTable = mysql_query("SELECT * FROM SubCategory WHERE SubCategory.CategoryID = $catID ORDER BY Name ASC");
                 while ($subRow = mysql_fetch_array($subCatTable)) {
