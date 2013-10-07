@@ -62,7 +62,7 @@
 							mysql_close($con);
 						?>
 
-						<form name="SubCategoryForm" action="subcategoryNew.php?CategoryID=<?php echo $_GET["ID"]; ?>" onsubmit="return validateForm()" method="post">
+						<form name="SubCategoryForm" action="subcategoryNew.php?ID=<?php echo $_GET["ID"]; ?>" onsubmit="return validateForm()" method="post">
 							<tr>
 								<td class = "CategoryName">
 									Category ID:
