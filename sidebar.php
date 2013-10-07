@@ -33,7 +33,7 @@
                 echo "<ul>";
                 $subCatTable = mysql_query("SELECT * FROM SubCategory WHERE SubCategory.CategoryID = $catID ORDER BY Name ASC");
                 while ($subRow = mysql_fetch_array($subCatTable)) {
-                    echo "<li><a href='subcategoryEdit.php?id=" . $subRow['ID'] . "'>" . $subRow['Name'] . "</a></li>";
+                    echo "<li><a href='subcategoryEdit.php?id=" . $subRow['ID'] . "'>" . $subRow['CategoryID'] . "</a></li>";
                 }
                 echo "<li><a href='subcategoryNew.php?ID=" . $catID. "'><span>Add New Subcategory</span></a></li>";
                 echo "</ul>";
