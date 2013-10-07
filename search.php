@@ -20,19 +20,6 @@ if(!$user->loggedIn()){
 
 		mysql_connect(DB_SERVER, DB_USER, DB_PASSWORD) or die(mysql_error());
 		mysql_select_db(DB_NAME) or die(mysql_error());
-
-		// Inserting new category
-		if (key_exists("catName", $_POST) && key_exists("catDesc", $_POST))
-		{
-			$catName = $_POST['catName'];
-			$description = $_POST['catDesc'];
-
-			// Insert values
-			$slq="INSERT INTO category (Name, Description) VALUES ('$catName','$description')";
-			mysql_query($slq,$con);
-
-			echo "One more category was inserted";
-		}
     ?>
 
     <head>
@@ -49,7 +36,7 @@ if(!$user->loggedIn()){
     </head>
 
     <body id="main">
-        <div id="box">
+        
         <?php
             if(DEBUG) print_r($_GET);
 
@@ -69,6 +56,7 @@ if(!$user->loggedIn()){
 
             //if (isAdmin()) echo "<a class=\"button-administration\">Administration</a>"
         ?>
+        <div id="box">
         <h1>Transaction History</h1>
         <form method="get" action="search.php" class="content">
             <div class="bordered">
