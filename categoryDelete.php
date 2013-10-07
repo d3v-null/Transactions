@@ -1,51 +1,21 @@
-<!DOCTYPE html>
+<?php
+    require_once 'includes/constants.php';
+    require_once 'includes/config.php';
 
-<html>
-<head>
-	<title>TAB TITLE</title>
+    $user = new User();
+    if(!$user->loggedIn()){
+        redirect('index.php');
+    }
     
-    <style type="text/css" media="screen">
-        @import url("/css/style2.css");
-		@import url("/css/styling.css");
-    </style>
-	
-	<body>
-		<div id="main">
-		
-			<div id="box">
-				<h1>Delete Category</h1>
-
-					
-				<div id="content">
-
-					<?php
-					
-						// Connect to database
-						$connection =mysql_connect("localhost","root","") or die("Could not connect");	
-						mysql_select_db("transaction") or die("Unable to select database");
-
-						$sql = "DELETE FROM category WHERE category.ID ='". $_GET['id']."'";
-						$result = mysql_query($sql) or die(mysql_error());
-						
-					?>	
-
-					<table class = "formatted">						
-						<br><tr>One category has been deleted.</tr><br>						
-					</table>							
-		</div>
-  	
-				<!-- end content!-->
-
-            </div><!-- end box -->
-            
-            <div id="sidebar">
-            
-				<?php include_once("sidebar.php");?>           
-                
-            </div><!-- end sidebar -->
-            
-            
-        </div><!-- end main -->
-           
-</body>
-</html>
+    // Connect to transaction database
+    mysql_connect(DB_SERVER, DB_USER, DB_PASSWORD) or die(mysql_error());
+    mysql_select_db(DB_NAME) or die(mysql_error());
+    
+    if(!key_exists('id', $_GET)){
+        die("Category ID Not specified");
+    } else {
+        $sql="DELETE FROM category WHERE category.ID ='". $_GET['id']."'";
+        mysql_query($sql) or die("cannot delete category: ".mysql_error());
+    }
+    redirect("search.php");
+?>

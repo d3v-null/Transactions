@@ -8,18 +8,15 @@
     if(!$user->loggedIn()){
         redirect('index.php');
     }
+    
+    // Connect to transaction database
+    mysql_connect(DB_SERVER, DB_USER, DB_PASSWORD) or die(mysql_error());
+    mysql_select_db(DB_NAME) or die(mysql_error());
 
 ?>
 
 <!DOCTYPE html>
 <html>
-    <?php
-        // Connect to transaction database
-
-		mysql_connect(DB_SERVER, DB_USER, DB_PASSWORD) or die(mysql_error());
-		mysql_select_db(DB_NAME) or die(mysql_error());
-    ?>
-
     <head>
         <title>Category Details</title>
         <link rel="stylesheet" type="text/css" href="/css/style2.css">
@@ -85,7 +82,7 @@
             </form>     
         </div><!-- end box-->
         <div id="sidebar">      
-				<?php //include_once("sidebar.php");?>                 
+				<?php include_once("sidebar.php");?>                 
         </div><!-- end sidebar -->      
 	</body>
 </html>
