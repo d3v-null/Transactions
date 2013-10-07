@@ -222,7 +222,69 @@ textarea:focus {
 	padding-left:5px;
 }
 
-.col2
+/*************TABS**************/
+
+ul#tabs
 {
-	padding-left:50px;
+  list-style-type:none;
+  margin: 30px 0 0 0;
 }
+
+ul#tabs li 
+{
+  display: inline;
+}
+
+ul#tabs li a
+{
+  color: royal blue;
+  background-color: black;
+  border: 1px solid white;
+}
+
+
+ul#tabs li a:hover
+{
+  color: yellow;
+  background-color: royal blue;
+  border-bottom: none;
+  text-decoration: none;
+  padding: 0.3em;
+}
+
+ul#tabs li a:selected
+{
+  color:white;
+  background-color:orange;
+  font-weight: bold;
+  padding: 0.7em 0.3em 0.38em 0.3em;
+}
+
+div.tabContent.hide
+{
+  display:none;
+}
+
+div.tabContent
+{
+  border: 1px solid blue;
+  padding: 0.5em;
+  background-color: pink;
+}
+
+/*******slide out tab thingy start*********/
+
+.slide-out-div {
+  padding: 20px;
+  width: 150px;
+  background: #ccc;
+  border: 2px solid black;
+  z-index:1;
+}
+    
+.handle {
+  background: url(images/leftedge.png) no-repeat;
+  height: 800px;
+  width: 70px;
+}
+
