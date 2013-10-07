@@ -25,11 +25,12 @@ if(!$user->loggedIn()){
     <head>
         <title>Transaction History</title>
         <meta charset="utf-8"/>
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <!--    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
         <!--[if lt IE 9]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+        <![endif]--> 
+    
         <link rel="stylesheet" type="text/css" href="/css/style2.css">
         <link rel="stylesheet" type="text/css" href="/css/styling.css">
         <script src="/js/expander.js"></script>
@@ -57,7 +58,14 @@ if(!$user->loggedIn()){
             //if (isAdmin()) echo "<a class=\"button-administration\">Administration</a>"
         ?>
         <div id="box">
-        <h1>Transaction History</h1>
+        <h1 style="float:left">Transaction History</h1>
+        <!-- !!! --->
+        <a href="index.php?logout=1" class="btn btn-default" style="float:right">Logout</a>
+        <?php
+            if ($user->isAdmin() || $user->isBoth()) {
+                echo "<a href='admin.php' style='float:right' class='btn btn-info'>Admin</a>";
+            }
+        ?>
         <form method="get" action="search.php" class="content">
             <div class="bordered">
             <h2 style="float:left">Search</h2>
@@ -196,17 +204,7 @@ if(!$user->loggedIn()){
         <a>Back</a><!-- to do: write this properly in JavaScript - decrements start and submits form-->
         <a>Forward</a><!-- to do: write this properly in JavaScript - increments start and submits form-->
         </div><!-- end pagination -->
-        </form>
-
-        <!--admin link>-->
-        <?php
-            if ($user->isAdmin() || $user->isBoth()) {
-                echo "<a href='admin.php' class='btn btn-info'>Admin</a>";
-            }
-        ?>
-
-        <a href="index.php?logout=1" class="btn btn-default">Logout</a>
-
+        </form>   
 
     </div><!-- end box -->
             <div id="sidebar">

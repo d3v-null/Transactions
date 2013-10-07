@@ -5,7 +5,7 @@
     $debug = True;
     If ($debug) echo "<h1>Initializing Transaction database</h1>";
     
-	If ($debug) echo "<h2>Connecting to database</h2>";
+	If ($debug) echo "<h2>Connecting to transaction database</h2>";
 	$dbhost = "localhost";
 	$dbname = "transaction";
 	$dbuser = "root";
@@ -19,7 +19,8 @@
             SubCategory, 
             Category,
             History,
-            Status;
+            Status,
+            Users;
     ") or die(mysql_error());
     
     If ($debug) echo "<h2>Creating tables</h2>";
@@ -186,4 +187,40 @@
     ") or die(mysql_error()); 
     
      echo "<h2>Complete</h2>";
+     
+    If ($debug) echo "<h1>Initializing User database</h1>";
+    
+	If ($debug) echo "<h2>Connecting to User database</h2>";
+	$dbname = "user_db";
+    mysql_connect($dbhost,$dbuser) or die(mysql_error());
+	mysql_select_db($dbname) or die(mysql_error());
+    
+    If ($debug) echo "<h3>Creating login_attempt table</h3>";
+	mysql_query(" 
+        CREATE TABLE IF NOT EXISTS `login_attempt` (
+        `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+        `ip` int(11) unsigned NOT NULL,
+        `email` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+        `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (`id`),
+        KEY `ip` (`ip`)
+        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+    ") or die(mysql_error());
+    
+    If ($debug) echo "<h3>Creating users table</h3>";
+	mysql_query(" 
+        CREATE TABLE IF NOT EXISTS `users` (
+        `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+        `email` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+        `rank` tinyint(2) unsigned NOT NULL,
+        `registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        `last_login` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+        `token` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+        `token_validity` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+        PRIMARY KEY (`id`),
+        UNIQUE KEY `email` (`email`),
+        UNIQUE KEY `token` (`token`)
+        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    ") or die(mysql_error());    
 ?>
