@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel='stylesheet' type='text/css' href='/css/stylessiderbar.css' />
+	<link rel='stylesheet' type='text/css' href='stylessiderbar.css' />
 	<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
-	<script type='text/javascript' src='/js/menu_jquery.js'></script>
+	<script type='text/javascript' src='menu_jquery.js'></script>
 	<?php
 			$debug = True;
 			// Connect to transaction database
@@ -17,7 +17,7 @@
 <body>
 <div id='cssmenu'>
 <ul>
-	<li class='active'><a href='category.php'><span>Create New Category</span></a>
+	<li class='active'><a href="category.php"><span>Create New Category</span></a>
 	<?php
 				// Select everything from Category
 				$catTable = mysql_query("SELECT * FROM Category");
@@ -26,7 +26,7 @@
 					// Save Category ID
 					$catID = $row['ID'];
 					?>
-   <li class='has-sub'><a href="#"><span><?php echo $row['Name']; ?>   <img src="images/pencil.png" /></span></a> <?php /* link button pencil href="categoryEdit.php?id=<?php echo $row['ID']; ?>"  */ ?>
+   <li class='has-sub'><a href="#"><span><?php echo $row['Name']; ?>     <img src="images/pencil.png" /></span></a>
       <ul>
 	  <?php
 							// Select everything from Category where SubCategory.CategoryID is equals to previous CategoryID
