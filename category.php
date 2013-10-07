@@ -35,77 +35,92 @@
         </script>
 		
     </head>
+	
     <body id="main">
-        <?php
+        
+		<?php
             $id=(key_exists("id", $_GET)) ? $_GET["id"] : Null;
         ?>
+		
 		<div id="box">
-            <h1>Category Details</h1>
-            <form name="transactionForm"  id="content" action="categoryEdit.php" onsubmit="return validateForm()" method="get">
-            <?php
-                $sql = "SELECT * FROM category WHERE ID='" . $id . "'";
-                $result = mysql_query($sql) or die(mysql_error());
-                $row = mysql_fetch_assoc($result);				
-                
-                // Editing Category
-                if (key_exists("Name", $_POST) && key_exists("Description", $_POST) && key_exists("id", $_GET)) // Submit was clicked
-                {
-                    $name 			= $_POST['Name'];
-                    $description 	= $_POST['Description'];
-                    $id				= $_GET['id'];
-                    
-                    // Update Values
-                    $sql = "UPDATE category SET Name = '$name' WHERE category.ID = $id";
-                    mysql_query($sql) or die(mysql_error());
-                    
-                    $sql = "UPDATE category SET Description = '$description' WHERE category.ID = $id";
-                    mysql_query($sql) or die(mysql_error());
-                                                
-                    echo "Category ".$_POST['Name']." was updated.";
-                }
             
-            ?>	
-                    
-            <input type="hidden" name="id">
-            <table class = "formatted">						
-                <br><tr>* This field is compulsory</tr><br>
-                <tr>
-                    <td colspan="4" class = "spaceBelow">
-                        Name*: 
-                        <input type="text" class="data" name="Name" size="55"  value="<?=$row['Name'];?>" readonly="readonly">
-                    </td>							
-                </tr>
-                <tr><td>Description:</td></tr>
-                <tr>
-                    <td colspan="4" class = "spaceBelow">
-                        <textarea rows="3" cols="48" class="data" name="Description" readonly="readonly"><?=$row['Description'];?></textarea>
-                    </td>							
-                </tr>
-            </table>
-            <input type="submit" name="SubmitButton" value="Submit" class="button">
-            </form>
-            <button onclick="setReadonly('data',false)">Edit</button>
-            <button onclick="setReadonly('data',true)">Cancel</button>
-                                
-            <form action="categoryDelete.php?id=<?php echo $_GET['id']; ?>">
-                <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
-                <input type="submit" name="DeleteButton" value="Delete" class="button">
-            </form>
+			<h1>Category Details</h1>
+            
+			<form name="transactionForm"  id="content" action="categoryEdit.php" onsubmit="return validateForm()" method="get">
+            
+				<?php
+					$sql = "SELECT * FROM category WHERE ID='" . $id . "'";
+					$result = mysql_query($sql) or die(mysql_error());
+					$row = mysql_fetch_assoc($result);				
+					
+					// Editing Category
+					if (key_exists("Name", $_POST) && key_exists("Description", $_POST) && key_exists("id", $_GET)) // Submit was clicked
+					{
+						$name 			= $_POST['Name'];
+						$description 	= $_POST['Description'];
+						$id				= $_GET['id'];
+						
+						// Update Values
+						$sql = "UPDATE category SET Name = '$name' WHERE category.ID = $id";
+						mysql_query($sql) or die(mysql_error());
+						
+						$sql = "UPDATE category SET Description = '$description' WHERE category.ID = $id";
+						mysql_query($sql) or die(mysql_error());
+													
+						echo "Category ".$_POST['Name']." was updated.";
+					}           
+				?>	
+						
+				<input type="hidden" name="id">
+				
+				<table class = "formatted">						
+					<br><tr>* This field is compulsory</tr><br>
+					
+					<tr>
+						<td colspan="4" class = "spaceBelow">
+							Name*: 
+							<input type="text" class="data" name="Name" size="55"  value="<?=$row['Name'];?>" readonly="readonly">
+						</td>							
+					</tr>
+					
+					<tr><td>Description:</td></tr>
+					
+					<tr>
+						<td colspan="4" class = "spaceBelow">
+							<textarea rows="3" cols="48" class="data" name="Description" readonly="readonly"><?=$row['Description'];?></textarea>
+						</td>							
+					</tr>
+					
+				</table>
+				
+				<button onclick="setReadonly('data',false)">Edit</button>
+				<button onclick="setReadonly('data',true)">Cancel</button>
+				
+				<input type="submit" name="SubmitButton" value="Submit" class="button">				
+            
+			    <br><br>
+				
+				<form action="categoryDelete.php?id=<?php echo $_GET['id']; ?>">
+					
+					<input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
+					<input type="submit" name="DeleteButton" value="Delete" class="button">
+					
+				</form>
+				
+            </form>           
 	
 		</div>
   	
-				<!-- end content!-->
-
-            </div><!-- end box -->
+    </div><!-- end box -->
             
-            <div id="sidebar">
+        <div id="sidebar">
             
 				<?php include_once("sidebar.php");?>           
                 
-            </div><!-- end sidebar -->
+        </div><!-- end sidebar -->
             
             
-        </div><!-- end main -->
+		</div><!-- end main -->
            
-</body>
+	</body>
 </html>
