@@ -4,11 +4,8 @@
 <head>
 	<title>TAB TITLE</title>
     
-    <style type="text/css" media="screen">
-        @import url("/css/style2.css");
-		@import url("/css/styling.css");
-    </style>
-
+    <link rel="stylesheet" type="text/css" href="/css/style2.css">
+    <link rel="stylesheet" type="text/css" href="/css/styling.css">
 	<script>
 
 			// Validation function ------ start
