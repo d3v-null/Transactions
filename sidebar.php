@@ -27,7 +27,7 @@
                 $catID = $row['ID'];
                 
                 echo "<li class='has-sub'>
-                    <a href='category.php?id=". $row['ID'] . "'>
+                    <a href='categoryEdit.php?id=". $row['ID'] . "'>
                     <img align='right' src='images/pencil.png'/>
                     </a><span>" . $row['Name'] . "</span></li>";
                 echo "<ul>";
@@ -40,7 +40,7 @@
             }
         ?>
                     
-        <li class='active'><a href='category.php'><span>Create New Category</span></a>
+        <li class='active'><a href='categoryNew.php'><span>Create New Category</span></a>
     </ul>
     </body>
 </html>
