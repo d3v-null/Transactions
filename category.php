@@ -16,7 +16,8 @@
         
         <link rel="stylesheet" type="text/css" href="/css/style2.css">
         <link rel="stylesheet" type="text/css" href="/css/styling.css">
-        <script>
+        
+		<script>
 
 			// Validation function ------ start
 			// http://www.w3schools.com/js/js_form_validation.asp
@@ -30,60 +31,9 @@
 					return false;
 				}
 			}			
-			// validate functions ----- end
-			
-			function deleteRowAlert()
-			{
-				alert("First Name must be filled out");
-			}
-			
-			// Gets all elements with the given class name
-			//http://stackoverflow.com/questions/7410949/javascript-document-getelementsbyclassname-compatibility-with-ie
-			function setReadonly(classname, bool)
-			{
-				var regex = new RegExp('(^| )'+classname+'( |$)');
-				var elements = document.getElementsByTagName("*");
-				var size = elements.length;
-
-				for(var i=0; i < size; i++)
-				{
-					if(regex.test(elements[i].className))
-					{
-						if(bool)
-						{
-							elements[i].setAttribute("readonly","readonly");
-						//	elements[i].reset();	// TODO : doesnt work, fixies
-						}
-						else	
-							elements[i].removeAttribute("readonly");
-					}
-				}
-			}
-			
-			// http://stackoverflow.com/questions/1586330/access-get-directly-from-javascript
-			function deleteAction() {
-			      
-		      	var parts = window.location.search.substr(1).split("&");
-				var $_GET = {};
-				for (var i = 0; i < parts.length; i++) {
-				    var temp = parts[i].split("=");
-				    $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
-				}
-				
-				// TO DO: TEST
-				//var db = openDatabase();
-				
-			    //
-			    var db = new ActiveXObject ("localhost.Connection");	
-			    db.Open("SELECT FROM category WHERE category.ID = $_GET['id']");	
-			    db.Delete;
-			    db.Close;	   	
-			    //var service = db.ConnectServer(".","root","");
-				//alert($_GET['id']);
-			    //var properties = service.ExecQuery("DELETE FROM category WHERE category.ID = $_GET['id']");
-			    			    
-			}
-        </script>	
+			// validate function  ----- end			
+        </script>
+		
     </head>
     <body id="main">
         <?php
