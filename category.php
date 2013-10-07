@@ -21,7 +21,7 @@
     ?>
 
     <head>
-        <title>TAB TITLE</title>
+        <title>Category Details</title>
         
         <link rel="stylesheet" type="text/css" href="/css/style2.css">
         <link rel="stylesheet" type="text/css" href="/css/styling.css">
@@ -53,83 +53,49 @@
             $row = mysql_fetch_assoc($result);	
             
             $name = $row['Name'];
-            $desc = $row['Description'];            
+            $desc = $row['Description'];    
             
             if(!empty($_POST)){
+                //Override 
                 if( key_exists('name', $_POST) ) {
                     $name = $_POST['name'];
                 }
                 if( key_exists('desc', $_POST) ) {
                     $desc = $_POST['desc'];
                 }
-                If($user->isTreasurer()){
+                if($name = ""){
+                    echo "<script>alert('Name cannot be empty')</script>";
+                } else If(!$user->isTreasurer()){
+                    echo "<script>alert('Cannot update category without Treasurer privileges')</script>";
+                } else {
                     $sql = "UPDATE category SET Name = ".$name.", Description = ".$desc." WHERE category.ID = $id";
                     mysql_query($sql) or die(mysql_error());
-                    
-                } else {
-                    die("Cannot update category without Treasurer privileges");
+                    echo "<script>alert('Successfully updated category')</script>";
                 }
             }
-            
-            //check 
         ?>
 		
 		<div id="box">
-            
 			<h1>Category Details</h1>
-            
-			<form name="categoryForm"  id="content" action="category.php" onsubmit="return validateForm()" method="post">
-            
-            <?php
-                $sql = "SELECT * FROM category WHERE ID='" . $id . "'";
-                $result = mysql_query($sql) or die(mysql_error());
-                $row = mysql_fetch_assoc($result);				
-                
-                // Editing Category
-                if (key_exists("Name", $_POST) && key_exists("Description", $_POST) && key_exists("id", $_GET)) // Submit was clicked
-                {
-                    $name 			= $_POST['Name'];
-                    $description 	= $_POST['Description'];
-                    $id				= $_GET['id'];
-                    
-                    // Update Values
-                    $sql = "UPDATE category SET Name = '$name' WHERE category.ID = $id";
-                    mysql_query($sql) or die(mysql_error());
-                    
-                    $sql = "UPDATE category SET Description = '$description' WHERE category.ID = $id";
-                    mysql_query($sql) or die(mysql_error());
-                                                
-                    echo "Category ".$_POST['Name']." was updated.";
-                }           
-            ?>	
-			
-            <input type="hidden" name="id">
+			<form name="categoryForm"  id="content" action="category.php?id=<?php $id?>" method="post">
+            <input type="hidden" name="id" value=>
             
             <b>* This field is compulsory</b>
             <table class = "formatted">						
                 <tr class = "spaceBelow">
-                    <td>
-                        Name*: 
-                    </td>
-                    <td>
-                        <input type="text" class="data" name="Name" value="<?=$row['Name'];?>" readonly="readonly">
-                    </td>							
+                    <td>Name*:</td>
+                    <td><input type="text" name="name" class="data" value="<?php $row['Name'] ?>"></td>							
                 </tr>
-                
                 <tr class = "spaceBelow">
-                    <td>
-                        Description: 
-                    </td>
-                    <td>
-                        <textarea class="data" name="Description" readonly="readonly"><?=$row['Description'];?></textarea>
-                    </td>							
+                    <td>Description:</td>
+                    <td><textarea name="desc" class="data"><?php $row['Description'] ?></textarea></td>							
                 </tr>    
             </table>
             
-            <input type="submit" name="SubmitButton" value="Save" class="button">
+            <input type="submit" value="Save">
             <form action="categoryDelete.php" method="get">
                 <input type="hidden" name="id" value="<?php echo $id ?>">
-                <input type="submit" name="DeleteButton" value="Delete" class="button">
+                <input type="submit" value="Delete">
             </form>
         </form>     
         
