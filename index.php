@@ -66,9 +66,9 @@ try{
 		$message.= get_page_url()."?tkn=".$user->generateToken()."\n\n";
 		$message.= "The link is going expire automatically after 7 days.";
 		$result = send_email($fromEmail, $_POST['email'], $subject, $message);
-
+        
 		$link = get_page_url()."?tkn=".$user->generateToken()."\n\n";
-
+        throw new Exception($fromEmail);
 		if (!$result) {
 			throw new Exception("There was an error sending your email. Please try again.");
 		}
