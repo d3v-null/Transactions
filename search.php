@@ -6,7 +6,7 @@
     if(!$user->loggedIn()){
         redirect('index.php');
     }
-    
+
     // Connect to transaction database
     mysql_connect(DB_SERVER, DB_USER, DB_PASSWORD) or die(mysql_error());
     mysql_select_db(DB_NAME) or die(mysql_error());
@@ -32,12 +32,10 @@
     <head>
         <title>Transaction History</title>
         <meta charset="utf-8"/>
-    <!--    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
         <!--[if lt IE 9]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]--> 
-    
+        <![endif]-->
+
         <link rel="stylesheet" type="text/css" href="/css/style2.css">
         <link rel="stylesheet" type="text/css" href="/css/styling.css">
         <script src="/js/expander.js"></script>
@@ -192,7 +190,7 @@
         <a>Back</a><!-- to do: write this properly in JavaScript - decrements start and submits form-->
         <a>Forward</a><!-- to do: write this properly in JavaScript - increments start and submits form-->
         </div><!-- end pagination -->
-        </form>   
+        </form>
 
     </div><!-- end box -->
             <div id="sidebar">
