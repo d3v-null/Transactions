@@ -17,7 +17,7 @@
     
     //Does the ID Correspond to a valid subcategory?
     $sql = "SELECT Name, Description FROM subcategory WHERE ID=" . $id . "";
-    $result = mysql_query($sql) or die("Category.ID not specified correctly: ".mysql_error());
+    $result = mysql_query($sql) or die("Subcategory.ID not specified correctly: ".mysql_error());
     if(!$result) die("No categories in database match given ID: ".mysql_error());
     $row = mysql_fetch_array($result);
     
@@ -37,7 +37,7 @@
             $name = $_POST['name'];
             $desc = $_POST['desc'];
             mysql_query("UPDATE subcategory SET Name='".$name."', Description='".$desc."' ".
-                        "WHERE category.ID=".$id) or die(mysql_error());
+                        "WHERE subcategory.ID=".$id) or die(mysql_error());
             //echo "<script>alert('Successfully updated category')</script>";
         }
     }
@@ -65,29 +65,6 @@
 				}
 			}
 			
-			// Gets all elements with the given class name
-			//http://stackoverflow.com/questions/7410949/javascript-document-getelementsbyclassname-compatibility-with-ie
-			//function setReadonly(classname, bool)
-			//{
-			//	var regex = new RegExp('(^| )'+classname+'( |$)');
-			//	var elements = document.getElementsByTagName("*");
-			//	var size = elements.length;
-
-			//	for(var i=0; i < size; i++)
-			//	{
-			//		if(regex.test(elements[i].className))
-			//		{
-			//			if(bool)
-			//			{
-			//				elements[i].setAttribute("readonly","readonly");
-			//			//	elements[i].reset();	// TODO : doesnt work, fixies
-			//			}
-			//			else	
-			//				elements[i].removeAttribute("readonly");
-			//		}
-			//	}
-			//}
-			
 		</script>
 		
     </head>	
@@ -96,49 +73,38 @@
 		<div id="main">
 		
 			<div id="box">
-				<h1>Edit Sub Category</h1>
+				<h1>Subcategory Details</h1>
 					
-				<div id="content">
+				<form action="subcategory.php?id=<?php echo $id; ?>" method="post" id="content" >
+					<input type="hidden" name="id" value=>
+					
+					<b>* This field is compulsory</b>
+					<table class = "formatted">						
+						<tr class = "spaceBelow">
+							<td>Name*:</td>
+							<td><input type="text" name="name" class="data" value="<?php echo $name ?>"></td>							
+						</tr>
+						<tr class = "spaceBelow">
+							<td>Description:</td>
+						</tr>						
+					</table>  
+					
+					<textarea name="desc" class="data"><?php echo $desc ?></textarea>					
+					
+					<input type="button" name="Delete" 	value="Delete">
+					<input type="submit" name="Save" 	value="Save">
+                
+				</form>	
 
-					<table class = "formatted">
-						
-						<form name="SubCategoryForm" action="" method="post" onsubmit="return validateForm()">
-							<tr>
-								<td class = "SubCategoryName">
-									Name*:									
-								</td>
-								<td>
-									<input type="text" class="data" value="<?=$row['Name'];?>" name="SubCategoryName" size="50" maxlength="50" readonly="readonly">
-								</td>
-							</tr>
-							<tr><td>Description:</td></tr>
-							<tr>
-								<td colspan="4" class = "SubCategoryDescription">
-									<textarea rows="3" cols="48" class="data" name="SubCategoryDescription" readonly="readonly"><?=$row['Description'];?></textarea>
-								</td>							
-							</tr><tr>* This field is compulsory</tr>
-					</table>	
-						<input type="submit" name="SubmitButton" value="Submit" class="button">				
-						</form>
-						<button onclick="setReadonly('data',false)">Edit</button>
-						<button onclick="setReadonly('data',true)">Cancel</button>
-						
-						<form action="subcategoryDelete.php?id=<?php echo $id ?>">
-							<input type=hidden name="id" value="<?php echo $id ?>">	
-							<input type="submit" name="DeleteButton" value="Delete" class="button">
-						</form>
-				</div>
-				<!-- end content!-->
-
-			</div><!-- end box -->
+			</div>
 			
 			<div id="sidebar">
 		
 				<?php include_once("sidebar.php");?>
            
-       		</div><!-- end sidebar -->
+       		</div>
 			
-		</div><!-- end main -->   
+		</div>
 
 	</body>
 </html>
