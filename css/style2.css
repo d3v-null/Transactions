@@ -10,6 +10,10 @@ body {
 	font: 76% Verdana,Tahoma,Arial,sans-serif;
 }
 
+textarea 
+{
+	resize: none;
+}
 
 thead, tr, th, td, tbody
 {
@@ -82,6 +86,7 @@ a:hover {
 	padding: 20px 0 20px 0;
 	margin: 0;
 	text-align: center;
+    text-transform: uppercase;
 }
 
 /* #box p.p2 {
@@ -103,7 +108,6 @@ a:hover {
 	padding: 20px 25px;
 	color: #222;
 	font-size: 0.90em;
-	text-align: justify;
 }
 
 
