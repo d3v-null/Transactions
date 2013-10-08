@@ -35,7 +35,6 @@ if($user->loggedIn()){
 }
 
 
-// login form with AJAX validation
 try{
 
 	if(!empty($_POST) && isset($_SERVER['HTTP_X_REQUESTED_WITH'])){
@@ -50,25 +49,24 @@ try{
 		rate_limit_tick($_SERVER['REMOTE_ADDR'], $_POST['email']);
 
 		// send email to the user
-		$message = '';
-		$email = $_POST['email'];
-		$subject = 'Access Granted!';
+		// $message = '';
+		// $email = $_POST['email'];
+		// $subject = 'Access Granted!';
 
-		if(!User::exists($email)){
-			$subject = "Access Granted!";
-			$message = "Your access to the ledger system is granted!\n\n";
-		}
+		// if(!User::exists($email)){
+		// 	$subject = "Access Granted!";
+		// 	$message = "Your access to the ledger system is granted!\n\n";
+		// }
 
-		// Attempt to login or register the person
 		$user = User::loginOrRegister($_POST['email']);
 
-		$message.= "You can access the ledger system from this URL:\n";
-		$message.= get_page_url()."?tkn=".$user->generateToken()."\n\n";
-		$message.= "The link is going expire automatically after 7 days.";
-		$result = send_email($fromEmail, $_POST['email'], $subject, $message);
-        
+		// $message.= "You can access the ledger system from this URL:\n";
+		// $message.= get_page_url()."?tkn=".$user->generateToken()."\n\n";
+		// $message.= "The link is going expire automatically after 7 days.";
+		// $result = send_email($fromEmail, $_POST['email'], $subject, $message);
+
 		$link = get_page_url()."?tkn=".$user->generateToken()."\n\n";
-        throw new Exception($fromEmail);
+
 		if (!$result) {
 			throw new Exception("There was an error sending your email. Please try again.");
 		}
