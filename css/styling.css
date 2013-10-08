@@ -277,8 +277,8 @@ div.tabContent
 .slide-out-div {
     padding: 20px;
     width: 150px;
-    background: #ccc;
-    border: 2px solid black;
+    background: #E6F5F5;
+    border: 2px solid #1589FF;
     z-index:1;
 }
     

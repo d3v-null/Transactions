@@ -2,7 +2,7 @@
 <?php
 $connection =mysql_connect("localhost","test","test") or die("Could not connect");
 
-mysql_select_db("test") or die("Unable to select database");
+mysql_select_db("transaction") or die("Unable to select database");
 ?>
 
 <html>
@@ -30,7 +30,7 @@ mysql_select_db("test") or die("Unable to select database");
            tabLocation: 'right', 
            speed: 300, 
            action: 'click',
-           topPos: '160px', 
+           topPos: '90px', 
            fixedPosition: false,
            onLoadSlideOut: false
        });
@@ -297,9 +297,9 @@ mysql_select_db("test") or die("Unable to select database");
        
   </script>	
   <script>
-    function showUser(str)
+    function showHistory(id)
     {
-    if (str=="")
+    if (id=="")
       {
       document.getElementById("historyVals").innerHTML="";
       return;
@@ -346,7 +346,7 @@ mysql_select_db("test") or die("Unable to select database");
             "TransactionID,". 
             "Description,". 
             "Comment,".
-            "RecordedDate,".
+            "ModificationDate,".
             "TransactionDate,".
             "PaymentDate,".
             "ResponsibleParty,".
@@ -370,16 +370,6 @@ mysql_select_db("test") or die("Unable to select database");
           "FROM History ". 
           "WHERE ID = '" . $_GET['id'] . "'" ; 
  
-/* 				$sql = "UPDATE History ".
-						"SET Description = '" . removeQuotes($_POST['Description']) . "', ".
-						"TransactionDate = '" . $_POST['TransactionDate'] . "', ".
-						"Amount = '" . $_POST['Amount'] . "', ".
-						"PaymentDate = '" . $_POST['PaymentDate'] . "', ".
-						"ResponsibleParty = '" . $_POST['ResponsibleParty'] . "', ".
-						"AssociatedParty = '" . $_POST['AssociatedParty'] . "', ".
-						"Inflow = '" .  ($_POST['Type'] == "in") . "', ".
-						"Comment = '" . removeQuotes($_POST['Comment']) . "'" .
-						"WHERE ID = '" . $_GET['id'] . "'" ;  */
         echo($sql);
 				mysql_query($sql) or die(mysql_error());
 			}
@@ -389,28 +379,28 @@ mysql_select_db("test") or die("Unable to select database");
 	
 	<body onload="initialiseTabs()">
     <div class="slide-out-div">
-      <a class="handle" href="http://link-for-non-js-users">Content</a>
         <h3>Transaction History:</h3>
         <div>
           <?php
               // Connect to database
            /*        $parentID = mysql_query("SELECT TransactionID FROM History WHERE ID='" . $_GET['id'] . "'"); */
-            $idResult = mysql_query("SELECT ID FROM History WHERE TransactionID='" . $_GET['id'] . "'");
+            $sql = "SELECT ID FROM History WHERE TransactionID='" . $_GET['id'] . "'";
+            $idResult = mysql_query($sql) or die(mysql_error());
             while($idResultRows = mysql_fetch_assoc($idResult))
             {
               echo $idResultRows['ID'];
-              $sql = "SELECT RecordedDate FROM HISTORY ".
+              $sql = "SELECT ModificationDate FROM HISTORY ".
                     "WHERE ".
                     "ID = '". $idResultRows['ID'] ."'".
-                    "ORDER BY RecordedDate ASC";
+                    "ORDER BY ModificationDate ASC";
               $result = mysql_query($sql) or die(mysql_error());
             
               while($row = mysql_fetch_assoc($result))
               {
                 echo "<ul>";
-                echo"<li><div class='history' id='" . $idResultRows['ID'] . "' onclick='showUser(this.id)'>" . $row['RecordedDate'] . "</div></li>";
+                echo"<li><div class='history' id='" . $idResultRows['ID'] . "' onclick='showHistory(this.id)'>" . $row['ModificationDate'] . "</div></li>";
                 echo"</ul>";
-                //echo $row['RecordedDate'] ."______".  $row['ID'];
+                //echo $row['ModificationDate'] ."______".  $row['ID'];
                 print "<br>";
               }
             }
@@ -524,7 +514,6 @@ mysql_select_db("test") or die("Unable to select database");
                       </td>
                     </tr>
                 </table>
-                  <button type="Reset">Clear</button>
                   <input name="update" type="submit" id="update" value="Update">
 
                   </form>
