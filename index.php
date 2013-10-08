@@ -67,9 +67,9 @@ try{
 
 		$link = get_page_url()."?tkn=".$user->generateToken()."\n\n";
 
-		if (!$result) {
-			throw new Exception("There was an error sending your email. Please try again.");
-		}
+		// if (!$result) {
+		// 	throw new Exception("There was an error sending your email. Please try again.");
+		// }
 
 		die(json_encode(array(
 			'message' => $link
