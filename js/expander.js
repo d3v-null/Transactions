@@ -9,3 +9,8 @@ function hideID(elem){
     if(document.getElementById(elem).style.display!='none')
         document.getElementById(elem).style.display = 'block';
 }
+
+// test function
+function test(msg){
+    alert(msg);
+}

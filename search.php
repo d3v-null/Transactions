@@ -11,19 +11,31 @@
     mysql_connect(DB_SERVER, DB_USER, DB_PASSWORD) or die(mysql_error());
     mysql_select_db(DB_NAME) or die(mysql_error());
 
-    //mandatory search parameters
-    $pg = (key_exists("pg", $_GET)) ? $_GET["pg"] : 1;    //page number
-    $ts = (key_exists("ts", $_GET)) ? $_GET["ts"] : 0;    //Starting transaction
-    $tn = (key_exists("tn", $_GET)) ? $_GET["tn"] : 20;   //Number of transactions per page
-    $tf = $ts + $tn;
-    $oc = (key_exists("oc", $_GET)) ? $_GET["oc"] : "TransactionDate"; //Order-by column
-    $od = (key_exists("od", $_GET)) ? $_GET["od"] : "DESC"; //Order direction
-
-    //Non-mandatory
-    $kw = (key_exists("kw", $_GET)) ? $_GET["kw"] : "";   //Keywords
-    $fd = (key_exists("fd", $_GET)) ? $_GET["fd"] : Null;
-    $td = (key_exists("td", $_GET)) ? $_GET["td"] : Null;
-    $st = (key_exists("st", $_GET)) ? $_GET["st"] : "0";
+    $PARS = Array(     
+      //'pg' => (isset($_GET['pg']))?$_GET['pg']:1,     //page number  
+        'ts' => (isset($_GET['ts']))?$_GET['ts']:0,     //Transaction offset   
+        'tn' => (isset($_GET['ts']))?$_GET['tn']:20,    //transactions / page 
+        'oc' => (isset($_GET['oc']))?$_GET['oc']:1,     //Order-by column
+        'od' => (isset($_GET['od']))?$_GET['od']:0,     //Order direction
+        'kw' => (isset($_GET['kw']))?$_GET['kw']:"",    //Keywords
+        'fd' => (isset($_GET['fd']))?$_GET['fd']:Null,  //From date
+        'td' => (isset($_GET['td']))?$_GET['td']:Null,  //To date
+        'st' => (isset($_GET['st']))?$_GET['st']:"0",   //Status
+    );
+    
+    $COLS = Array(           
+        Array('TransactionID', function($row){return $row['TransactionID'];}),
+        Array('TransactionDate', function($row){return $row['TransactionDate'];}),
+        Array('Description', function($row){return $row['Description'];}),
+        Array('Status', function($row){return $row['Status'];}),
+        Array('Amount', function($row){return $row['Amount'] / 100;}),
+        Array('', function($row){return "<a id='edit' href='transaction.php?hid=".$row['HistoryID']."'>Edit</a>";}),
+    );
+    
+    $ORDS = Array(
+        Array('Descending', 'DESC'),
+        Array('Ascending', 'ASC'),
+    );
 ?>
 
 
@@ -34,110 +46,99 @@
         <meta charset="utf-8"/>
         <!--[if lt IE 9]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+        <![endif]
 
         <link rel="stylesheet" type="text/css" href="/css/style2.css">
-        <link rel="stylesheet" type="text/css" href="/css/styling.css">
+        <link rel="stylesheet" type="text/css" href="/css/styling.css">-->
         <script src="/js/expander.js"></script>
     </head>
 
     <body id="main">
         <div id="box">
         
-        <table>
-            <tr>
-                <td><h1>Transaction History</h1></td>
-                <td><a href="index.php?logout=1" class="btn btn-default">Logout</a></td>
-                <?php
-                    if ($user->isAdmin() || $user->isBoth()) {
-                        echo "<td><a href='admin.php' style='float:right' class='btn btn-info'>Admin</a></td>";
-                    }
-                ?>
-            </tr>
-        <table>
+        <h1>Transaction History</h1>
+        <a href="index.php?logout=1" class="btn btn-default">Logout</a>
+        <?php
+            if ($user->isAdmin()) {
+                echo "<a href='admin.php' class='btn btn-info'>Admin</a>";
+            }
+        ?>            
 
         <form method="get" action="search.php" class="content">
             <div class="bordered">
-                <Table>
+                <h2>Search</h2>
+                <input type="submit" name="search" value="Update">
+                
+
+
+                <table id="options-basic">
                     <tr>
-                        <td><h2>Search</h2></td>
-                        <td><input type="submit" name="search" value="Update"></td>
+                        <td>Keywords</td>
+                        <td>From date</td>
+                        <td>To date</td>
+                    </tr>
+                    <tr>
+                        <td><input type='text' name='kw' value='<?php echo $PARS['kw']?>'></td>
+                        <td><input type='date' name='fd' <?php echo (($PARS['fd']!=Null)?"value=".$PARS['fd']:"")?>></td>
+                        <td><input type='date' name='td' <?php echo (($PARS['fd']!=Null)?"value=".$PARS['fd']:"")?>></td>
                     </tr>
                 </table>
-                
-                
-                <?php
-                    echo "<input type='hidden' name='pg' value=".$pg.">";
-                    echo "<input type='hidden' name='ts' value=".$ts.">";
-                    echo "<input type='hidden' name='tn' value=".$tn.">";
-                    echo "<input type='hidden' name='oc' value=".$oc.">";
-                    echo "<input type='hidden' name='od' value=".$od.">";
-                ?>
-
-                <table id="basic-options">
-                    <thead>
-                        <tr>
-                            <td>Keywords</td>
-                            <td>From date</td>
-                            <td>To date</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <?php
-                            echo "<td><input type='text' name='kw' value=".$kw."></td>";
-                            echo "<td><input type='date' name='fd' ";
-                            echo ($fd!=Null)?"value=".$fd."></td>":"></td>";
-                            echo "<td><input type='date' name='td' ";
-                            echo ($td!=Null)?"value=".$td."></td>":"></td>";
-                        ?>
-                        </tr>
-                    </tbody>
+                <table id="options-advanced">
+                    <tr>
+                        <td>Status</td>
+                        <td>Order by</td>
+                        <td>Order direction</td>
+                        <td>Transactions per page</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select name="st">
+                                <option value=0>-- Select --</option>
+                                <?php
+                                    $statuses = mysql_query("SELECT * FROM Status") or die(mysql_error());
+                                    while($row = mysql_fetch_array($statuses)){
+                                        $sel = ($row['ID']==$st)?"selected":"";
+                                        echo "<option value=".$row['ID']." ".$sel." >".$row['Name']."</option>";
+                                    }
+                                ?>
+                            </select>
+                        </td>
+                        <td>
+                            <select name="oc">
+                                <?php
+                                    foreach($COLS as $k => $v){
+                                        $sel = ($k==$PARS['oc'])?"selected":"";
+                                        echo "<option value=".$k." ".$sel." >".$v[0]."</option>";
+                                    }
+                                ?>
+                            </select>
+                        </td>
+                        <td>
+                            <select name='od'>
+                                <?php
+                                    foreach($ORDS as $k => $v){
+                                        $sel = ($k==$PARS['od'])?"selected":"";
+                                        echo "<option value=".$k." ".$sel." >".$v[0]."</option>";
+                                    }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
                 </table>
-                <table id="advanced-options" style="display:none">
-                    <thead>
-                        <tr>
-                            <td>Status</td>
-                            <!-- to do: more options -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <select name="st">
-                                    <option value=0>-- Select --</option>
-                                    <?php
-                                        $statuses = mysql_query("SELECT * FROM Status") or die(mysql_error());
-                                        while($row = mysql_fetch_array($statuses)){
-                                            $sel = ($row['ID']==$st) ? "selected" : "";
-                                            echo "<option value=".$row['ID']." ".$sel." >".$row['Name']."</option>";
-                                        }
-                                    ?>
-                                </select>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <a id="search-expander"
-                    onclick="showID(advanced-options);
-                             hideID(search-expander);
-                             showID(search-hider)">Show advanced options</a>
-                <a id="search-hider" style="display:none"
-                    onclick="hideID(advanced-options);
-                             hideID(search-hider);
-                             showID(search-expander);">Hide advanced options</a>
+                <a id="search-expander">Show advanced options</a>
+                <a id="search-hider" style="display:none">Hide advanced options</a>
             </div><!-- end bordered-->
 
             <?php
                 //select the transactions to display on the page
                 $whr = "";
-                if ($st != 0) {
+                if ($PARS['st'] != 0) {
                     $whr = $whr . "StatusID = ".$st."\nAND ";
                 }
-                if ($fd != Null AND $td != Null) {
+                if ($PARS['fd'] != Null AND $PARS['td'] != Null) {
                     $whr = $whr . "TransactionDate BETWEEN ".$fd." AND ".$td."\nAND ";
                 }
-                if ($kw != "") {
+                if ($PARS['kw'] != "") {
                     $whr = $whr . "History.Description LIKE '%".$kw."%' OR Comment LIKE '%".$kw."%'\nAND ";
                 }
                 if (substr($whr,-4) == "AND ") {
@@ -146,9 +147,8 @@
                 if ($whr != "") {
                     $whr = "WHERE " . $whr;
                 }
-                echo "qry: " . $whr . "<br/>--<br/>";
 
-                $sql="
+                $search="
                     SELECT
                         History.ID AS HistoryID,
                         History.TransactionID AS TransactionID,
@@ -164,44 +164,47 @@
                     ) AS Latest
                     INNER JOIN History ON Latest.TransactionID = History.TransactionID
                     AND Latest.ModificationDate = History.ModificationDate
-                    INNER JOIN Status ON Status.ID = History.StatusID
-                    " . $whr .
-                   "ORDER BY " . $oc . " " . $od . "
-                    LIMIT " . $ts . ", " . $tf .
-                  ";";
-                echo "sql: " . $sql . "<br/>";
-                $page = mysql_query($sql) or die(mysql_error());
+                    INNER JOIN Status ON Status.ID = History.StatusID ".$whr;
+                
+                $result = mysql_query("SELECT COUNT(*) AS Count FROM (".$search.") AS T") or die(mysql_error());;
+                $count = mysql_fetch_array($result)['Count'];
+                $PARS['ts'] = max(0, min($count-$PARS['tn'],$PARS['ts']));
+                $post = "ORDER BY ".$COLS[$PARS['oc']][0]." ".$ORDS[$PARS['od']][1].
+                        " LIMIT ".$PARS['tn']." OFFSET ".$PARS['ts'].";";
+                $page = mysql_query($search.$post) or die(mysql_error());
+                
             ?>
 
             <table id="transaction-list" summary = "List of Transactions">
                 <thead>
-                    <td>Transaction<br/>ID</td>
-                    <td>Transaction<br/>Date</td>
-                    <td>Description</td>
-                    <td>Status</td>
-                    <td>Amount</td>
-                    <td></td>
+                    <?php
+                        foreach($COLS as $v){
+                            echo "<td>".$v[0]."</td>";
+                        }
+                    ?>
                 </thead>
                 <tbody>
                 <?php
                     while($row = mysql_fetch_array($page))
                     {
                         echo "<tr>";
-                        echo "<td>". $row['TransactionID'] . "</td>";
-                        echo "<td>". $row['TransactionDate'] . "</td>";
-                        echo "<td>". $row['Description']  . "</td>";
-                        echo "<td>". $row['Status'] . "</td>";
-                        echo "<td>". $row['Amount'] / 100 . "</td>";
-                        echo "<td><a id='edit' href='transaction.php?hid=" . $row['HistoryID'] . "'>Edit</a></td>";
+                        foreach($COLS as $v){
+                            echo "<td>".$v[1]($row)."</td>";
+                        }
                         echo "</tr>";
                     }
                 ?>
                 </tbody>
             </table>
+            <input type='hidden' name='ts' value=<?php echo $PARS['ts']?>>;
+
             <div id="pagination">
-                <input type="submit" name="first" value="First">
-                <input type="submit" name="back" value="Back">
-                <input type="submit" name="fwd" value="Forward">
+                <input type="submit" name="frst" value="First">
+                <input type="submit" name="prev" value="Previous">
+                <?php
+                    echo "Displaying transactions ".$PARS['ts']." to ".($PARS['ts']+$PARS['tn'])." of ".$count
+                ?>
+                <input type="submit" name="next" value="Next">
                 <input type="submit" name="last" value="Last">
             </div><!-- end pagination -->
         </form>
