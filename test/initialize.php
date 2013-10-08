@@ -9,7 +9,12 @@
 	$dbhost = "localhost";
 	$dbname = "transaction";
 	$dbuser = "root";
-	mysql_connect($dbhost,$dbuser) or die(mysql_error());
+    $dbpass = '';
+    if(False){
+        $dbuser = 'test';
+        $dbpass = 'test';
+    }
+	mysql_connect($dbhost,$dbuser,$dbpass) or die(mysql_error());
 	mysql_select_db($dbname) or die(mysql_error());
 	
     If ($debug) echo "<h2>Dropping tables</h2>";
@@ -74,6 +79,7 @@
             AssociatedParty VARCHAR (255),
             StatusID INT NOT NULL,
             Amount INT NOT NULL,
+            Inflow BOOLEAN NOT NULL,
             
             PRIMARY KEY (ID),
             FOREIGN KEY (StatusID) 
@@ -122,15 +128,25 @@
     If ($debug) echo "<h3>Populating History</h3>";
     mysql_query("
         INSERT INTO History (TransactionID, Description, ModificationDate, 
-            AssociatedParty, Amount, StatusID) 
+            AssociatedParty, Amount, StatusID, Inflow) 
         VALUES
             (1, 'Jimmy Neutron’s membership', '2013-09-22 18:48:43','Jimmy Neutron', 1000, 
-                (SELECT ID FROM Status WHERE Name = 'Pending')),
+                (SELECT ID FROM Status WHERE Name = 'Pending'), 0),
             (2, 'Jombles Notronbo’s family membership', '2013-09-22 18:48:44', 'Jombles Notronbo', 4000, 
-                (SELECT ID FROM Status WHERE Name = 'Pending')),
+                (SELECT ID FROM Status WHERE Name = 'Pending'), 0),
             (2, 'Jombles Notronbos\' family membership', '2013-09-22 18:48:45', 'Jombles Notronbos', 4000, 
-                (SELECT ID FROM Status WHERE Name = 'Processed')); 
+                (SELECT ID FROM Status WHERE Name = 'Processed'), 0); 
     ") or die(mysql_error()); 
+    
+    mysql_query("INSERT INTO `history` (`ID`, `TransactionID`, `Description`, `Comment`, `ModificationDate`, `TransactionDate`, `PaymentDate`, `ModificationPersonID`, `ResponsibleParty`, `AssociatedParty`, `Amount`, `Inflow`, `StatusID`) VALUES
+(11, 1, 'Bought 50 gold pencils', 'They looked so purdy and I couldn''t resist! :}', '0000-00-00 00:00:00', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 0, 1),
+(12, 0, 'Sold a meatball', 'He knew it''d be tasty! \"I''ll love it\", he said.', '0000-00-00 00:00:00', '0001-01-01 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Wendy the Other Person', 124, 0, 1),
+(32, 1, 'id is 1, and complete', 'They looked so purdy and I couldn''t resist! :}', '2013-10-03 22:24:52', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 0, 2),
+(34, 1, 'id is 1, and complete', 'They looked so purdy and I couldn''t resist! :}', '2013-10-03 22:26:06', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 1, 2),
+(35, 3, 'Bought 50 gold pencils id3', 'They looked so purdy and I couldn''t resist! :}', '2013-10-03 22:26:49', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 0, 1),
+(36, 1, 'Bought 50 gold pencils', 'They looked so purdy and I couldn''t resist! :}', '2013-10-03 22:28:37', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 0, 2),
+(37, 1, 'Bought 50 gold pencils. Updated!!', 'They looked so purdy and I couldn''t resist! :}', '2013-10-07 10:58:48', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 0, 1),
+(38, 1, 'Bought 50 gold pencils', 'They looked so purdy and I couldn''t resist! :}', '2013-10-07 14:12:19', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 19898, 0, 1);") or die(mysql_error());
     
     If ($debug) echo "<h3>Populating Category</h3>";
     mysql_query("
@@ -192,7 +208,7 @@
     
 	If ($debug) echo "<h2>Connecting to User database</h2>";
 	$dbname = "user_db";
-    mysql_connect($dbhost,$dbuser) or die(mysql_error());
+    mysql_connect($dbhost,$dbuser,$dbpass) or die(mysql_error());
 	mysql_select_db($dbname) or die(mysql_error());
     
     If ($debug) echo "<h3>Creating login_attempt table</h3>";
