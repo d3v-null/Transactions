@@ -57,11 +57,11 @@
             <h2 style="float:left">Search</h2>
             <input type="submit" id="search-button" value="Update" Style="float:right">
             <?php
-            echo "<input type='hidden' name='pg' value=".$pg.">";
-            echo "<input type='hidden' name='ts' value=".$ts.">";
-            echo "<input type='hidden' name='tn' value=".$tn.">";
-            echo "<input type='hidden' name='oc' value=".$oc.">";
-            echo "<input type='hidden' name='od' value=".$od.">";
+                echo "<input type='hidden' name='pg' value=".$pg.">";
+                echo "<input type='hidden' name='ts' value=".$ts.">";
+                echo "<input type='hidden' name='tn' value=".$tn.">";
+                echo "<input type='hidden' name='oc' value=".$oc.">";
+                echo "<input type='hidden' name='od' value=".$od.">";
             ?>
 
             <table id="basic-options">
@@ -75,9 +75,11 @@
                 <tbody>
                     <tr>
                     <?php
-                    echo "<td><input type='text' name='kw' value=".$kw."></td>";
-                    echo "<td><input type='date' name='fd' value=".$fd."></td>";
-                    echo "<td><input type='date' name='td' value=".$td."></td>";
+                        echo "<td><input type='text' name='kw' value=".$kw."></td>";
+                        echo "<td><input type='date' name='fd' ";
+                        echo ($fd!=Null)?"value=".$fd:"";
+                        echo "></td>";
+                        //echo "<td><input type='date' name='td' ".($td!=Null)?"value=".$td."></td>";
                     ?>
                     </tr>
                 </tbody>

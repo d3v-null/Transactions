@@ -1,29 +1,8 @@
-<?php
-// user these pieces of codes to detect an user type
-
-require_once 'includes/config.php';
-
-$user = new User();
-
-if ($user->loggedIn()) { // if any user is logged in
-  echo "Logged in<br/>";
-}
-
-if ($user->loggedIn() && $user->isAdmin()) { // if the logged in user is admin
-  echo "Admin<br/>";
-}
-
-if ($user->loggedIn() && $user->isTreasurer()) { // if the logged in user is treasurer
-  echo "Treasurer<br/>";
-}
-
-if ($user->loggedIn() && $user->isBoth()) { // if the logged in user is admin and treasurer
-  echo "Both<br/>";
-}
-
-if ($user->loggedIn() && $user->isRegular()) { // if the logged in user is normal user
-  echo "Regular<br/>";
-}
-
-
+<?php 
+    echo serialize($_POST);
 ?>
+<form action='test.php' method='post'>
+    <input type="text" name="text">
+    <input type="submit" name="Save" value="Save">
+    <input type="submit" name="Delete" value="Delete">
+</form>

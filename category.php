@@ -71,9 +71,11 @@
                     </tr>
                     <tr class = "spaceBelow">
                         <td>Description:</td>
-                        <td><textarea name="desc" class="data"><?php echo $desc ?></textarea></td>							
+                        <td></td>							
                     </tr>    
                 </table>
+                <textarea name="desc" class="data"><?php echo $desc ?></textarea>
+                
                 
                 <input type="submit" name="Save" value="Save">
                 <input type="submit" name="Delete" value="Delete">
