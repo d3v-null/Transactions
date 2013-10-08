@@ -421,22 +421,7 @@ mysql_select_db("test") or die("Unable to select database");
 		
 			<div id="box">
 				<h1>Transaction Details</h1>
-
-					
 				<div id="content">
-
-            <ul id="tabs">
-              <li><a href="#transInfo"> Transaction Details</a></li>
-              <li><a href="#transHistory"> Transaction History</a></li>
-            </ul>
-
-            				
-            <div class="tabContent" id="transHistory">
-              <h2>History</h2>
-              
-            </div>
-        
-        
 					<?php
 						// Connect to database
 						$sql = "SELECT * FROM History WHERE ID='" . $_GET['id'] . "'";
@@ -445,8 +430,6 @@ mysql_select_db("test") or die("Unable to select database");
 						$statusID = intval($row['StatusID']);
 					?>	
 
-          
-          <div class="tabContent" id="transInfo">
           
             <div id="historyVals">
               <div id="deleteMe"> 
@@ -549,8 +532,6 @@ mysql_select_db("test") or die("Unable to select database");
                 <button onclick="setReadonly('data',true)">Cancel</button>
               </div> <!--delete end-->
             </div><!--historyValues end-->
-          </div> <!-- end tab content transInfo -->
-          
         </div><!-- end content!-->
                 
 
