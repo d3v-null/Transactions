@@ -288,3 +288,11 @@ div.tabContent
   width: 70px;
 }
 
+/*******history list elements start*********/
+
+.history:hover{
+  color:red;
+  text-decoration:underline;
+}
+
+
