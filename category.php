@@ -15,17 +15,18 @@
 
     //Has the page been given a category ID?
     $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No category specified");
-    
+
     //Does the ID Correspond to a valid category?
-    $sql = "SELECT Name, Description FROM category WHERE ID=" . $id . "";
+    $sql = "SELECT Name, Description FROM category WHERE ID=".$id;
     $result = mysql_query($sql) or die("Category.ID not specified correctly: ".mysql_error());
     if(!$result) die("No categories in database match given ID: ".mysql_error());
     $row = mysql_fetch_array($result);
-    
+
     $name = $row['Name'];
-    $desc = $row['Description'];   
+    $desc = $row['Description']; 
     
-    if(!empty($_POST)){
+    //If the save button was pressed
+    if(!empty($_POST) && key_exists('save', $_POST)){
         if(!key_exists('name', $_POST)) {
             echo "<script>alert('No name specified in $_POST')</script>";
         } else if(!key_exists('desc', $_POST)){
@@ -41,7 +42,21 @@
                         "WHERE category.ID=".$id) or die(mysql_error());
             //echo "<script>alert('Successfully updated category')</script>";
         }
+    } else if(!empty($_POST) && key_exists('delete', $_POST)){
+        if (!$user->isTreasurer()){
+            echo "<script>alert('You must have treasurer privileges to delete a category')</script>";
+        } else {
+            $sql="DELETE FROM category WHERE category.ID ='". $_GET['id']."'";
+            mysql_query($sql) or die("cannot delete category: ".mysql_error());
+        }
+        $redirect = False;
+        if($redirect && $_SERVER['HTTP_REFERER']){
+            redirect($_SERVER['HTTP_REFERER']);
+        } else {
+            redirect("search.php");
+        }
     }
+    
     //echo "id: ".$id." name: ".$name." desc: ".$desc." row: ".$row;
 ?>
 
@@ -77,8 +92,8 @@
                 <textarea name="desc" class="data"><?php echo $desc ?></textarea>
                 
                 
-                <input type="submit" name="Save" value="Save">
-                <input type="submit" name="Delete" value="Delete">
+                <input type="submit" name="save" value="Save">
+                <input type="submit" name="delete" value="Delete">
                 
             </form> 
             <!--<form action="categoryDelete.php" method="get">
