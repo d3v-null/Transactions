@@ -20,7 +20,7 @@
         mysql_query($sql) or die("cannot delete category: ".mysql_error());
     }
     
-    if($_SERVER['HTTP_REFERER']){
+    if(False && $_SERVER['HTTP_REFERER']){
         redirect($_SERVER['HTTP_REFERER']);
     } else {
         redirect("search.php");

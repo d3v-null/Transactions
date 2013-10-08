@@ -75,15 +75,19 @@
                     </tr>    
                 </table>
                 
-                <input type="submit" value="Save">
-                <form action="categoryDelete.php" method="get">
-                    <input type="hidden" name="id" value="<?php echo $id ?>">
-                    <input type="submit" value="Delete">
-                </form>
-            </form>     
+                <input type="submit" name="Save" value="Save">
+                <input type="submit" name="Delete" value="Delete">
+                
+            </form> 
+            <!--<form action="categoryDelete.php" method="get">
+                <input type="hidden" name="id" value="<?php echo $id ?>">
+                <input type="submit" value="Delete">
+            </form>
+            <button onclick="location.href='categoryDelete.php?id=<?php echo $id ?>'">Delete</button> -->
         </div><!-- end box-->
         <div id="sidebar">      
 				<?php include_once("sidebar.php");?>                 
         </div><!-- end sidebar -->      
 	</body>
+    
 </html>
