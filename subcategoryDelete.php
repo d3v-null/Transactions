@@ -26,9 +26,8 @@
 						mysql_select_db("transaction") or die("Unable to select database");
 						
 						$id = $_GET['subCatID'];
-						$subID =  $_GET['id']; 
 						
-						$sql = "DELETE FROM subcategory WHERE ID= '$id' AND CategoryID='$subID'";
+						$sql = "DELETE FROM subcategory WHERE ID= '$id'";
 						$result = mysql_query($sql) or die(mysql_error());
 						
 						// Close conection
