@@ -10,8 +10,8 @@ mysql_select_db("test") or die("Unable to select database");
 	<title>TAB TITLE</title>
     
   <style type="text/css" media="screen">
-    @import url("style2.css");
-    @import url("styling.css");
+    @import url("css/style2.css");
+    @import url("css/styling.css");
   </style>
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script>
