@@ -283,7 +283,6 @@ div.tabContent
 }
     
 .handle {
-  background: url(images/leftedge.png) no-repeat;
   height: 800px;
   width: 70px;
 }
