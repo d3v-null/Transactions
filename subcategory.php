@@ -102,16 +102,7 @@
 
 					<table class = "formatted">
 						
-						<!-- Insert Category Code -->
 						<form name="SubCategoryForm" action="" method="post" onsubmit="return validateForm()">
-							<!--<tr>
-								<td class = "SubCategoryID">
-									Subcategory ID:
-								</td>
-								<td>
-									<input type="text" class="data" value="<?php echo $_GET["subCatID"]; ?>" name="subCatID" size="50" maxlength="50" readonly="readonly">
-								</td>
-							</tr>-->
 							<tr>
 								<td class = "SubCategoryName">
 									Name*:									
@@ -132,9 +123,8 @@
 						<button onclick="setReadonly('data',false)">Edit</button>
 						<button onclick="setReadonly('data',true)">Cancel</button>
 						
-						<form action="subcategoryDelete.php?id=<?php echo $_GET['id']; ?>&subCatID=<?php echo $_GET['subCatID'];?>">
+						<form action="subcategoryDelete.php?id=<?php echo $_GET['id']; ?>">
 							<input type=hidden name="id" value="<?php echo $_GET['id']; ?>">
-							<input type=hidden name="subCatID" value="<?php echo $_GET['subCatID']; ?>">
 							<input type="submit" name="DeleteButton" value="Delete" class="button">
 						</form>
 				</div>
