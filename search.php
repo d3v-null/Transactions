@@ -43,79 +43,89 @@
 
     <body id="main">
         <div id="box">
-        <a href="index.php?logout=1" class="btn btn-default" style="float:right">Logout</a>
-        <?php
-            if ($user->isAdmin() || $user->isBoth()) {
-                echo "<a href='admin.php' style='float:right' class='btn btn-info'>Admin</a>";
-            }
-        ?>
-        <h1 style="float:left">Transaction History</h1>
-        <!-- !!! -->
+        
+        <table>
+            <tr>
+                <td><h1>Transaction History</h1></td>
+                <td><a href="index.php?logout=1" class="btn btn-default">Logout</a></td>
+                <?php
+                    if ($user->isAdmin() || $user->isBoth()) {
+                        echo "<td><a href='admin.php' style='float:right' class='btn btn-info'>Admin</a></td>";
+                    }
+                ?>
+            </tr>
+        <table>
 
         <form method="get" action="search.php" class="content">
             <div class="bordered">
-            <h2 style="float:left">Search</h2>
-            <input type="submit" id="search-button" value="Update" Style="float:right">
-            <?php
-                echo "<input type='hidden' name='pg' value=".$pg.">";
-                echo "<input type='hidden' name='ts' value=".$ts.">";
-                echo "<input type='hidden' name='tn' value=".$tn.">";
-                echo "<input type='hidden' name='oc' value=".$oc.">";
-                echo "<input type='hidden' name='od' value=".$od.">";
-            ?>
+                <Table>
+                    <tr>
+                        <td><h2>Search</h2></td>
+                        <td><input type="submit" name="search" value="Update"></td>
+                    </tr>
+                </table>
+                
+                
+                <?php
+                    echo "<input type='hidden' name='pg' value=".$pg.">";
+                    echo "<input type='hidden' name='ts' value=".$ts.">";
+                    echo "<input type='hidden' name='tn' value=".$tn.">";
+                    echo "<input type='hidden' name='oc' value=".$oc.">";
+                    echo "<input type='hidden' name='od' value=".$od.">";
+                ?>
 
-            <table id="basic-options">
-                <thead>
-                    <tr>
-                        <td>Keywords</td>
-                        <td>From date</td>
-                        <td>To date</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                    <?php
-                        echo "<td><input type='text' name='kw' value=".$kw."></td>";
-                        echo "<td><input type='date' name='fd' ";
-                        echo ($fd!=Null)?"value=".$fd."></td>":"></td>";
-                        echo "<td><input type='date' name='td' ";
-                        echo ($td!=Null)?"value=".$td."></td>":"></td>";
-                    ?>
-                    </tr>
-                </tbody>
-            </table>
-            <table id="advanced-options" style="display:none">
-                <thead>
-                    <tr>
-                        <td>Status</td>
-                        <!-- to do: more options -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <select name="st">
-                                <option value=0>-- Select --</option>
-                                <?php
-                                    $statuses = mysql_query("SELECT * FROM Status") or die(mysql_error());
-                                    while($row = mysql_fetch_array($statuses)){
-                                        $sel = ($row['ID']==$st) ? "selected" : "";
-                                        echo "<option value=".$row['ID']." ".$sel." >".$row['Name']."</option>";
-                                    }
-                                ?>
-                            </select>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <a id="search-expander"
-                onclick="showID(advanced-options);
-                         hideID(search-expander);
-                         showID(search-hider)">Show advanced options</a>
-            <a id="search-hider" style="display:none"
-                onclick="hideID(advanced-options);
-                         hideID(search-hider);
-                         showID(search-expander);">Hide advanced options</a>
+                <table id="basic-options">
+                    <thead>
+                        <tr>
+                            <td>Keywords</td>
+                            <td>From date</td>
+                            <td>To date</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <?php
+                            echo "<td><input type='text' name='kw' value=".$kw."></td>";
+                            echo "<td><input type='date' name='fd' ";
+                            echo ($fd!=Null)?"value=".$fd."></td>":"></td>";
+                            echo "<td><input type='date' name='td' ";
+                            echo ($td!=Null)?"value=".$td."></td>":"></td>";
+                        ?>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="advanced-options" style="display:none">
+                    <thead>
+                        <tr>
+                            <td>Status</td>
+                            <!-- to do: more options -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <select name="st">
+                                    <option value=0>-- Select --</option>
+                                    <?php
+                                        $statuses = mysql_query("SELECT * FROM Status") or die(mysql_error());
+                                        while($row = mysql_fetch_array($statuses)){
+                                            $sel = ($row['ID']==$st) ? "selected" : "";
+                                            echo "<option value=".$row['ID']." ".$sel." >".$row['Name']."</option>";
+                                        }
+                                    ?>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a id="search-expander"
+                    onclick="showID(advanced-options);
+                             hideID(search-expander);
+                             showID(search-hider)">Show advanced options</a>
+                <a id="search-hider" style="display:none"
+                    onclick="hideID(advanced-options);
+                             hideID(search-hider);
+                             showID(search-expander);">Hide advanced options</a>
             </div><!-- end bordered-->
 
             <?php
@@ -188,15 +198,16 @@
                 ?>
                 </tbody>
             </table>
-        <div id="pagination">
-        <a>Back</a><!-- to do: write this properly in JavaScript - decrements start and submits form-->
-        <a>Forward</a><!-- to do: write this properly in JavaScript - increments start and submits form-->
-        </div><!-- end pagination -->
+            <div id="pagination">
+                <input type="submit" name="first" value="First">
+                <input type="submit" name="back" value="Back">
+                <input type="submit" name="fwd" value="Forward">
+                <input type="submit" name="last" value="Last">
+            </div><!-- end pagination -->
         </form>
-
     </div><!-- end box -->
-            <div id="sidebar">
-                <?php include_once("sidebar.php")?>
-            </div>
+    <div id="sidebar">
+        <?php include_once("sidebar.php")?>
+    </div>
     </body>
 </html>
