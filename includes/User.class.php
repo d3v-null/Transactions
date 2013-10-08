@@ -159,7 +159,7 @@ class User{
 	 * @return boolean
 	 */
 	public function isAdmin(){
-		return $this->rank() == 'admin';
+		return $this->rank() == 'admin' || $this->rank() == 'admin, treasurer';
 	}
 
 
@@ -168,7 +168,7 @@ class User{
 	 * @return boolean
 	 */
 	public function isTreasurer(){
-		return $this->rank() == 'treasurer';
+		return $this->rank() == 'treasurer' || $this->rank() == 'admin, treasurer';
 	}
 
 	public function isBoth() {
