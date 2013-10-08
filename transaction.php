@@ -219,14 +219,14 @@ mysql_select_db("transaction") or die("Unable to select database");
     function showHistory(id)
     {
     if (id=="")
-      {
+    {
       document.getElementById("historyVals").innerHTML="";
       return;
-      }
+    }
     if (window.XMLHttpRequest)
-      {// code for IE7+, Firefox, Chrome, Opera, Safari
+    {// code for IE7+, Firefox, Chrome, Opera, Safari
       xmlhttp=new XMLHttpRequest();
-      }
+    }
     else
       {// code for IE6, IE5
       xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
@@ -306,7 +306,7 @@ mysql_select_db("transaction") or die("Unable to select database");
             $idResult = mysql_query($sql) or die(mysql_error());
             while($idResultRows = mysql_fetch_assoc($idResult))
             {
-              echo $idResultRows['ID'];
+             // echo $idResultRows['ID'];
               $sql = "SELECT ModificationDate FROM HISTORY ".
                     "WHERE ".
                     "ID = '". $idResultRows['ID'] ."'".
