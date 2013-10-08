@@ -392,27 +392,27 @@ mysql_select_db("test") or die("Unable to select database");
         <h3>Transaction History:</h3>
         <div>
           <?php
-                  // Connect to database
+              // Connect to database
            /*        $parentID = mysql_query("SELECT TransactionID FROM History WHERE ID='" . $_GET['id'] . "'"); */
-                  $idResult = mysql_query("SELECT ID FROM History WHERE TransactionID='" . $_GET['id'] . "'");
-                  while($idResultRows = mysql_fetch_assoc($idResult))
-                  {
-                    echo $idResultRows['ID'];
-                    $sql = "SELECT RecordedDate FROM HISTORY ".
-                          "WHERE ".
-                          "ID = '". $idResultRows['ID'] ."'".
-                          "ORDER BY RecordedDate ASC";
-                    $result = mysql_query($sql) or die(mysql_error());
-                  
-                    while($row = mysql_fetch_assoc($result))
-                    {
-                      echo "<ul>";
-                      echo"<li value='" . $idResultRows['ID'] . "' onclick='showUser(this.value)'>" . $row['RecordedDate'] . "</li>";
-                      echo"</ul>";
-                      //echo $row['RecordedDate'] ."______".  $row['ID'];
-                      print "<br>";
-                    }
-                  }
+            $idResult = mysql_query("SELECT ID FROM History WHERE TransactionID='" . $_GET['id'] . "'");
+            while($idResultRows = mysql_fetch_assoc($idResult))
+            {
+              echo $idResultRows['ID'];
+              $sql = "SELECT RecordedDate FROM HISTORY ".
+                    "WHERE ".
+                    "ID = '". $idResultRows['ID'] ."'".
+                    "ORDER BY RecordedDate ASC";
+              $result = mysql_query($sql) or die(mysql_error());
+            
+              while($row = mysql_fetch_assoc($result))
+              {
+                echo "<ul>";
+                echo"<li><div class='history' id='" . $idResultRows['ID'] . "' onclick='showUser(this.id)'>" . $row['RecordedDate'] . "</div></li>";
+                echo"</ul>";
+                //echo $row['RecordedDate'] ."______".  $row['ID'];
+                print "<br>";
+              }
+            }
           ?>
         </div>
     </div>
