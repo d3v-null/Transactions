@@ -111,6 +111,7 @@ mysql_select_db("test") or die("Unable to select database");
         error = "Please select an option for '" + id + "'\n";
       }
       return error;
+       
     }
     
 
