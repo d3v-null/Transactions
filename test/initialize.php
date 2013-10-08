@@ -16,7 +16,8 @@
     }
 	mysql_connect($dbhost,$dbuser,$dbpass) or die(mysql_error());
 	mysql_select_db($dbname) or die(mysql_error());
-	
+	If ($debug) echo "<h2>Creating transaction database</h2>";
+    
     If ($debug) echo "<h2>Dropping tables</h2>";
     mysql_query("
         DROP TABLE IF EXISTS 
