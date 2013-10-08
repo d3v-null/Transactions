@@ -45,8 +45,20 @@
         if (!$user->isTreasurer()){
             echo "<script>alert('You must have treasurer privileges to delete a category')</script>";
         } else {
-            $sql="DELETE FROM subcategory WHERE subcategory.ID ='". $_GET['id']."'";
-            mysql_query($sql) or die("cannot delete category: ".mysql_error());
+			
+			$sql = "SELECT * FROM Categorization WHERE SubCategoryID ='". $_GET['id']."'";
+			ECHO "<br><br><br><br><br>fadfafsaffasfasfadf</br></br></br></br></br>";
+			$actionDelete = mysql_fetch_array($sql,MYSQL_NUM);
+					
+			if($actionDelete != TRUE){
+				// If this current subcategory isn't associated with transaction
+				$sql="DELETE FROM subcategory WHERE subcategory.ID ='". $_GET['id']."'";
+				mysql_query($sql) or die("cannot delete category: ".mysql_error());
+			}
+			else{
+				// Else you can't delete!
+				echo "<script>alert('ERROR: This subcategory has transactions associated with.')</script>";
+			}
         }
         $redirect = False;
         if($redirect && $_SERVER['HTTP_REFERER']){
