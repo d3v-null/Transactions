@@ -8,14 +8,13 @@
 ?>
 <html>
     <head>
-        <!--
         <link rel='stylesheet' type='text/css' href='/css/stylessiderbar.css' />
         <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
         <script type='text/javascript' src='/js/menu_jquery.js'></script>
-        -->
     </head>
     <body>
-    <ul id='cssmenu'>
+    <div id='cssmenu'>
+    <ul>
         <li class='active'><a href='search.php'>Home</a>
         <?php
             // Select everything from Category
@@ -26,8 +25,10 @@
                 $catID = $row['ID'];
                 
                 echo "<li class='has-sub'><a href='category.php?id=".$row['ID']."'>
-                      <img align='right' src='images/pencil.png'/></a>".$row['Name']."</li>";
+                      <img align='right' src='images/pencil.png'/></a>".$row['Name'];
                 echo "<ul>";
+                echo "<li><a href='category.php?id=".$row['ID']."'>
+                      <span>edit</span></a></li>";                
                 $subCats = mysql_query("SELECT * FROM SubCategory WHERE SubCategory.CategoryID=".$catID." 
                                         ORDER BY Name ASC");
                 while ($subRow = mysql_fetch_array($subCats)) {
@@ -36,10 +37,12 @@
                 echo "<li><a href='subcategoryNew.php?ID=".$catID."'>
                       <span>Add New Subcategory</span></a></li>";
                 echo "</ul>";
+                echo "</li>";
             }
         ?>
                     
-        <li class='active'><a href='categoryNew.php'>Create New Category</a>
+        <li class='active'><a href='categoryNew.php'>Create New Category</a></li>
     </ul>
+    </div>
     </body>
 </html>
