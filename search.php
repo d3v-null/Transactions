@@ -77,9 +77,9 @@
                     <?php
                         echo "<td><input type='text' name='kw' value=".$kw."></td>";
                         echo "<td><input type='date' name='fd' ";
-                        echo ($fd!=Null)?"value=".$fd:"";
-                        echo "></td>";
-                        //echo "<td><input type='date' name='td' ".($td!=Null)?"value=".$td."></td>";
+                        echo ($fd!=Null)?"value=".$fd."></td>":"></td>";
+                        echo "<td><input type='date' name='td' ";
+                        echo ($td!=Null)?"value=".$td."></td>":"></td>";
                     ?>
                     </tr>
                 </tbody>
@@ -111,11 +111,11 @@
             <a id="search-expander"
                 onclick="showID(advanced-options);
                          hideID(search-expander);
-                         showID(search-hider)">Show advanced options</button>
+                         showID(search-hider)">Show advanced options</a>
             <a id="search-hider" style="display:none"
                 onclick="hideID(advanced-options);
                          hideID(search-hider);
-                         showID(search-expander);">Hide advanced options</button>
+                         showID(search-expander);">Hide advanced options</a>
             </div><!-- end bordered-->
 
             <?php
@@ -196,7 +196,7 @@
 
     </div><!-- end box -->
             <div id="sidebar">
-            <?php include_once("sidebar.php");?>
+                <?php include_once("sidebar.php")?>
             </div>
     </body>
 </html>

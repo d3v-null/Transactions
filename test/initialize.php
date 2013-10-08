@@ -7,7 +7,6 @@
     
 	If ($debug) echo "<h2>Connecting to transaction database</h2>";
 	$dbhost = "localhost";
-	$dbname = "transaction";
 	$dbuser = "root";
     $dbpass = '';
     if(False){
@@ -15,8 +14,11 @@
         $dbpass = 'test';
     }
 	mysql_connect($dbhost,$dbuser,$dbpass) or die(mysql_error());
-	mysql_select_db($dbname) or die(mysql_error());
 	If ($debug) echo "<h2>Creating transaction database</h2>";
+    mysql_query("
+        CREATE DATABASE transaction
+    ");
+	mysql_select_db("transaction") or die(mysql_error());
     
     If ($debug) echo "<h2>Dropping tables</h2>";
     mysql_query("
@@ -206,6 +208,12 @@
      echo "<h2>Complete</h2>";
      
     If ($debug) echo "<h1>Initializing User database</h1>";
+    
+	If ($debug) echo "<h2>Creating transaction database</h2>";
+    mysql_query("
+        CREATE DATABASE user_db
+    ");
+	mysql_select_db("user_db") or die(mysql_error());    
     
 	If ($debug) echo "<h2>Connecting to User database</h2>";
 	$dbname = "user_db";
