@@ -2,7 +2,7 @@
 
 require_once 'includes/config.php';
 
-$currentUser = new User();
+$currentUser = new User(); // current logged in user
 
 if (!$currentUser->loggedIn()) {
   redirect('index.php');
@@ -12,8 +12,7 @@ if ($currentUser->rank() != 'admin' && $currentUser->rank() != 'admin, treasurer
   redirect('search.php');
 }
 
-
-$users = ORM::for_table('users')->find_many();
+$users = ORM::for_table('users')->find_many(); // list of all users in the databse
 $ranks = array (
     "Regular",
     "Treasurer",
@@ -23,14 +22,11 @@ $ranks = array (
 
 if (isset($_GET['remove'])) {
   remove($_GET['remove']);
-}
-if (isset($_GET['toAdmin'])) {
+} else if (isset($_GET['toAdmin'])) {
   toAdmin($_GET['toAdmin']);
-}
-if (isset($_GET['toTreasurer'])) {
+} else if (isset($_GET['toTreasurer'])) {
   toTreasurer($_GET['toTreasurer']);
-}
-if (isset($_GET['toRegular'])) {
+} else if (isset($_GET['toRegular'])) {
   toRegular($_GET['toRegular']);
 }
 
@@ -54,32 +50,32 @@ if (isset($_GET['toRegular'])) {
       <div class="col-md-10">
         <h1>Admin</h1>
         <form method="get" action="admin.php">
-        <table class="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>Email</th>
-              <th>Type</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <?php foreach ($users as $user): ?>
-            <tr>
-              <td><?=$user->email?></td>
-              <td id="changeRank"><?=$ranks[$user->rank]?></td>
-              <td>
-                <button type="submit" class="btn btn-default btn-xs" name="toAdmin" value="<?=$user->id?>">To Admin</button>
-                <button type="submit" class="btn btn-default btn-xs" name="toTreasurer" value="<?=$user->id?>">To Treasurer</button>
-                <button type="submit" class="btn btn-default btn-xs" name="toRegular" value="<?=$user->id?>">To Regular</button>
-                <?php if($user->rank != 2 && $user->rank != 3): ?>
-                <button type="submit" class="btn btn-default btn-xs" name="remove" value="<?=$user->id?>">Remove</button>
-                <?php endif; ?>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        </table>
-        <a href="search.php" class="pull-left">&#60&#60 Back to Ledger</a>
-        <a href="index.php?logout=1" class="pull-right">Logout &#62&#62</a>
-      </form>
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Type</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <?php foreach ($users as $user): ?>
+              <tr>
+                <td><?=$user->email?></td>
+                <td><?=$ranks[$user->rank]?></td>
+                <td>
+                  <button type="submit" class="btn btn-default btn-xs" name="toAdmin" value="<?=$user->id?>">To Admin</button>
+                  <button type="submit" class="btn btn-default btn-xs" name="toTreasurer" value="<?=$user->id?>">To Treasurer</button>
+                  <button type="submit" class="btn btn-default btn-xs" name="toRegular" value="<?=$user->id?>">To Regular</button>
+                  <?php if($user->rank != 2 && $user->rank != 3): ?>
+                  <button type="submit" class="btn btn-default btn-xs" name="remove" value="<?=$user->id?>">Remove</button>
+                  <?php endif; ?>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </table>
+          <a href="search.php" class="pull-left">&#60&#60 Back to Ledger</a>
+          <a href="index.php?logout=1" class="pull-right">Logout &#62&#62</a>
+        </form>
       </div>
       <div class="col-md-1"></div>
     </div>

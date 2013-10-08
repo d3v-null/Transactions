@@ -50,7 +50,7 @@
             }
         ?>
         <h1 style="float:left">Transaction History</h1>
-        <!-- !!! --->
+        <!-- !!! -->
 
         <form method="get" action="search.php" class="content">
             <div class="bordered">
