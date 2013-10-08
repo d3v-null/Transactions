@@ -25,7 +25,7 @@
 						$connection =mysql_connect("localhost","root","") or die("Could not connect");	
 						mysql_select_db("transaction") or die("Unable to select database");
 						
-						$id = $_GET['subCatID'];
+						$id = $_GET['id'];
 						
 						$sql = "DELETE FROM subcategory WHERE ID= '$id'";
 						$result = mysql_query($sql) or die(mysql_error());

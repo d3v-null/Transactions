@@ -41,7 +41,7 @@
             //echo "<script>alert('Successfully updated category')</script>";
         }
     }
-    //echo "id: ".$id." name: ".$name." desc: ".$desc." row: ".$row;
+    //echo "id: ".$id." name: ".$name." desc: ".$desc;
 ?>
 
 <!DOCTYPE html>
@@ -123,8 +123,8 @@
 						<button onclick="setReadonly('data',false)">Edit</button>
 						<button onclick="setReadonly('data',true)">Cancel</button>
 						
-						<form action="subcategoryDelete.php?id=<?php echo $_GET['id']; ?>">
-							<input type=hidden name="id" value="<?php echo $_GET['id']; ?>">
+						<form action="subcategoryDelete.php?id=<?php echo $id ?>">
+							<input type=hidden name="id" value="<?php echo $id ?>">	
 							<input type="submit" name="DeleteButton" value="Delete" class="button">
 						</form>
 				</div>
