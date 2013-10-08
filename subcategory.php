@@ -63,7 +63,7 @@
 						$connection =mysql_connect("localhost","root","") or die("Could not connect");	
 						mysql_select_db("transaction") or die("Unable to select database");
 
-						$sql = "SELECT * FROM subcategory WHERE ID='" . $_GET['subCatID'] . "' AND CategoryID='" . $_GET['id'] . "'";
+						$sql = "SELECT * FROM subcategory WHERE ID='" . $_GET['id'] . "'";
 						$result = mysql_query($sql) or die(mysql_error());
 						$row = mysql_fetch_assoc($result);
 											
