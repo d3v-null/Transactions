@@ -42,13 +42,13 @@
             echo "<script>alert('You must have treasurer privileges to delete a category')</script>";
         } else {
 			
-			$sql = "SELECT id FROM Categorization WHERE SubCategoryID ='". $_GET['id']."'";
+			$sql = "SELECT HistoryID FROM Categorization WHERE SubCategoryID ='". $_GET['id']."'";
 			$result = mysql_query($sql);
 			
 			$actionDelete = mysql_fetch_array($result);
 			echo "<script>alert('".serialize($actionDelete)."')</script>";
 					
-			if($actionDelete['id'] == FALSE){
+			if($actionDelete['HistoryID'] == FALSE){
 				// If this current subcategory isn't associated with transaction
 				$sql="DELETE FROM subcategory WHERE subcategory.ID ='". $_GET['id']."'";
 				mysql_query($sql) or die("cannot delete category: ".mysql_error());
