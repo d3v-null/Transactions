@@ -106,6 +106,27 @@
                 <input type="submit" name="save" value="Save">
                 <input type="submit" name="delete" value="Delete">
                 <input type="submit" name="new" value="New">
+				
+				<br><br>
+				
+				<table>
+					<h3>Subcategory List</h3>					
+					<tr>
+						<th>Name</th>
+						<th>Description</th>
+					</tr>
+					<?php
+						$sql = mysql_query("SELECT * FROM Subcategory WHERE CategoryID = '". $_GET['id']."' ORDER BY Name ASC");
+						// For each row of Category
+						while ($row = mysql_fetch_array($sql)) {
+							echo "<tr>";
+							echo "<td>". $row["Name"] ."</td>";							
+							echo "<td>". $row["Description"] ."</td>";
+							echo "<td>ASD</td>";
+							echo "</tr>";
+						}
+					?>
+				</table>
                 
             </form> 
             <!--<form action="categoryDelete.php" method="get">
