@@ -37,7 +37,7 @@
     $desc = $row['Description']; 
     
     //If the save button was pressed
-    if(!empty($_POST) && key_exists('save', $_POST)){
+    if(!empty($_POST) && key_exists('save', $_POST)){        	
         if(!key_exists('name', $_POST)) {
             echo "<script>alert('No name specified in $_POST')</script>";
         } else if(!key_exists('desc', $_POST)){
@@ -53,10 +53,12 @@
                         "WHERE category.ID=".$id) or die(mysql_error());
             //echo "<script>alert('Successfully updated category')</script>";
         }
-    } else if(!empty($_POST) && key_exists('delete', $_POST)){
-        if (!$user->isTreasurer()){
-            echo "<script>alert('You must have treasurer privileges to delete a category')</script>";
+    } else if(!empty($_POST) && key_exists('delete', $_POST))
+	{
+		if (!$user->isTreasurer()){
+            echo "<script>alert('You must have treasurer privileges to delete a category!!')</script>";
         } else {
+            echo "<script>alert('You must have treasurer');</script>";
 			// Check if it can perform delete action
 			$canDelete = TRUE;
 			$sql = "SELECT id FROM SubCategory WHERE CategoryID ='". $_GET['id']."'";
@@ -99,11 +101,9 @@
 			else{
 				// Else you can't delete!
 				echo "<script>alert('ERROR: This subcategory has transactions associated with.')</script>";
-			}
-			
+			}			
 			echo "<script>alert('".serialize($actionDelete)."')</script>";
         }
-        //todo: delete subcategories
         
         $redirect = False;
         if($redirect && $_SERVER['HTTP_REFERER']){
@@ -112,8 +112,9 @@
             redirect("search.php");
         }
     }
-
-
+	else
+	{
+	}
     //echo "id: ".$id." name: ".$name." desc: ".$desc." row: ".$row;
 ?>
 
