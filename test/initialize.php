@@ -35,9 +35,9 @@
     If ($debug) echo "<h3>Creating Status table</h3>";
 	mysql_query("
 		CREATE TABLE Status (
-			ID INT AUTO_INCREMENT, 
-			Name VARCHAR(50) UNIQUE NOT NULL,
-			Description VARCHAR(255),
+            ID INT AUTO_INCREMENT, 
+            Name VARCHAR(50) UNIQUE NOT NULL,
+            Description VARCHAR(255),
             PRIMARY KEY (ID)
 		);
     ") or die(mysql_error());

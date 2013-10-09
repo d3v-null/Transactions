@@ -9,15 +9,14 @@
     }
 
     $PARS = Array(     
-      //'pg' => (isset($_GET['pg']))?$_GET['pg']:1,     //page number  
         'ts' => (isset($_GET['ts']))?$_GET['ts']:0,     //Transaction offset   
         'tn' => (isset($_GET['tn']))?$_GET['tn']:20,    //transactions / page 
         'oc' => (isset($_GET['oc']))?$_GET['oc']:1,     //Order-by column
         'od' => (isset($_GET['od']))?$_GET['od']:0,     //Order direction
         'kw' => (isset($_GET['kw']))?$_GET['kw']:"",    //Keywords
-        'fd' => (isset($_GET['fd']))?$_GET['fd']:Null,  //From date
-        'td' => (isset($_GET['td']))?$_GET['td']:Null,  //To date
-        'st' => (isset($_GET['st']))?$_GET['st']:"0",   //Status
+        'fd' => (isset($_GET['fd']))?$_GET['fd']:"",    //From date
+        'td' => (isset($_GET['td']))?$_GET['td']:"",    //To date
+        'st' => (isset($_GET['st']))?$_GET['st']:0,   //Status
     );
     
     $COLS = Array(           
@@ -26,7 +25,7 @@
         Array('Description', function($row){return $row['Description'];}),
         Array('Status', function($row){return $row['Status'];}),
         Array('Amount', function($row){return $row['Amount'] / 100;}),
-        Array('', function($row){return "<a id='edit' href='transaction.php?id=".$row['HistoryID']."'>Edit</a>";}),
+        Array('', function($row){return "<a id='edit' href='transaction.php?id=".$row['TransactionID']."'>Edit</a>";}),
     );
     
     $ORDS = Array(
@@ -80,8 +79,6 @@
             <div class="bordered">
                 <h2>Search</h2>
                 <input type="submit" name="search" value="Update">
-                
-
 
                 <table id="options-basic">
                     <tr>
@@ -91,8 +88,8 @@
                     </tr>
                     <tr>
                         <td><input type='text' name='kw' value='<?php echo $PARS['kw']?>'></td>
-                        <td><input type='date' name='fd' <?php echo (($PARS['fd']!=Null)?"value=".$PARS['fd']:"")?>></td>
-                        <td><input type='date' name='td' <?php echo (($PARS['td']!=Null)?"value=".$PARS['td']:"")?>></td>
+                        <td><input type='date' name='fd' value='<?php echo ($PARS['fd']) ?>'></td>
+                        <td><input type='date' name='td' value='<?php echo ($PARS['td']) ?>'></td>
                     </tr>
                 </table>
                 <table id="options-advanced">
@@ -109,7 +106,7 @@
                                 <?php
                                     $statuses = mysql_query("SELECT * FROM Status") or die(mysql_error());
                                     while($row = mysql_fetch_array($statuses)){
-                                        $sel = ($row['ID']==$st)?"selected":"";
+                                        $sel = ($row['ID']==$PARS['st'])?"selected":"";
                                         echo "<option value=".$row['ID']." ".$sel." >".$row['Name']."</option>";
                                     }
                                 ?>
@@ -172,7 +169,6 @@
 
                 $search="
                     SELECT
-                        History.ID AS HistoryID,
                         History.TransactionID AS TransactionID,
                         DATE(History.TransactionDate) AS TransactionDate,
                         History.Description AS Description,
