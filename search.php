@@ -16,7 +16,7 @@
         'kw' => (isset($_GET['kw']))?$_GET['kw']:"",    //Keywords
         'fd' => (isset($_GET['fd']))?$_GET['fd']:"",    //From date
         'td' => (isset($_GET['td']))?$_GET['td']:"",    //To date
-        'st' => (isset($_GET['st']))?$_GET['st']:0,   //Status
+        'st' => (isset($_GET['st']))?$_GET['st']:0,     //Status
     );
     
     $COLS = Array(           
@@ -35,6 +35,7 @@
     
     $VIEW = Array(2,5,20,50,100);
     
+    //process pagination
     if(isset($_GET['pag'])){
         switch($_GET['pag']){
             case 'First':
@@ -54,7 +55,6 @@
         }
     }
 ?>
-
 
 <!DOCTYPE html>
 <html>

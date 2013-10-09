@@ -9,10 +9,16 @@
         redirect('index.php');
     }
     
+    $PARS=Array(
+        'id'=>Null,
+        'nm'=>'',
+        'ds'=>''
+    );
+    
     //If new button was pressed
     if(!empty($_POST) && key_exists('new', $_POST)){
         if (!$user->isTreasurer()){
-            echo "<script>alert('You must have treasurer privileges to delete a category')</script>";
+            echo "<script>alert('You must have treasurer privileges to create a category')</script>";
         } else {
             $qry = "SELECT MAX(ID) AS ID FROM Category";
             $result = mysql_query($qry) or die(mysql_error());

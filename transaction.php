@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
     $page_title = 'Transaction Details';
     require_once 'includes/transaction_setup.php';
@@ -8,6 +7,15 @@
     if(!$user->loggedIn()){
         redirect('index.php');
     } 
+    
+    if(!empty($_POST) && key_exists('new', $_POST)){
+        if (!$user->isTreasurer()){
+            echo "<script>alert('You must have treasurer privileges to create a transaction')</script>";
+        } else { 
+            
+        }
+    }
+    
     //ignore this
     
     // $PARS = Array(
@@ -38,8 +46,19 @@
         if (!$user->isTreasurer()){
             echo "<script>alert('You must have treasurer privileges to modify a transaction')</script>";
         } else {       
-            $sql =  "INSERT INTO History ( TransactionID, Description, Comment, ModificationDate, TransactionDate, ".
-                    "PaymentDate, ResponsibleParty, AssociatedParty, Amount, Inflow, StatusID)".
+            $sql =  "INSERT INTO History ( 
+                        TransactionID, 
+                        Description, 
+                        Comment, 
+                        ModificationDate, 
+                        TransactionDate,
+                        PaymentDate, 
+                        ResponsibleParty, 
+                        AssociatedParty, 
+                        Amount, 
+                        Inflow, 
+                        StatusID
+                     )".
                     "SELECT".
                         "'" . $_GET['id'] . "', ".
                         "'" . removeQuotes($_POST['Description']) . "', ".
@@ -59,7 +78,7 @@
         }
     }
 ?>  
-
+<!DOCTYPE html>
 <html>
     <head>
         <title><?php echo $page_title?></title>
@@ -111,13 +130,16 @@
                 <form name="transactionForm" onsubmit="return validateForm(this);" action="transaction.php" method="post">
                     <table class = "formatted">
                         <tr>
-                            <td class = "transactionTitle">
+                            <td class="transactionTitle">
                                 Description
                             </td>
                             <td>
-                                Status
+                                
                             </td>
-                            <td>              
+                            <td> 
+                                <div class="transactionTitle">
+                                    Status:
+                                </div>
                                 <select id="Status" name="Status" disabled="disabled">
                                     <option value=""></option>
                                     <?php
@@ -134,85 +156,85 @@
                                         }
                                     ?>
                                 </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class = "spaceBelow">
+                                <textarea class="data" name="Description" readonly="readonly"><?=$row['Description'];?></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class = "transactionTitle">
+                                Transaction Date*:
+                            </td>
+                            <td>
+                                <input type="datetime" class="data" name="TransactionDate" size="12" value="<?=$row['TransactionDate'];?>"readonly="readonly">
+                            </td>
+                            <td class = "transactionTitle col2">
+                                Amount*:
+                            </td>
+                            <td>
+                                <input type="text" class="data" name="Amount" id="Amount" size="8"  value="<?=$row['Amount'];?>" readonly="readonly">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class = "transactionTitle">
+                                Date of receipt/payment*:
+                            </td>
+                            <td>
+                                <input type="datetime" class="data" name="PaymentDate" value="<?=$row['PaymentDate'];?>"size="12" readonly="readonly">
+                            </td>
+                            <td class = "transactionTitle col2">
+                                Type*:
+                            </td>
+                            <td>
+                                <?php
+                                    $checked = ($row['Inflow'] == '1') ? "checked=\"checked\"" : "";
+                                    $checked2 = ($checked == "") ? "checked=\"checked\"" : "";
+                                ?>
+                                <input type="radio" class="data" name="Type" value="in" disabled="disabled" <?=$checked;?>>Inflow <br>
+                                <input type="radio" class="data" name="Type" value="out" disabled="disabled" <?=$checked2;?>>Outflow<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class = "transactionTitle">
+                                Responsible*:
+                            </td>
+                            <td>
+                                <input type="text" class="data" name="ResponsibleParty" value="<?=$row['ResponsibleParty'];?>"size="12" readonly="readonly">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class = "transactionTitle spaceBelow">
+                                Associated person:
+                            </td>
+                            <td>
+                                <input type="text" class="data" name="AssociatedParty" value="<?=$row['AssociatedParty'];?>"size="12" readonly="readonly">
+                            </td>
+                        </tr>
+                        <tr>
+                          <td class = "transactionTitle">
+                            Comment:
                           </td>
                         </tr>
                         <tr>
-                      <td colspan="4" class = "spaceBelow">
-                        <textarea class="data" name="Description" readonly="readonly"><?=$row['Description'];?></textarea>
-                      </td>
-                      
-                    </tr>
-                    <tr>
-                      <td class = "transactionTitle">
-                        Transaction Date*:
-                      </td>
-                      <td>
-                        <input type="datetime" class="data" name="TransactionDate" size="12" value="<?=$row['TransactionDate'];?>"readonly="readonly">
-                      </td>
-                      <td class = "transactionTitle col2">
-                        Amount*:
-                      </td>
-                      <td>
-                        <input type="text" class="data" name="Amount" id="Amount" size="8"  value="<?=$row['Amount'];?>" readonly="readonly">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class = "transactionTitle">
-                        Date of receipt/payment*:
-                      </td>
-                      <td>
-                        <input type="datetime" class="data" name="PaymentDate" value="<?=$row['PaymentDate'];?>"size="12" readonly="readonly">
-                      </td>
-                      <td class = "transactionTitle col2">
-                        Type*:
-                      </td>
-                      <td>
-                        <?php
-                          $checked = ($row['Inflow'] == '1') ? "checked=\"checked\"" : "";
-                          $checked2 = ($checked == "") ? "checked=\"checked\"" : "";
-                        ?>
-                        <input type="radio" class="data" name="Type" value="in" disabled="disabled" <?=$checked;?>>Inflow <br>
-                        <input type="radio" class="data" name="Type" value="out" disabled="disabled" <?=$checked2;?>>Outflow<br>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class = "transactionTitle">
-                        Responsible*:
-                      </td>
-                      <td>
-                        <input type="text" class="data" name="ResponsibleParty" value="<?=$row['ResponsibleParty'];?>"size="12" readonly="readonly">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class = "transactionTitle spaceBelow">
-                        Associated person:
-                      </td>
-                      <td>
-                        <input type="text" class="data" name="AssociatedParty" value="<?=$row['AssociatedParty'];?>"size="12" readonly="readonly">
-                      </td>
-                    </tr>
-                    <tr>
-                    <tr>
-                      <td class = "transactionTitle">
-                        Comment:
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan = "2">
-                        <textarea cols="20" class="data" name="Comment" readonly="readonly"><?=$row['Comment'];?></textarea>
-                      </td>
-                    </tr>
-                </table>
-                <input name="update" type="submit" id="update" value="Update">
+                            <td colspan = "2">
+                                <textarea cols="20" class="data" name="Comment" readonly="readonly"><?=$row['Comment'];?></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="submit" name="update" id="update" value="Update">
+                    <input type='submit' name='delete' value='Delete'>
+                    <input type='submit' name='new' value='New'>
                 </form>
-                <!--
+                
                 <button onclick="setReadonly('data',false)">Edit</button>
-                <button onclick="setReadonly('data',true)">Cancel</button>
-                -->
+                <!--<button onclick="setReadonly('data',true)">Cancel</button>-->
+                
             </div><!-- end content!-->
         </div><!-- end box -->
         <div id="sidebar">
         <?php include_once("sidebar.php")?>
-        </div>
+        </div><!-- end sidebar-->
     </body id='main'>
 </html>

@@ -1,3 +1,3 @@
 <?php 
-    echo "bluh".((True)?"A":"B");
+    echo "<script>alert('Name must not be empty')</script>";
 ?>
