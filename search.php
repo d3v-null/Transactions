@@ -1,15 +1,12 @@
 <?php
-    require_once 'includes/constants.php';
+    $page_title = 'Transaction History';
+    require_once 'includes/transaction_setup.php';
     require_once 'includes/config.php';
 
     $user = new User();
     if(!$user->loggedIn()){
         redirect('index.php');
     }
-
-    // Connect to transaction database
-    mysql_connect(DB_SERVER, DB_USER, DB_PASSWORD) or die(mysql_error());
-    mysql_select_db(DB_NAME) or die(mysql_error());
 
     $PARS = Array(     
       //'pg' => (isset($_GET['pg']))?$_GET['pg']:1,     //page number  
@@ -63,27 +60,21 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Transaction History</title>
+        <title><?php echo $page_title?></title>
         <meta charset="utf-8"/>
         <!--[if lt IE 9]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]
-
+        -->
         <link rel="stylesheet" type="text/css" href="/css/style2.css">
-        <link rel="stylesheet" type="text/css" href="/css/styling.css">-->
+        <link rel="stylesheet" type="text/css" href="/css/styling.css">
         <script src="/js/expander.js"></script>
     </head>
 
     <body id="main">
         <div id="box">
         
-        <h1>Transaction History</h1>
-        <a href="index.php?logout=1" class="btn btn-default">Logout</a>
-        <?php
-            if ($user->isAdmin()) {
-                echo "<a href='admin.php' class='btn btn-info'>Admin</a>";
-            }
-        ?>            
+        <?php include 'subheader.php' ?>
 
         <form method="get" action="search.php" class="content">
             <div class="bordered">
@@ -101,7 +92,7 @@
                     <tr>
                         <td><input type='text' name='kw' value='<?php echo $PARS['kw']?>'></td>
                         <td><input type='date' name='fd' <?php echo (($PARS['fd']!=Null)?"value=".$PARS['fd']:"")?>></td>
-                        <td><input type='date' name='td' <?php echo (($PARS['fd']!=Null)?"value=".$PARS['fd']:"")?>></td>
+                        <td><input type='date' name='td' <?php echo (($PARS['td']!=Null)?"value=".$PARS['td']:"")?>></td>
                     </tr>
                 </table>
                 <table id="options-advanced">
@@ -164,13 +155,13 @@
                 //select the transactions to display on the page
                 $whr = "";
                 if ($PARS['st'] != 0) {
-                    $whr = $whr . "StatusID = ".$st."\nAND ";
+                    $whr = $whr . "StatusID = ".$PARS['st']."\nAND ";
                 }
                 if ($PARS['fd'] != Null AND $PARS['td'] != Null) {
-                    $whr = $whr . "TransactionDate BETWEEN ".$fd." AND ".$td."\nAND ";
+                    $whr = $whr . "TransactionDate BETWEEN ".$PARS['fd']." AND ".$PARS['td']."\nAND ";
                 }
                 if ($PARS['kw'] != "") {
-                    $whr = $whr . "History.Description LIKE '%".$kw."%' OR Comment LIKE '%".$kw."%'\nAND ";
+                    $whr = $whr . "History.Description LIKE '%".$PARS['kw']."%' OR Comment LIKE '%".$PARS['kw']."%'\nAND ";
                 }
                 if (substr($whr,-4) == "AND ") {
                     $whr = substr($whr,0,strlen($whr)-4);

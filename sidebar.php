@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <?php  
-    require_once 'includes/constants.php';
-    
-    // Connect to transaction database
-    mysql_connect(DB_SERVER, DB_USER, DB_PASSWORD) or die(mysql_error());
-    mysql_select_db(DB_NAME) or die(mysql_error());
+    require_once 'includes/transaction_setup.php';
 ?>
 <html>
     <head>

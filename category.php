@@ -1,6 +1,6 @@
-
 <?php
-    require_once 'includes/constants.php';
+    $page_title  ='Category Details';
+    require_once 'includes/transaction_setup.php';
     require_once 'includes/config.php';
 
     $user = new User();
@@ -8,10 +8,6 @@
     if(!$user->loggedIn()){
         redirect('index.php');
     }
-    
-    // Connect to transaction database
-    mysql_connect(DB_SERVER, DB_USER, DB_PASSWORD) or die(mysql_error());
-    mysql_select_db(DB_NAME) or die(mysql_error());
 
     //Has the page been given a category ID?
     $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No category specified");
@@ -63,18 +59,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Category Details</title>
+        <title><?php echo $page_title ?></title>
         <link rel="stylesheet" type="text/css" href="/css/style2.css">
         <link rel="stylesheet" type="text/css" href="/css/styling.css">
     </head>
 	
     <body id="main">
-        <?php
-
-        ?>
-		
 		<div id="box">
-			<h1>Category Details</h1>
+			<?php include 'subheader.php' ?>
+            
 			<form action="category.php?id=<?php echo $id; ?>" method="post" id="content" >
                 <input type="hidden" name="id" value=>
                 
