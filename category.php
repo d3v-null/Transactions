@@ -122,7 +122,7 @@
 							echo "<tr>";
 							echo "<td>". $row["Name"] ."</td>";							
 							echo "<td>". $row["Description"] ."</td>";
-							echo "<td>ASD</td>";
+							echo "<td><a href='subcategory.php?id=".$row['ID']."'>Edit</a></td>";
 							echo "</tr>";
 						}
 					?>
