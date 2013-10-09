@@ -60,6 +60,8 @@
             $sql="DELETE FROM category WHERE category.ID ='". $_GET['id']."'";
             mysql_query($sql) or die("cannot delete category: ".mysql_error());
         }
+        //todo: delete subcategories
+        
         $redirect = False;
         if($redirect && $_SERVER['HTTP_REFERER']){
             redirect($_SERVER['HTTP_REFERER']);
