@@ -1,5 +1,5 @@
 <?php
-    require_once 'includes/constants.php';
+    require_once 'includes/transaction_setup.php';
     require_once 'includes/config.php';
 
     $user = new User();
@@ -7,10 +7,6 @@
     if(!$user->loggedIn()){
         redirect('index.php');
     }
-    
-    // Connect to transaction database
-    mysql_connect(DB_SERVER, DB_USER, DB_PASSWORD) or die(mysql_error());
-    mysql_select_db(DB_NAME) or die(mysql_error());
 
     //Has the page been given a category ID?
     $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No category specified");
@@ -38,7 +34,7 @@
             $desc = $_POST['desc'];
             mysql_query("UPDATE subcategory SET Name='".$name."', Description='".$desc."' ".
                         "WHERE subcategory.ID=".$id) or die(mysql_error());
-            //echo "<script>alert('Successfully updated category')</script>";
+            echo "<script>alert('Successfully updated category')</script>";
         }
     }
 	else if(!empty($_POST) && key_exists('delete', $_POST)){
@@ -47,8 +43,10 @@
         } else {
 			
 			$sql = "SELECT id FROM Categorization WHERE SubCategoryID ='". $_GET['id']."'";
-			ECHO "<br><br><br><br><br>fadfafsaffasfasfadf</br></br></br></br></br>";
-			$actionDelete = mysql_fetch_array($sql,MYSQL_NUM);
+			$result = mysql_query($sql);
+			
+			$actionDelete = mysql_fetch_array($result);
+			echo "<script>alert('".serialize($actionDelete)."')</script>";
 					
 			if($actionDelete['id'] == FALSE){
 				// If this current subcategory isn't associated with transaction
