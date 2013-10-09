@@ -57,8 +57,49 @@
         if (!$user->isTreasurer()){
             echo "<script>alert('You must have treasurer privileges to delete a category')</script>";
         } else {
-            $sql="DELETE FROM category WHERE category.ID ='". $_GET['id']."'";
-            mysql_query($sql) or die("cannot delete category: ".mysql_error());
+			// Check if it can perform delete action
+			$canDelete = TRUE;
+			$sql = "SELECT id FROM SubCategory WHERE CategoryID ='". $_GET['id']."'";
+			$SubCatList = mysql_query($sql);			
+			
+			// For each subcategory of this category 
+			while($SubCatListIDs = mysql_fetch_array($SubCatList))
+			{
+				// Check if there is any Categorization associated with it
+				$sql = "SELECT HistoryID FROM Categorization WHERE SubCategoryID = '". $SubCatListIDs['id'] ."'";
+				$CategList = mysql_query($sql);
+				
+				while($CategListIDs = mysql_fetch_array($CategList))
+				{
+					// If it exists at least one matching on Categorization table 
+					if ($CategListIDs != FALSE)
+					{
+						// Can't delete
+						$canDelete = FALSE;
+					}
+				}
+			}
+			
+			if ($canDelete)
+			{
+				$sql = "SELECT id FROM SubCategory WHERE CategoryID ='". $_GET['id']."'";
+				$SubCatList = mysql_query($sql);
+				
+				while($SubCatListIDs = mysql_fetch_array($SubCatList))
+				{
+					$sql="DELETE FROM subcategory WHERE subcategory.ID ='". $SubCatListIDs['id'] ."'";
+					mysql_query($sql) or die("cannot delete category: ".mysql_error());
+				}			
+				
+				$sql="DELETE FROM category WHERE subcategory.ID ='". $_GET['id']."'";
+				mysql_query($sql) or die("cannot delete category: ".mysql_error());
+			}
+			else{
+				// Else you can't delete!
+				echo "<script>alert('ERROR: This subcategory has transactions associated with.')</script>";
+			}
+			
+			echo "<script>alert('".serialize($actionDelete)."')</script>";
         }
         //todo: delete subcategories
         
@@ -108,9 +149,9 @@
                 <input type="submit" name="new" value="New">
 				
 				<br><br>
-				
-				<table>
-					<h3>Subcategory List</h3>					
+								
+				<h3>Subcategory List</h3>	
+				<table border="1">				
 					<tr>
 						<th>Name</th>
 						<th>Description</th>
