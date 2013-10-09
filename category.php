@@ -8,9 +8,24 @@
     if(!$user->loggedIn()){
         redirect('index.php');
     }
-
-    //Has the page been given a category ID?
-    $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No category specified");
+    
+    //If new button was pressed
+    if(!empty($_POST) && key_exists('new', $_POST)){
+        if (!$user->isTreasurer()){
+            echo "<script>alert('You must have treasurer privileges to delete a category')</script>";
+        } else {
+            $qry = "SELECT MAX(ID) AS ID FROM Category";
+            $result = mysql_query($qry) or die(mysql_error());
+            echo serialize($result);
+            $max = mysql_fetch_array($result)['ID'];
+            $sql="INSERT INTO Category (Name, Description) VALUES ('New Category (".$max.")','')";
+            mysql_query($sql) or die("Category cannot be created: ".mysql_error());
+        }
+        
+        $id = mysql_insert_id();
+    } else {
+        $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No category specified");
+    }
 
     //Does the ID Correspond to a valid category?
     $sql = "SELECT Name, Description FROM category WHERE ID=".$id;
@@ -52,7 +67,8 @@
             redirect("search.php");
         }
     }
-    
+
+
     //echo "id: ".$id." name: ".$name." desc: ".$desc." row: ".$row;
 ?>
 
@@ -87,6 +103,7 @@
                 
                 <input type="submit" name="save" value="Save">
                 <input type="submit" name="delete" value="Delete">
+                <input type="submit" name="new" value="New">
                 
             </form> 
             <!--<form action="categoryDelete.php" method="get">
