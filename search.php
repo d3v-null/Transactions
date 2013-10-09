@@ -26,7 +26,7 @@
         Array('Description', function($row){return $row['Description'];}),
         Array('Status', function($row){return $row['Status'];}),
         Array('Amount', function($row){return $row['Amount'] / 100;}),
-        Array('', function($row){return "<a id='edit' href='transaction.php?hid=".$row['HistoryID']."'>Edit</a>";}),
+        Array('', function($row){return "<a id='edit' href='transaction.php?id=".$row['HistoryID']."'>Edit</a>";}),
     );
     
     $ORDS = Array(
