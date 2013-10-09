@@ -142,14 +142,14 @@
     ") or die(mysql_error()); 
     
     mysql_query("INSERT INTO `history` (`ID`, `TransactionID`, `Description`, `Comment`, `ModificationDate`, `TransactionDate`, `PaymentDate`, `ModificationPersonID`, `ResponsibleParty`, `AssociatedParty`, `Amount`, `Inflow`, `StatusID`) VALUES
-(11, 1, 'Bought 50 gold pencils', 'They looked so purdy and I couldn''t resist! :}', '0000-00-00 00:00:00', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 0, 1),
-(12, 0, 'Sold a meatball', 'He knew it''d be tasty! \"I''ll love it\", he said.', '0000-00-00 00:00:00', '0001-01-01 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Wendy the Other Person', 124, 0, 1),
-(32, 1, 'id is 1, and complete', 'They looked so purdy and I couldn''t resist! :}', '2013-10-03 22:24:52', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 0, 2),
-(34, 1, 'id is 1, and complete', 'They looked so purdy and I couldn''t resist! :}', '2013-10-03 22:26:06', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 1, 2),
-(35, 3, 'Bought 50 gold pencils id3', 'They looked so purdy and I couldn''t resist! :}', '2013-10-03 22:26:49', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 0, 1),
-(36, 1, 'Bought 50 gold pencils', 'They looked so purdy and I couldn''t resist! :}', '2013-10-03 22:28:37', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 0, 2),
-(37, 1, 'Bought 50 gold pencils. Updated!!', 'They looked so purdy and I couldn''t resist! :}', '2013-10-07 10:58:48', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 0, 1),
-(38, 1, 'Bought 50 gold pencils', 'They looked so purdy and I couldn''t resist! :}', '2013-10-07 14:12:19', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 19898, 0, 1);") or die(mysql_error());
+(11, 11, 'Bought 50 gold pencils', 'They looked so purdy and I couldn''t resist! :}', '0000-00-00 00:00:00', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 0, 1),
+(12, 10, 'Sold a meatball', 'He knew it''d be tasty! \"I''ll love it\", he said.', '0000-00-00 00:00:00', '0001-01-01 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Wendy the Other Person', 124, 0, 1),
+(32, 11, 'id is 1, and complete', 'They looked so purdy and I couldn''t resist! :}', '2013-10-03 22:24:52', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 0, 2),
+(34, 11, 'id is 1, and complete', 'They looked so purdy and I couldn''t resist! :}', '2013-10-03 22:26:06', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 1, 2),
+(35, 13, 'Bought 50 gold pencils id3', 'They looked so purdy and I couldn''t resist! :}', '2013-10-03 22:26:49', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 0, 1),
+(36, 11, 'Bought 50 gold pencils', 'They looked so purdy and I couldn''t resist! :}', '2013-10-03 22:28:37', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 0, 2),
+(37, 11, 'Bought 50 gold pencils. Updated!!', 'They looked so purdy and I couldn''t resist! :}', '2013-10-07 10:58:48', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 1, 0, 1),
+(38, 11, 'Bought 50 gold pencils', 'They looked so purdy and I couldn''t resist! :}', '2013-10-07 14:12:19', '2012-12-12 00:00:00', '2012-12-12 00:00:00', 0, 'Bob the Builder', 'Someone', 19898, 0, 1);") or die(mysql_error());
     
     If ($debug) echo "<h3>Populating Category</h3>";
     mysql_query("

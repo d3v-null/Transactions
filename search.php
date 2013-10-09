@@ -14,7 +14,7 @@
     $PARS = Array(     
       //'pg' => (isset($_GET['pg']))?$_GET['pg']:1,     //page number  
         'ts' => (isset($_GET['ts']))?$_GET['ts']:0,     //Transaction offset   
-        'tn' => (isset($_GET['ts']))?$_GET['tn']:20,    //transactions / page 
+        'tn' => (isset($_GET['tn']))?$_GET['tn']:20,    //transactions / page 
         'oc' => (isset($_GET['oc']))?$_GET['oc']:1,     //Order-by column
         'od' => (isset($_GET['od']))?$_GET['od']:0,     //Order direction
         'kw' => (isset($_GET['kw']))?$_GET['kw']:"",    //Keywords
@@ -36,6 +36,27 @@
         Array('Descending', 'DESC'),
         Array('Ascending', 'ASC'),
     );
+    
+    $VIEW = Array(2,5,20,50,100);
+    
+    if(isset($_GET['pag'])){
+        switch($_GET['pag']){
+            case 'First':
+                $PARS['ts']=0;
+                break;
+            case 'Previous':
+                $PARS['ts']-=$PARS['tn'];
+                break;
+            case 'Next':
+                $PARS['ts']+=$PARS['tn'];
+                break;
+            case 'Last':
+                $PARS['ts']=PHP_INT_MAX;
+                break;
+            default:
+                die('page button not configured correctly');
+        }
+    }
 ?>
 
 
@@ -122,6 +143,16 @@
                                     }
                                 ?>
                             </select>
+                        </td>                        
+                        <td>
+                            <select name='tn'>
+                                <?php
+                                    foreach($VIEW as $v){
+                                        $sel = ($v==$PARS['tn'])?"selected":"";
+                                        echo "<option value=".$v." ".$sel." >".$v."</option>";
+                                    }
+                                ?>
+                            </select>
                         </td>
                     </tr>
                 </table>
@@ -199,13 +230,13 @@
             <input type='hidden' name='ts' value=<?php echo $PARS['ts']?>>;
 
             <div id="pagination">
-                <input type="submit" name="frst" value="First">
-                <input type="submit" name="prev" value="Previous">
+                <input type="submit" name="pag" value="First">
+                <input type="submit" name="pag" value="Previous">
                 <?php
                     echo "Displaying transactions ".$PARS['ts']." to ".($PARS['ts']+$PARS['tn'])." of ".$count
                 ?>
-                <input type="submit" name="next" value="Next">
-                <input type="submit" name="last" value="Last">
+                <input type="submit" name="pag" value="Next">
+                <input type="submit" name="pag" value="Last">
             </div><!-- end pagination -->
         </form>
     </div><!-- end box -->
