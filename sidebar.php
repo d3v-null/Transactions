@@ -11,7 +11,7 @@
     <body>
     <div id='cssmenu'>
     <ul>
-        <li class='active'><a href='search.php'><span>Home</span></a>
+        <li class='last'><a href='search.php'><span>Home</span></a></li>
         <?php
             // Select everything from Category
             $cats = mysql_query("SELECT * FROM Category");
@@ -29,14 +29,14 @@
                 while ($subRow = mysql_fetch_array($subCats)) {
                     echo "<li><a href='subcategory.php?id=".$subRow['ID']."'><span>".$subRow['Name']."</span></a></li>";
                 }
-                echo "<li><a href='subcategoryNew.php?ID=".$catID."'>
+                echo "<li class='last'><a href='subcategoryNew.php?ID=".$catID."'>
                       <span>Add New Subcategory</span></a></li>";
                 echo "</ul>";
                 echo "</li>";
             }
         ?>
                     
-        <li class='active'><a href='categoryNew.php'><span>Create New Category</span></a></li>
+        <li class='last'><a href='categoryNew.php'><span>Create New Category</span></a></li>
     </ul>
     </div>
     </body>
