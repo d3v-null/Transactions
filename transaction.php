@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <?php
-$connection =mysql_connect("localhost","test","test") or die("Could not connect");
-
-mysql_select_db("transaction") or die("Unable to select database");
+    require_once 'includes/transaction_setup.php';
 ?>
 
 <html>
@@ -24,7 +22,7 @@ mysql_select_db("transaction") or die("Unable to select database");
    $(function(){
        $('.slide-out-div').tabSlideOut({
            tabHandle: '.handle',
-           pathToTabImage: 'historyTab.png',
+           pathToTabImage: 'images/historyTab.png',
            imageHeight: '97px',
            imageWidth: '35px', 
            tabLocation: 'right', 
@@ -333,7 +331,7 @@ mysql_select_db("transaction") or die("Unable to select database");
 					<?php
 						// Connect to database
 						$sql = "SELECT * FROM History WHERE ID='" . $_GET['id'] . "'";
-						$result = mysql_query($sql, $connection) or die(mysql_error());
+						$result = mysql_query($sql ) or die(mysql_error());
 						$row = mysql_fetch_assoc($result);
 						$statusID = intval($row['StatusID']);
 					?>	
@@ -353,7 +351,7 @@ mysql_select_db("transaction") or die("Unable to select database");
                           <option value=""></option>
                           <?php
                             $sql = "SELECT * FROM Status";
-                            $statusIDs = mysql_query($sql, $connection) or die(mysql_error());
+                            $statusIDs = mysql_query($sql ) or die(mysql_error());
                             while($statusRow = mysql_fetch_array($statusIDs))
                             {
                               if(intval($statusRow['ID']) == $statusID)
