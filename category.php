@@ -79,20 +79,22 @@
 					}
 				}
 			}
-			
+			// If you can delete
 			if ($canDelete)
 			{
 				$sql = "SELECT id FROM SubCategory WHERE CategoryID ='". $_GET['id']."'";
 				$SubCatList = mysql_query($sql);
 				
+				// Delete all subcategories first
 				while($SubCatListIDs = mysql_fetch_array($SubCatList))
 				{
 					$sql="DELETE FROM subcategory WHERE subcategory.ID ='". $SubCatListIDs['id'] ."'";
-					mysql_query($sql) or die("cannot delete category: ".mysql_error());
-				}			
+					mysql_query($sql) or die("cannot delete category 91: ".mysql_error());
+				}
 				
-				$sql="DELETE FROM category WHERE subcategory.ID ='". $_GET['id']."'";
-				mysql_query($sql) or die("cannot delete category: ".mysql_error());
+				// Delete the main category
+				$sql="DELETE FROM category WHERE category.ID ='". $_GET['id']."'";
+				mysql_query($sql) or die("cannot delete category 95: ".mysql_error());
 			}
 			else{
 				// Else you can't delete!
