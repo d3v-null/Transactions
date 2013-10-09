@@ -11,7 +11,7 @@
     <body>
     <div id='cssmenu'>
     <ul>
-        <li class='active'><a href='search.php'>Home</a>
+        <li class='active'><a href='search.php'><span>Home</span></a>
         <?php
             // Select everything from Category
             $cats = mysql_query("SELECT * FROM Category");
@@ -20,15 +20,14 @@
                 // Save Category ID
                 $catID = $row['ID'];
                 
-                echo "<li class='has-sub'><a href='category.php?id=".$row['ID']."'>
-                      <img align='right' src='images/pencil.png'/></a>".$row['Name'];
-                echo "<ul>";
+                echo "<li class='has-sub'><a href='category.php?id=".$row['ID']."'><span>".$row['Name'];
+                echo "</span></a><ul>";
                 echo "<li><a href='category.php?id=".$row['ID']."'>
-                      <span>edit</span></a></li>";                
+                      <span>edit <img src='images/pencil.png'/></span></a></li>";                
                 $subCats = mysql_query("SELECT * FROM SubCategory WHERE SubCategory.CategoryID=".$catID." 
                                         ORDER BY Name ASC");
                 while ($subRow = mysql_fetch_array($subCats)) {
-                    echo "<li><a href='subcategory.php?id=".$subRow['ID']."'>".$subRow['Name']."</a></li>";
+                    echo "<li><a href='subcategory.php?id=".$subRow['ID']."'><span>".$subRow['Name']."</span></a></li>";
                 }
                 echo "<li><a href='subcategoryNew.php?ID=".$catID."'>
                       <span>Add New Subcategory</span></a></li>";
@@ -37,7 +36,7 @@
             }
         ?>
                     
-        <li class='active'><a href='categoryNew.php'>Create New Category</a></li>
+        <li class='active'><a href='categoryNew.php'><span>Create New Category</span></a></li>
     </ul>
     </div>
     </body>
