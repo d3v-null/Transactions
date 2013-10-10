@@ -32,18 +32,14 @@
 				// If this current subcategory isn't associated with transaction
 				$sql="DELETE FROM subcategory WHERE subcategory.ID ='". $_GET['id']."'";
 				mysql_query($sql) or die("cannot delete category: ".mysql_error());
+				
+				redirect("search.php");
 			}
 			else{
 				// Else you can't delete!
-				echo "<script>alert('ERROR: This subcategory has transactions associated with.')</script>";
+				echo "<script>alert('ERROR: It is not possible delete any subcategory which is associated with a transaction.')</script>";
 			}
-        }
-        $redirect = False;
-        if($redirect && $_SERVER['HTTP_REFERER']){
-            redirect($_SERVER['HTTP_REFERER']);
-        } else {
-            redirect("search.php");
-        }
+        }        
     }
     
     if(!empty($_POST) && key_exists('save', $_POST)){
@@ -62,6 +58,12 @@
                         "WHERE subcategory.ID=".$id) or die(mysql_error());
             echo "<script>alert('Successfully updated category')</script>";
         }
+		
+		if($_SERVER['HTTP_REFERER']){
+			redirect($_SERVER['HTTP_REFERER']);
+		} else {
+			redirect("search.php");
+		}
     }
 	else 
     //echo "id: ".$id." name: ".$name." desc: ".$desc;
@@ -102,18 +104,19 @@
 					<input type="hidden" name="id" value=>
 					
 					<b>* This field is compulsory</b>
+					<br><br>
 					<table class = "formatted">						
 						<tr class = "spaceBelow">
 							<td>Name*:</td>
-							<td><input type="text" name="name" class="data" value="<?php echo $name ?>"></td>							
+							<td><input type="text" name="name" class="data" value="<?php echo $FETCH['Name'] ?>"></td>							
 						</tr>
 						<tr class = "spaceBelow">
 							<td>Description:</td>
 						</tr>						
 					</table>  
 					
-					<textarea name="desc" class="data"><?php echo $desc ?></textarea>					
-					
+					<textarea name="desc" class="data"><?php echo $FETCH['Description'] ?></textarea>					
+					<br><br>
 					<input type="submit" name="delete" 	value="Delete">
 					<input type="submit" name="save" 	value="Save">
                 

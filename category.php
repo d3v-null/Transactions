@@ -18,17 +18,17 @@
     $result = mysql_query($sql) or die("Category.ID not specified correctly: ".mysql_error());
     if(!$result) die("No categories in database match given ID: ".$id);
     $FETCH = mysql_fetch_array($result);
-    
+	    
     //If delete button was pressed
     if(!empty($_POST) && key_exists('delete', $_POST))
 	{
 		if (!$user->isTreasurer()){
             echo "<script>alert('You must have treasurer privileges to delete a category!')</script>";
         } else {
-			// Check if it can perform delete action
 			$canDelete = TRUE;
+			// Check if it can perform delete action
 			$sql = "SELECT id FROM SubCategory WHERE CategoryID ='". $_GET['id']."'";
-			$SubCatList = mysql_query($sql);			
+			$SubCatList = mysql_query($sql);		
 			
 			// For each subcategory of this category 
 			while($SubCatListIDs = mysql_fetch_array($SubCatList))
@@ -57,28 +57,21 @@
 				while($SubCatListIDs = mysql_fetch_array($SubCatList))
 				{
 					$sql="DELETE FROM subcategory WHERE subcategory.ID ='". $SubCatListIDs['id'] ."'";
-					mysql_query($sql) or die("cannot delete category 91: ".mysql_error());
+					mysql_query($sql) or die("cannot delete category: ".mysql_error());
 				}
 				
 				// Delete the main category
 				$sql="DELETE FROM category WHERE category.ID ='". $_GET['id']."'";
-				mysql_query($sql) or die("cannot delete category 95: ".mysql_error());
+				mysql_query($sql) or die("cannot delete category: ".mysql_error());
+				
+				redirect("search.php");
 			}
 			else{
 				// Else you can't delete!
-				echo "<script>alert('ERROR: This subcategory has transactions associated with.')</script>";
-			}			
-			echo "<script>alert('".serialize($actionDelete)."')</script>";
-        }
-        
-        $redirect = False;
-        if($redirect && $_SERVER['HTTP_REFERER']){
-            redirect($_SERVER['HTTP_REFERER']);
-        } else {
-            redirect("search.php");
-        }
+				echo "<script>alert('ERROR: It is not possible delete any category which is associated with a transaction.')</script>";
+			}
+        }        
     }
-    
     //If new button was pressed
     // if(!empty($_POST) && key_exists('new', $_POST)){
         // if (!$user->isTreasurer()){
@@ -145,6 +138,7 @@
                 <input type="hidden" name="id" value=>
                 
                 <b>* This field is compulsory</b>
+				<br><br>
                 <table class = "formatted">						
                     <tr class = "spaceBelow">
                         <td>Name*:</td>
@@ -157,6 +151,7 @@
                 </table>
                 <textarea name="desc" class="data"><?php echo $desc ?></textarea>
                 
+				<br><br>
                 
                 <input type="submit" name="save" value="Save">
                 <input type="submit" name="delete" value="Delete">
@@ -164,7 +159,7 @@
 				
 				<br><br>
 								
-				<h3>Subcategory List</h3>	
+				<h4>Subcategory List</h4>	
 				<table border="1">				
 					<tr>
 						<th>Name</th>
