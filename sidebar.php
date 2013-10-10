@@ -54,9 +54,10 @@
                       <span>Add New Subcategory</span></a></li>";
                   echo "</div>";
                 echo"</div>";
-              echo "</div>";
+              
             }
       ?>
+    </div>
       <div class="panel-group" id="accordion">
       <div class="panel panel-default">
         <div class="panel-heading">
