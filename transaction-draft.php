@@ -15,7 +15,7 @@
     $sql = "SELECT Name, Description FROM History WHERE ID=" . $id . "";
     $result = mysql_query($sql) or die("History.ID not specified correctly: ".mysql_error());
     if(!$result) die("No histories in database match given ID: ".$id);
-    $FETCH = mysql_fetch_array($result);
+    $fetch = mysql_fetch_array($result);
     
     //If delete button was pressed
     if(!empty($_POST) && key_exists('delete', $_POST)){
@@ -28,22 +28,8 @@
         }
     }
     
-    //ignore this
-    
-    $PARS = Array(
-        'id' => (isset($_GET['st']))?$_GET['st']:0,   //TransactionID
-        'ds' => 
-        'cm' =>
-        'rd' =>
-        'td' => 
-        'pd' =>
-        'md' =>
-        'rp' =>
-        'ap' =>
-        'st' => (isset($_POST['st']))?$_POST['st']:0,   //Status
-        'am' =>
-        'if' =>
-    }
+    //parse     
+
 
     // remove single and double quotes so no errors are thrown with the sql
     function removeQuotes($string)
@@ -57,7 +43,22 @@
     {
         if (!$user->isTreasurer()){
             echo "<script>alert('You must have treasurer privileges to modify a transaction')</script>";
-        } else {       
+        } else {     
+            $pars = Array(
+                'ti' => $fetch['TransactionID'],f
+                //(isset($_POST['ds']))?$_POST['ds']:die("No transaction ID specified"),
+                'ds' => (isset($_POST['ds']))?$_POST['ds']:die("No description specified"),  
+                'cm' => (isset($_POST['cm']))?$_POST['cm']:"",  //Comment
+                'md' => (isset($_POST['md']))?$_POST['md']:0,   //Mod date
+                'td' => (isset($_POST['td']))?$_POST['td']:0,   //Trans date
+                'pd' => (isset($_POST['pd']))?$_POST['pd']:0,   //Pay date
+                'rp' => (isset($_POST['rp']))?$_POST['rp']:0,   //Record party
+                'ap' => (isset($_POST['ap']))?$_POST['ap']:0,   //Assoc party
+                'st' => (isset($_POST['st']))?$_POST['st']:0,   //Status
+                'am' => (isset($_POST['am']))?$_POST['am']:die("No ammount specified"),
+                'if' => (isset($_POST['if']))?$_POST['if']:0,   //Status
+            }
+        
             $sql =  "INSERT INTO History ( 
                         TransactionID, 
                         Description, 
