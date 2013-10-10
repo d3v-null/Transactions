@@ -35,7 +35,8 @@
               echo "<div class='panel panel-default'>";
               echo "<div class='panel-heading'>";
               echo "<h4 class='panel-title'>";
-              echo "<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#has-sub".$row['ID']."''><span>".$row['Name']."</span></a>";
+              echo "<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#has-sub".$row['ID']."''>
+                <span>".$row['Name']."</span></a>";
               echo "<a href='category.php?id=".$row['ID']."'>
                       <img src='images/pencil.png' border='0' align='right' />
                     </a>
