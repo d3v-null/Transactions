@@ -17,7 +17,7 @@
     $sql = "SELECT Name, Description FROM Category WHERE ID=" . $id . "";
     $result = mysql_query($sql) or die("Category.ID not specified correctly: ".mysql_error());
     if(!$result) die("No categories in database match given ID: ".$id);
-    $FETCH = mysql_fetch_array($result);
+    $fetch = mysql_fetch_array($result);
 	    
     //If delete button was pressed
     if(!empty($_POST) && key_exists('delete', $_POST))
