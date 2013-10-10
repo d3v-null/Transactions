@@ -8,7 +8,7 @@
         redirect('index.php');
     }
 
-    $PARS = Array(     
+    $pars = Array(     
         'ts' => (isset($_GET['ts']))?$_GET['ts']:0,     //Transaction offset   
         'tn' => (isset($_GET['tn']))?$_GET['tn']:20,    //transactions / page 
         'oc' => (isset($_GET['oc']))?$_GET['oc']:1,     //Order-by column
@@ -19,7 +19,7 @@
         'st' => (isset($_GET['st']))?$_GET['st']:0,     //Status
     );
     
-    $COLS = Array(           
+    $pars = Array(           
         Array('TransactionID', function($row){return $row['TransactionID'];}),
         Array('TransactionDate', function($row){return $row['TransactionDate'];}),
         Array('Description', function($row){return $row['Description'];}),
@@ -28,27 +28,27 @@
         Array('', function($row){return "<a id='edit' href='transaction.php?id=".$row['TransactionID']."'>Edit</a>";}),
     );
     
-    $ORDS = Array(
+    $pars = Array(
         Array('Descending', 'DESC'),
         Array('Ascending', 'ASC'),
     );
     
-    $VIEW = Array(2,5,20,50,100);
+    $view = Array(2,5,20,50,100);
     
     //process pagination
     if(isset($_GET['pag'])){
         switch($_GET['pag']){
             case 'First':
-                $PARS['ts']=0;
+                $pars['ts']=0;
                 break;
             case 'Previous':
-                $PARS['ts']-=$PARS['tn'];
+                $pars['ts']-=$pars['tn'];
                 break;
             case 'Next':
-                $PARS['ts']+=$PARS['tn'];
+                $pars['ts']+=$pars['tn'];
                 break;
             case 'Last':
-                $PARS['ts']=PHP_INT_MAX;
+                $pars['ts']=PHP_INT_MAX;
                 break;
             default:
                 die('page button not configured correctly');
@@ -87,9 +87,9 @@
                         <td>To date</td>
                     </tr>
                     <tr>
-                        <td><input type='text' name='kw' value='<?php echo $PARS['kw']?>'></td>
-                        <td><input type='date' name='fd' value='<?php echo ($PARS['fd']) ?>'></td>
-                        <td><input type='date' name='td' value='<?php echo ($PARS['td']) ?>'></td>
+                        <td><input type='text' name='kw' value='<?php echo $pars['kw']?>'></td>
+                        <td><input type='date' name='fd' value='<?php echo ($pars['fd']) ?>'></td>
+                        <td><input type='date' name='td' value='<?php echo ($pars['td']) ?>'></td>
                     </tr>
                 </table>
                 <table id="options-advanced">
@@ -106,7 +106,7 @@
                                 <?php
                                     $statuses = mysql_query("SELECT * FROM Status") or die(mysql_error());
                                     while($row = mysql_fetch_array($statuses)){
-                                        $sel = ($row['ID']==$PARS['st'])?"selected":"";
+                                        $sel = ($row['ID']==$pars['st'])?"selected":"";
                                         echo "<option value=".$row['ID']." ".$sel." >".$row['Name']."</option>";
                                     }
                                 ?>
@@ -116,7 +116,7 @@
                             <select name="oc">
                                 <?php
                                     foreach($COLS as $k => $v){
-                                        $sel = ($k==$PARS['oc'])?"selected":"";
+                                        $sel = ($k==$pars['oc'])?"selected":"";
                                         echo "<option value=".$k." ".$sel." >".$v[0]."</option>";
                                     }
                                 ?>
@@ -126,7 +126,7 @@
                             <select name='od'>
                                 <?php
                                     foreach($ORDS as $k => $v){
-                                        $sel = ($k==$PARS['od'])?"selected":"";
+                                        $sel = ($k==$pars['od'])?"selected":"";
                                         echo "<option value=".$k." ".$sel." >".$v[0]."</option>";
                                     }
                                 ?>
@@ -135,8 +135,8 @@
                         <td>
                             <select name='tn'>
                                 <?php
-                                    foreach($VIEW as $v){
-                                        $sel = ($v==$PARS['tn'])?"selected":"";
+                                    foreach($view as $v){
+                                        $sel = ($v==$pars['tn'])?"selected":"";
                                         echo "<option value=".$v." ".$sel." >".$v."</option>";
                                     }
                                 ?>
@@ -151,14 +151,14 @@
             <?php
                 //select the transactions to display on the page
                 $whr = "";
-                if ($PARS['st'] != 0) {
-                    $whr = $whr . "StatusID = ".$PARS['st']."\nAND ";
+                if ($pars['st'] != 0) {
+                    $whr = $whr . "StatusID = ".$pars['st']."\nAND ";
                 }
-                if ($PARS['fd'] != Null AND $PARS['td'] != Null) {
-                    $whr = $whr . "TransactionDate BETWEEN ".$PARS['fd']." AND ".$PARS['td']."\nAND ";
+                if ($pars['fd'] != Null AND $pars['td'] != Null) {
+                    $whr = $whr . "TransactionDate BETWEEN ".$pars['fd']." AND ".$pars['td']."\nAND ";
                 }
-                if ($PARS['kw'] != "") {
-                    $whr = $whr . "History.Description LIKE '%".$PARS['kw']."%' OR Comment LIKE '%".$PARS['kw']."%'\nAND ";
+                if ($pars['kw'] != "") {
+                    $whr = $whr . "History.Description LIKE '%".$pars['kw']."%' OR Comment LIKE '%".$pars['kw']."%'\nAND ";
                 }
                 if (substr($whr,-4) == "AND ") {
                     $whr = substr($whr,0,strlen($whr)-4);
@@ -186,9 +186,9 @@
                 
                 $result = mysql_query("SELECT COUNT(*) AS Count FROM (".$search.") AS T") or die(mysql_error());;
                 $count = mysql_fetch_array($result)['Count'];
-                $PARS['ts'] = max(0, min($count-$PARS['tn'],$PARS['ts']));
-                $post = "ORDER BY ".$COLS[$PARS['oc']][0]." ".$ORDS[$PARS['od']][1].
-                        " LIMIT ".$PARS['tn']." OFFSET ".$PARS['ts'].";";
+                $pars['ts'] = max(0, min($count-$pars['tn'],$pars['ts']));
+                $post = "ORDER BY ".$COLS[$pars['oc']][0]." ".$ORDS[$pars['od']][1].
+                        " LIMIT ".$pars['tn']." OFFSET ".$pars['ts'].";";
                 $page = mysql_query($search.$post) or die(mysql_error());
                 
             ?>
@@ -214,13 +214,13 @@
                 ?>
                 </tbody>
             </table>
-            <input type='hidden' name='ts' value=<?php echo $PARS['ts']?>>;
+            <input type='hidden' name='ts' value=<?php echo $pars['ts']?>>;
 
             <div id="pagination">
                 <input type="submit" name="pag" value="First">
                 <input type="submit" name="pag" value="Previous">
                 <?php
-                    echo "Displaying transactions ".$PARS['ts']." to ".($PARS['ts']+$PARS['tn'])." of ".$count
+                    echo "Displaying transactions ".$pars['ts']." to ".($pars['ts']+$pars['tn'])." of ".$count
                 ?>
                 <input type="submit" name="pag" value="Next">
                 <input type="submit" name="pag" value="Last">
