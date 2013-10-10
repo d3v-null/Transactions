@@ -19,7 +19,7 @@
         'st' => (isset($_GET['st']))?$_GET['st']:0,     //Status
     );
     
-    $pars = Array(           
+    $cols = Array(           
         Array('TransactionID', function($row){return $row['TransactionID'];}),
         Array('TransactionDate', function($row){return $row['TransactionDate'];}),
         Array('Description', function($row){return $row['Description'];}),
@@ -28,7 +28,7 @@
         Array('', function($row){return "<a id='edit' href='transaction.php?id=".$row['TransactionID']."'>Edit</a>";}),
     );
     
-    $pars = Array(
+    $ords = Array(
         Array('Descending', 'DESC'),
         Array('Ascending', 'ASC'),
     );
@@ -115,7 +115,7 @@
                         <td>
                             <select name="oc">
                                 <?php
-                                    foreach($COLS as $k => $v){
+                                    foreach($cols as $k => $v){
                                         $sel = ($k==$pars['oc'])?"selected":"";
                                         echo "<option value=".$k." ".$sel." >".$v[0]."</option>";
                                     }
@@ -125,7 +125,7 @@
                         <td>
                             <select name='od'>
                                 <?php
-                                    foreach($ORDS as $k => $v){
+                                    foreach($ords as $k => $v){
                                         $sel = ($k==$pars['od'])?"selected":"";
                                         echo "<option value=".$k." ".$sel." >".$v[0]."</option>";
                                     }
@@ -187,7 +187,7 @@
                 $result = mysql_query("SELECT COUNT(*) AS Count FROM (".$search.") AS T") or die(mysql_error());;
                 $count = mysql_fetch_array($result)['Count'];
                 $pars['ts'] = max(0, min($count-$pars['tn'],$pars['ts']));
-                $post = "ORDER BY ".$COLS[$pars['oc']][0]." ".$ORDS[$pars['od']][1].
+                $post = "ORDER BY ".$cols[$pars['oc']][0]." ".$ords[$pars['od']][1].
                         " LIMIT ".$pars['tn']." OFFSET ".$pars['ts'].";";
                 $page = mysql_query($search.$post) or die(mysql_error());
                 
@@ -196,7 +196,7 @@
             <table id="transaction-list" summary = "List of Transactions">
                 <thead>
                     <?php
-                        foreach($COLS as $v){
+                        foreach($cols as $v){
                             echo "<td>".$v[0]."</td>";
                         }
                     ?>
@@ -206,7 +206,7 @@
                     while($row = mysql_fetch_array($page))
                     {
                         echo "<tr>";
-                        foreach($COLS as $v){
+                        foreach($cols as $v){
                             echo "<td>".$v[1]($row)."</td>";
                         }
                         echo "</tr>";
