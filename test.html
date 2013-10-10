@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php  
+    require_once 'includes/transaction_setup.php';
+?>
 <html>
   <head>
     <title>Test</title>
@@ -13,7 +16,8 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+            
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#has-sub">
               Home 
             </a>
             <a href="http://www.uol.com.br">
@@ -21,10 +25,17 @@
             </a>
           </h4>
         </div>
-        <div id="collapseOne" class="panel-collapse collapse">
+        <div id="has-sub" class="panel-collapse collapse">
           <div class="panel-body">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            <li class='last'><a href='search.php'><span>Home</span></a></li>
+            $subCats = mysql_query("SELECT * FROM SubCategory WHERE SubCategory.CategoryID=".$catID." 
+                                        ORDER BY Name ASC");
+                while ($subRow = mysql_fetch_array($subCats)) {
+                    echo "<li><a href='subcategory.php?id=".$subRow['ID']."'><span>".$subRow['Name']."</span></a></li>";
+                }
+                echo "<li class='last'><a href='subcategoryNew.php?ID=".$catID."'>
+                      <span>Add New Subcategory</span></a></li>";
+                echo "</ul>";
+                echo "</li>";
           </div>
         </div>
       </div>

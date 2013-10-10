@@ -22,7 +22,6 @@
           </div>
         </div>
       </div>
-
       <div class="panel-group" id="accordion">
         <?php
         // Select everything from Category
