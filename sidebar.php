@@ -35,9 +35,9 @@
               echo "<div class='panel panel-default'>";
               echo "<div class='panel-heading'>";
               echo "<h4 class='panel-title'>";
-              echo "<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#has-sub".$row['ID']."''>".$row['Name']."</a>";
+              echo "<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#has-sub".$row['ID']."''><span>".$row['Name']."</span></a>";
               echo "<a href='category.php?id=".$row['ID']."'>
-                      <img src='images/pencil.png' border='0' />
+                      <img src='images/pencil.png' border='0' align='right' />
                     </a>
                   </h4>
                 </div>";
@@ -45,8 +45,10 @@
                                         ORDER BY Name ASC");
                 echo "<div id='has-sub".$row['ID']."'' class='panel-collapse collapse'>
                   <div class='panel-body'>";
-                    while ($subRow = mysql_fetch_array($subCats)) {
-                      echo "<li><a href='subcategory.php?id=".$subRow['ID']."'><span>".$subRow['Name']."</span></a></li>";
+                    while ($subRow = mysql_fetch_array($subCats)) 
+                    {
+                      echo "<li><a href='subcategory.php?id=".$subRow['ID']."'>
+                      <span>".$subRow['Name']."</span></a></li>";
                     }
                     echo "<li class='last'><a href='subcategoryNew.php?ID=".$catID."'>
                       <span>Add New Subcategory</span></a></li>";
@@ -55,6 +57,16 @@
               echo "</div>";
             }
       ?>
+      <div class="panel-group" id="accordion">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a href="categoryNew.php" class='accordion-toggle' data-parent='#accordion'>
+              Create New Category
+            </a>
+          </div>
+        </div>
+      </div>    
     <script src='//code.jquery.com/jquery.js'></script>
     <script src='//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js'></script>
   </body>

@@ -34,7 +34,8 @@
               echo "<div class='panel panel-default'>";
               echo "<div class='panel-heading'>";
               echo "<h4 class='panel-title'>";
-              echo "<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#has-sub".$row['ID']."''>".$row['Name']."</a>";
+              echo "<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#has-sub".$row['ID']."''>
+                ".$row['Name']."</a>";
               echo "<a href='category.php?id=".$row['ID']."'>
                       <img src='images/pencil.png' border='0' />
                     </a>
@@ -50,7 +51,16 @@
                     echo "<li class='last'><a href='subcategoryNew.php?ID=".$catID."'>
                       <span>Add New Subcategory</span></a></li>";
                   echo "</div>";
-                echo"</div>";
+                echo "</div>";
+                echo "<div class='panel panel-default'>
+                  <div class='panel-heading'>
+                    <h4 class='panel-title'>
+                      <a href='CategoryID.php' class='accordion-toggle' data-parent='#accordion'>
+                        New Category 
+                      </a>
+                    </div>
+                  </div>
+                </div> "               
               echo "</div>";
             }
       ?>
