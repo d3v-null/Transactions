@@ -4,67 +4,27 @@
     require_once 'includes/config.php';
 
     $user = new User();
-
+    
+    //redirect if user is not logged in
     if(!$user->loggedIn()){
         redirect('index.php');
     }
     
-    $PARS=Array(
-        'id'=>Null,
-        'nm'=>'',
-        'ds'=>''
-    );
+    //die if no category ID specified
+    $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No Category ID specified");
     
-    //If new button was pressed
-    if(!empty($_POST) && key_exists('new', $_POST)){
-        if (!$user->isTreasurer()){
-            echo "<script>alert('You must have treasurer privileges to create a category')</script>";
-        } else {
-            $qry = "SELECT MAX(ID) AS ID FROM Category";
-            $result = mysql_query($qry) or die(mysql_error());
-            echo serialize($result);
-            $max = mysql_fetch_array($result)['ID'];
-            $sql="INSERT INTO Category (Name, Description) VALUES ('New Category (".$max.")','')";
-            mysql_query($sql) or die("Category cannot be created: ".mysql_error());
-        }
-        
-        $id = mysql_insert_id();
-    } else {
-        $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No category specified");
-    }
-
-    //Does the ID Correspond to a valid category?
-    $sql = "SELECT Name, Description FROM category WHERE ID=".$id;
+    //Check ID is valid
+    $sql = "SELECT Name, Description FROM Category WHERE ID=" . $id . "";
     $result = mysql_query($sql) or die("Category.ID not specified correctly: ".mysql_error());
-    if(!$result) die("No categories in database match given ID: ".mysql_error());
-    $row = mysql_fetch_array($result);
-
-    $name = $row['Name'];
-    $desc = $row['Description']; 
+    if(!$result) die("No categories in database match given ID: ".$id);
+    $FETCH = mysql_fetch_array($result);
     
-    //If the save button was pressed
-    if(!empty($_POST) && key_exists('save', $_POST)){        	
-        if(!key_exists('name', $_POST)) {
-            echo "<script>alert('No name specified in $_POST')</script>";
-        } else if(!key_exists('desc', $_POST)){
-            echo "<script>alert('No desc specified in $_POST')</script>";
-        } else if($_POST['name'] == ""){
-            echo "<script>alert('Name must not be empty')</script>";
-        } else If(!$user->isTreasurer()){
-            echo "<script>alert('You must have treasurer privileges to modify a category')</script>";
-        } else {
-            $name = $_POST['name'];
-            $desc = $_POST['desc'];
-            mysql_query("UPDATE category SET Name='".$name."', Description='".$desc."' ".
-                        "WHERE category.ID=".$id) or die(mysql_error());
-            //echo "<script>alert('Successfully updated category')</script>";
-        }
-    } else if(!empty($_POST) && key_exists('delete', $_POST))
+    //If delete button was pressed
+    if(!empty($_POST) && key_exists('delete', $_POST))
 	{
 		if (!$user->isTreasurer()){
-            echo "<script>alert('You must have treasurer privileges to delete a category!!')</script>";
+            echo "<script>alert('You must have treasurer privileges to delete a category!')</script>";
         } else {
-            echo "<script>alert('You must have treasurer');</script>";
 			// Check if it can perform delete action
 			$canDelete = TRUE;
 			$sql = "SELECT id FROM SubCategory WHERE CategoryID ='". $_GET['id']."'";
@@ -118,9 +78,54 @@
             redirect("search.php");
         }
     }
-	else
-	{
-	}
+    
+    //If new button was pressed
+    // if(!empty($_POST) && key_exists('new', $_POST)){
+        // if (!$user->isTreasurer()){
+            // echo "<script>alert('You must have treasurer privileges to create a category')</script>";
+        // } else {
+            // $qry = "SELECT MAX(ID) AS ID FROM Category";
+            // $result = mysql_query($qry) or die(mysql_error());
+            // echo serialize($result);
+            // $max = mysql_fetch_array($result)['ID'];
+            // $sql="INSERT INTO Category (Name, Description) VALUES ('New Category (".$max.")','')";
+            // mysql_query($sql) or die("Category cannot be created: ".mysql_error());
+        // }
+        
+        // $id = mysql_insert_id();
+    // } else {
+        // $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No category specified");
+    // }
+
+    //Does the ID Correspond to a valid category?
+    $sql = "SELECT Name, Description FROM category WHERE ID=".$id;
+    $result = mysql_query($sql) or die("Category.ID not specified correctly: ".mysql_error());
+    if(!$result) die("No categories in database match given ID: ".mysql_error());
+    $row = mysql_fetch_array($result);
+
+    $name = $row['Name'];
+    $desc = $row['Description']; 
+    
+    //If the save button was pressed
+    if(!empty($_POST) && key_exists('save', $_POST)){        	
+        if(!key_exists('name', $_POST)) {
+            echo "<script>alert('No name specified in $_POST')</script>";
+        } else 
+        // if(!key_exists('desc', $_POST)){
+            // echo "<script>alert('No desc specified in $_POST')</script>";
+        // } 
+        else if($_POST['name'] == ""){
+            echo "<script>alert('Name must not be empty')</script>";
+        } else If(!$user->isTreasurer()){
+            echo "<script>alert('You must have treasurer privileges to modify a category')</script>";
+        } else {
+            $name = $_POST['name'];
+            $desc = $_POST['desc'];
+            mysql_query("UPDATE category SET Name='".$name."', Description='".$desc."' ".
+                        "WHERE category.ID=".$id) or die(mysql_error());
+            //echo "<script>alert('Successfully updated category')</script>";
+        }
+    } 
     //echo "id: ".$id." name: ".$name." desc: ".$desc." row: ".$row;
 ?>
 

@@ -8,32 +8,42 @@
         redirect('index.php');
     } 
     
+    //die if no category ID specified
+    $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No Category ID specified");
+    
+    //Check ID is valid
+    $sql = "SELECT Name, Description FROM History WHERE ID=" . $id . "";
+    $result = mysql_query($sql) or die("History.ID not specified correctly: ".mysql_error());
+    if(!$result) die("No histories in database match given ID: ".$id);
+    $FETCH = mysql_fetch_array($result);
+    
     //If delete button was pressed
     if(!empty($_POST) && key_exists('delete', $_POST)){
         if (!$user->isTreasurer()){
             echo "<script>alert('You must have treasurer privileges to create a transaction')</script>";
         } else { 
+            //Check things
             //Do delete things
-            
+            //Redirect
         }
     }
     
     //ignore this
     
-    // $PARS = Array(
-        // 'id' => (isset($_GET['st']))?$_GET['st']:0,   //TransactionID
-        // 'ds' => 
-        // 'cm' =>
-        // 'rd' =>
-        // 'td' => 
-        // 'pd' =>
-        // 'md' =>
-        // 'rp' =>
-        // 'ap' =>
-        // 'st' => (isset($_POST['st']))?$_POST['st']:0,   //Status
-        // 'am' =>
-        // 'if' =>
-    // }
+    $PARS = Array(
+        'id' => (isset($_GET['st']))?$_GET['st']:0,   //TransactionID
+        'ds' => 
+        'cm' =>
+        'rd' =>
+        'td' => 
+        'pd' =>
+        'md' =>
+        'rp' =>
+        'ap' =>
+        'st' => (isset($_POST['st']))?$_POST['st']:0,   //Status
+        'am' =>
+        'if' =>
+    }
 
     // remove single and double quotes so no errors are thrown with the sql
     function removeQuotes($string)

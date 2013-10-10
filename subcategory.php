@@ -9,35 +9,15 @@
     }
 
     //Has the page been given a category ID?
-    $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No category specified");
+    $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No subcategory specified");
     
     //Does the ID Correspond to a valid subcategory?
     $sql = "SELECT Name, Description FROM subcategory WHERE ID=" . $id . "";
     $result = mysql_query($sql) or die("Subcategory.ID not specified correctly: ".mysql_error());
-    if(!$result) die("No categories in database match given ID: ".mysql_error());
-    $row = mysql_fetch_array($result);
+    if(!$result) die("No subcategories in database match given ID: ".$id);
+    $FETCH = mysql_fetch_array($result);
     
-    $name = $row['Name'];
-    $desc = $row['Description'];   
-    
-    if(!empty($_POST) && key_exists('save', $_POST)){
-        if(!key_exists('name', $_POST)) {
-            echo "<script>alert('No name specified in $_POST')</script>";
-        } else if(!key_exists('desc', $_POST)){
-            echo "<script>alert('No desc specified in $_POST')</script>";
-        } else if($_POST['name'] == ""){
-            echo "<script>alert('Name must not be empty')</script>";
-        } else If(!$user->isTreasurer()){
-            echo "<script>alert('You must have treasurer privileges to modify a category')</script>";
-        } else {
-            $name = $_POST['name'];
-            $desc = $_POST['desc'];
-            mysql_query("UPDATE subcategory SET Name='".$name."', Description='".$desc."' ".
-                        "WHERE subcategory.ID=".$id) or die(mysql_error());
-            echo "<script>alert('Successfully updated category')</script>";
-        }
-    }
-	else if(!empty($_POST) && key_exists('delete', $_POST)){
+    if(!empty($_POST) && key_exists('delete', $_POST)){
         if (!$user->isTreasurer()){
             echo "<script>alert('You must have treasurer privileges to delete a category')</script>";
         } else {
@@ -65,6 +45,25 @@
             redirect("search.php");
         }
     }
+    
+    if(!empty($_POST) && key_exists('save', $_POST)){
+        if(!key_exists('name', $_POST)) {
+            echo "<script>alert('No name specified in $_POST')</script>";
+        } else if(!key_exists('desc', $_POST)){
+            echo "<script>alert('No desc specified in $_POST')</script>";
+        } else if($_POST['name'] == ""){
+            echo "<script>alert('Name must not be empty')</script>";
+        } else If(!$user->isTreasurer()){
+            echo "<script>alert('You must have treasurer privileges to modify a category')</script>";
+        } else {
+            $name = $_POST['name'];
+            $desc = $_POST['desc'];
+            mysql_query("UPDATE subcategory SET Name='".$name."', Description='".$desc."' ".
+                        "WHERE subcategory.ID=".$id) or die(mysql_error());
+            echo "<script>alert('Successfully updated category')</script>";
+        }
+    }
+	else 
     //echo "id: ".$id." name: ".$name." desc: ".$desc;
 ?>
 
