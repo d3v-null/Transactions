@@ -110,7 +110,7 @@
     if(!empty($_POST) && key_exists('save', $_POST)){        	
         if(!key_exists('name', $_POST)) {
             echo "<script>alert('No name specified in $_POST')</script>";
-        } else 
+        }
         // if(!key_exists('desc', $_POST)){
             // echo "<script>alert('No desc specified in $_POST')</script>";
         // } 
