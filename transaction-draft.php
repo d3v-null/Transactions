@@ -57,33 +57,31 @@
             
             $metaform->vlds = Array(
                 'Description' =>
-                    Array(
-                        'Description must be unique and not empty',
-                        function($d){
-                            if($d == "") return false;
-                            $sql = "SELECT History.Description FROM (
-                                        SELECT TransactionID, Max(ModificationDate) AS ModificationDate
-                                        FROM History
-                                        GROUP BY TransactionID
-                                    ) AS Latest
-                                    INNER JOIN History ON Latest.TransactionID = History.TransactionID
-                                    AND Latest.ModificationDate = History.ModificationDate
-                                    WHERE History.Description = ".$d;
-                            return !mysql_query($sql) or die mysql_error();
-                        }
-                    ),
+                    function($d){
+                        if($d == "") return 'Description must be unique and not empty';
+                        $sql = "SELECT History.Description FROM (
+                                    SELECT TransactionID, Max(ModificationDate) AS ModificationDate
+                                    FROM History
+                                    GROUP BY TransactionID
+                                ) AS Latest
+                                INNER JOIN History ON Latest.TransactionID = History.TransactionID
+                                AND Latest.ModificationDate = History.ModificationDate
+                                WHERE History.Description = ".$d;
+                        $result = mysql_query($sql) or die mysql_error();
+                        if($result) return 'Description must be unique';
+                        // return Null;
+                    },
                 'StatusID' => 
-                    Array(
-                        'You must chose a valid status',
-                        function($s){
-                            if($s == 0) return false;
-                            $sql = "SELECT StatusID FROM Status WHERE StatusID =".$s;
-                            $result = mysql_query($sql) or die mysql_error();
-                            return $result != false;
-                        }
-                    )
+                    function($s){
+                        if($s == 0) return 'You must choose a status';
+                        $sql = "SELECT StatusID FROM Status WHERE StatusID =".$s;
+                        $result = mysql_query($sql) or die mysql_error();
+                        if(!$result) return 'You must choose a valid status';
+                        // return Null;
+                    }
                 'Amount'=>
                     Array(
+                    
             )
             
             $metaform::parse($_POST);

@@ -71,10 +71,12 @@ class MetaForm{
                 $this->valid = False;
                 break;
             } 
-            if(isset($vlds[$k]) && !$vlds[$k][1]($v)){
-                $errs[$k] = $vlds[$k][0];
-                $this->valid = False;
-                break;
+            if(isset($vlds[$k])){
+                if($vlds[$k]($v)){                        
+                    $errs[$k] = $vlds[$k]($v);
+                    $this->valid = False;
+                    break;
+                }
             }
         }
         return $this->valid;
