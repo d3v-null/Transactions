@@ -1,21 +1,26 @@
 <?php
     $page_title = 'Transaction Details';
+    $page_table = 'history';
+    
     require_once 'includes/transaction_setup.php';
+    
     require_once 'includes/config.php';
-
     $user = new User();
     if(!$user->loggedIn()){
         redirect('index.php');
-    } 
+    }
+    
+    require_once 'metaform.class.php';
     
     //die if no category ID specified
     $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No Category ID specified");
     
     //Check ID is valid
-    $sql = "SELECT Name, Description FROM History WHERE ID=" . $id . "";
-    $result = mysql_query($sql) or die("History.ID not specified correctly: ".mysql_error());
-    if(!$result) die("No histories in database match given ID: ".$id);
-    $fetch = mysql_fetch_array($result);
+    $fetch = MetaForm::fetch($page_table, $id);
+    // $sql = "SELECT Name, Description FROM History WHERE ID=" . $id . "";
+    // $result = mysql_query($sql) or die("History.ID not specified correctly: ".mysql_error());
+    // if(!$result) die("No histories in database match given ID: ".$id);
+    // $fetch = mysql_fetch_array($result);
     
     //If delete button was pressed
     if(!empty($_POST) && key_exists('delete', $_POST)){
@@ -27,69 +32,111 @@
             //Redirect
         }
     }
-    
-    //parse     
-
 
     // remove single and double quotes so no errors are thrown with the sql
-    function removeQuotes($string)
-    {
-        $string = str_replace("'","\'", $string);
-        return str_replace("\"", "\\\"", $string);
-    }
+    // function removeQuotes($string)
+    // {
+        // $string = str_replace("'","\'", $string);
+        // return str_replace("\"", "\\\"", $string);
+    // }
+    $meta = MetaForm::metaTable(DB_NAME, $page_table);
+    
+    $metaform = new MetaForm($meta);
     
     // If update button was pressed
-    if(isset($_POST['update']))
+    if(!empty($_POST) && isset($_POST['update']))
     {
         if (!$user->isTreasurer()){
             echo "<script>alert('You must have treasurer privileges to modify a transaction')</script>";
-        } else {     
-            $pars = Array(
-                'ti' => $fetch['TransactionID'],f
-                //(isset($_POST['ds']))?$_POST['ds']:die("No transaction ID specified"),
-                'ds' => (isset($_POST['ds']))?$_POST['ds']:die("No description specified"),  
-                'cm' => (isset($_POST['cm']))?$_POST['cm']:"",  //Comment
-                'md' => (isset($_POST['md']))?$_POST['md']:0,   //Mod date
-                'td' => (isset($_POST['td']))?$_POST['td']:0,   //Trans date
-                'pd' => (isset($_POST['pd']))?$_POST['pd']:0,   //Pay date
-                'rp' => (isset($_POST['rp']))?$_POST['rp']:0,   //Record party
-                'ap' => (isset($_POST['ap']))?$_POST['ap']:0,   //Assoc party
-                'st' => (isset($_POST['st']))?$_POST['st']:0,   //Status
-                'am' => (isset($_POST['am']))?$_POST['am']:die("No ammount specified"),
-                'if' => (isset($_POST['if']))?$_POST['if']:0,   //Status
-            }
-        
-            $sql =  "INSERT INTO History ( 
-                        TransactionID, 
-                        Description, 
-                        Comment, 
-                        ModificationDate, 
-                        TransactionDate,
-                        PaymentDate, 
-                        ResponsibleParty, 
-                        AssociatedParty, 
-                        Amount, 
-                        Inflow, 
-                        StatusID
-                     )".
-                    "SELECT".
-                        "'" . $_GET['id'] . "', ".
-                        "'" . removeQuotes($_POST['Description']) . "', ".
-                        "'" . removeQuotes($_POST['Comment']) . "', " .
-                        "CURRENT_TIMESTAMP,".
-                        "'" . $_POST['TransactionDate'] . "', ".
-                        "'" . $_POST['PaymentDate'] . "', ".
-                        "'" . $_POST['ResponsibleParty'] . "', ".
-                        "'" . $_POST['AssociatedParty'] . "', ".
-                        "'" . $_POST['Amount'] . "', ".
-                        "'" .  ($_POST['Type'] == "in") . "', ".
-                        "'" . $_POST['Status'] . "' ".
-                    "FROM History ". 
-                    "WHERE ID = '" . $_GET['id'] . "'" ; 
+        } else { 
+            
+            $metaform->$pars = Array(
+                'TransacionID' => $fetch['TransactionID'],
+                'ModificationDate' => date(), 
+            );
+            
+            $metaform->vlds = Array(
+                'Description' =>
+                    Array(
+                        'Description must be unique and not empty',
+                        function($d){
+                            if($d == "") return false;
+                            $sql = "SELECT History.Description FROM (
+                                        SELECT TransactionID, Max(ModificationDate) AS ModificationDate
+                                        FROM History
+                                        GROUP BY TransactionID
+                                    ) AS Latest
+                                    INNER JOIN History ON Latest.TransactionID = History.TransactionID
+                                    AND Latest.ModificationDate = History.ModificationDate
+                                    WHERE History.Description = ".$d;
+                            return !mysql_query($sql) or die mysql_error();
+                        }
+                    ),
+                'StatusID' => 
+                    Array(
+                        'You must chose a valid status',
+                        function($s){
+                            if($s == 0) return false;
+                            $sql = "SELECT StatusID FROM Status WHERE StatusID =".$s;
+                            $result = mysql_query($sql) or die mysql_error();
+                            return $result != false;
+                        }
+                    )
+                'Amount'=>
+                    Array(
+            )
+            
+            $metaform::parse($_POST);
+            
+            //$parser = new PostParser(DB_NAME, 'history', 
+            
+            // $pars = Array(
+                // 'ti' => $fetch['TransactionID'],
+                // //(isset($_POST['ti']))?$_POST['ti']:die("No transaction ID specified"),
+                // 'ds' => (isset($_POST['ds']))?$_POST['ds']:die("No description specified"),  
+                // 'cm' => (isset($_POST['cm']))?$_POST['cm']:"",  //Comment
+                // 'md' => date(),   //Mod date
+                // 'td' => (isset($_POST['td']))?$_POST['td']:"",   //Trans date
+                // 'pd' => (isset($_POST['pd']))?$_POST['pd']:"",   //Pay date
+                // 'mp' => (isset($_SESSION['loginid']))?$_SESSION['loginid']:die("No login available"),
+                // 'ap' => (isset($_POST['ap']))?$_POST['ap']:"",   //Assoc party
+                // 'st' => (isset($_POST['st']))?$_POST['st']:die("No status specified"),
+                // 'am' => (isset($_POST['am']))?$_POST['am']:die("No ammount specified"),     
+                // 'if' => (isset($_POST['if']))?$_POST['if']:die("No inflow specified"),
+            // }
+            
+            // if($pars['cm']=="") die("");
+            
+            
+            $cols = implode(", ", array_keys($metaform->pars));
+            $vals = implode(", ", array_values($metaform->pars));
+            
+            $sql =  "INSERT INTO history (".
+                        $cols.
+                    ") VALUES (".
+                        $vals.
+                    ") ";
+            
             IF(debug) echo($sql);
-            mysql_query($sql) or die(mysql_error());
+            //mysql_query($sql) or die(mysql_error());
         }
+    } else {
+        $metaform->pars($fetch);
+        $metaform::validate();
     }
+    
+    $display = array(
+        'Description'=>MetaClass::InputFormat('text'),
+        'Status'=>Null,
+        'TransactionDate'=>MetaClass::InputFormat('datetime'),
+        'PaymentDate'=>MetaClass::InputFormat('datetime'),
+        'ResponsibleParty'=>MetaClass::InputFormat('text'),
+        'AssociatedParty'=>MetaClass::InputFormat('text'),
+        'Amount'=>MetaClass::InputFormat('text'),
+        'Inflow'=>,
+        'Comment'=>
+    )
+        
 ?>  
 <!DOCTYPE html>
 <html>
@@ -109,39 +156,20 @@
         <div class="slide-out-div">
             <h3>Transaction History:</h3>
              <?php
-                $sql = "SELECT ID FROM History WHERE TransactionID='" . $_GET['id'] . "'";
-                $idResult = mysql_query($sql) or die(mysql_error());
-                while($idResultRows = mysql_fetch_assoc($idResult))
-                {
-                    // echo $idResultRows['ID'];
-                    $sql = "SELECT ModificationDate FROM HISTORY ".
-                        "WHERE ".
-                        "ID = '". $idResultRows['ID'] ."'".
+                $sql = "SELECT ID, ModificationDate, ModificationPersonID FROM History WHERE TransactionID = ".$fetch['TransactionID'].
                         "ORDER BY ModificationDate ASC";
-                    $result = mysql_query($sql) or die(mysql_error());
-                
-                    while($row = mysql_fetch_assoc($result))
-                    {
-                        echo "<ul>";
-                        echo"<li><div class='history' id='" . $idResultRows['ID'] . "' onclick='showHistory(this.id)'>" . $row['ModificationDate'] . "</div></li>";
-                        echo"</ul>";
-                        //echo $row['ModificationDate'] ."______".  $row['ID'];
-                        print "<br>";
-                    }
-                }
+                $result = mysql_query($sql) or die(mysql_error());
+                echo "<ul>";
+                while($row = mysql_fetch_array($result)){
+                    echo "<li class='history' id='".$row['ID']."' onclick='showHistory(this.id)'>"$row['ModificationPersonID']." - ".$row['ModificationDate']."</li>";
+                }    
             ?>
         </div><!-- end slide out-->
         <div id="box">
             <?php include 'subheader.php' ?>
             <div id="content">
-                <?php
-                    $sql = "SELECT * FROM History WHERE ID='" . $_GET['id'] . "'";
-                    $result = mysql_query($sql ) or die(mysql_error());
-                    $row = mysql_fetch_assoc($result);
-                    $statusID = intval($row['StatusID']);
-                ?>	
                 <form name="transactionForm" onsubmit="return validateForm(this);" action="transaction.php" method="post">
-                    <table class = "formatted">
+                    <!--<table class = "formatted">
                         <tr>
                             <td class="transactionTitle">
                                 Description
@@ -162,10 +190,6 @@
                                         {
                                             $sel = ($statusRow['ID']==$st)?"selected":"";
                                             echo "<option value=".$row['ID']." ".$sel." >".$row['Name']."</option>";
-                                            if(intval($statusRow['ID']) == $statusID)
-                                                echo "<option value=" . $statusRow['ID'] . " selected='selected'>" . $statusRow['Name'] . "</option>";
-                                            else
-                                                echo "<option value=" . $statusRow['ID'] . " >" . $statusRow['Name'] . "</option>";
                                         }
                                     ?>
                                 </select>
@@ -236,8 +260,8 @@
                             </td>
                         </tr>
                     </table>
-                    <input type="submit" name="update" id="update" value="Update">
-                    <input type='submit' name='delete' value='Delete'>
+                    -->
+                    <input type='submit' name='update' id='update' value='Update'>
                 </form>
                 
                 <button onclick="setReadonly('data',false)">Edit</button>
