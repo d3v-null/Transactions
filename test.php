@@ -1,7 +1,7 @@
 <?php
 
-if(!'false'){
-    echo "bluh";
-}
-?>
-    
+    class Test{
+        public static $a;
+        
+        public static f(){
+            echo self::a

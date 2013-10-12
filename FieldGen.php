@@ -18,22 +18,45 @@ class FieldRule{
 }  
 
 class FieldGen{
-    public $errs = array(); //Errors for each parameter
-    public $pars = array();
-    public $ruls = array();
-    public $lbls = array();
+    //for each field...
+    public $lbls = array(); //Labels
+    public $vals = array(); //values
+    public $errs = array(); //Errors
+    public $ruls = array(); //Evaluation rules
+    
+    //ID's used in generated HTML
+    public static $labelid = 'label';
+    public static $inputid = 'input';
+    public static $errorid = 'error';
 
-    public static function InputFormat($t){
-        return function ($f, $p, $e) use ($t){
-            return 
-                "<div class='inputformat' id='".$f."'>".
-                    "<ul>".
-                        "<li id='namefield'>".$f."</li>".
-                        "<li id='input'><input name='".$f."' type='".$t."' value='".$p."'></li>".
-                        "<li id='error'>".$e."</li>".
-                    "</ul>".
-                "</div>";
+    public static function fieldGenList($id, $lbl, $fld, $err){
+        return 
+            "<div class='fieldgenlist' id='".$id."'>".
+                "<ul>".
+                    "<li id='".self::$labelid."'>".$lbl."</li>".
+                    "<li id='".self::$inputid."'>".$fld."</li>".
+                    "<li id='".self::$errorid."'>".$err."</li>".
+                "</ul>".
+            "</div>";        
+    }
+    
+    public static function InputFormat($typ){
+        return function ($id, $lbl, $val, $err) use($typ){
+            $fld = "<input name='".$id."' type='".$typ."' value='".$val."'>";
+            return self::fieldGenList($id, $lbl, $fld, $err);
         };
+    }
+    
+    public static function OptionFormat($opts){
+        return function ($id, $lbl, $val, $err) use($opts){
+            $fld = "<select name=".$id.">";
+            foreach($opts as $k => $v){
+                $sel = ($k = $val)?"selected":"";
+                $fld .= "<option value='".$k."' ".$sel.">".$v."</option>";
+            }
+            $fld .= "</select>";
+            return self::fieldGenList($id, $lbl, $fld, $err);
+        };  
     }
     
     public static function fetch($table, $id) {
@@ -47,7 +70,11 @@ class FieldGen{
     }
     
     public function get_lbl($col){
-        if(isset($lbls[$col])) return $lbls[$col] else return $col;
+        if(isset($lbls[$col])) {
+            return $lbls[$col]; 
+        } else {
+            return $col;
+        }
     }
     
     public function parse_metadata($db, $table){
@@ -61,13 +88,13 @@ class FieldGen{
         if(!$result) die("No fields in table: ".$id);
         while($row = mysql_fetch_array($result)){
             if($row['IS_NULLABLE']=='NO'){
-                add_rule(
+                $this->add_rule(
                     $row['COLUMN_NAME'],
                     new FieldRule(
-                        get_lbl($row['COLUMN_NAME'])." must not be empty",
+                        $this->get_lbl($row['COLUMN_NAME'])." must not be empty",
                         function($v){ return !is_null($v); }
                     )
-                )
+                );
             }
             //If int check if numeric
             //If text check character length
@@ -76,42 +103,43 @@ class FieldGen{
         return $meta;
     }
     
-    public function add_rule($rule){
-        if(isset($this->ruls[$k]){
-            array_push($this->ruls[$k], $rule);
+    public function add_rule($col, $rule){
+        if(isset($this->ruls[$col])){
+            array_push($this->ruls[$col], $rule);
         } else {
-            $this->ruls[$k] = array($rule);
+            $this->ruls[$col] = array($rule);
         }
     }
     
-    public function add_rules($rules){
-        foreach($rules as $k){
-            $this->add_rule($k[0],$k[1]);
-        }
+    // public function add_rules($rules){
+        // foreach($rules as $k){
+            // $this->add_rule($k[0],$k[1]);
+        // }
+    // }
     
     public function parse($post){ //post, vlds, meta | pars, errs
         //parse each item in $post //post, meta | pars
         foreach($post as $k => $v){
-            if(isset($this->meta[$k]) && !isset($this->pars[$k])){
-                $this->pars[$k]=$v;
+            if(!isset($this->vals[$k])){//don't over-write.
+                $this->vals[$k]=$v;
             }
         }
         
-        //complete $pars with default values //meta | pars
-        foreach($this->meta as $k => $v){
-            if(!isset($this->pars[$k])){
-                $this->pars[$k] = $v['def'];
-            }
-        }
+        // //complete $vals with default values //meta | pars
+        // foreach($this->meta as $k => $v){
+            // if(!isset($this->vals[$k])){
+                // $this->vals[$k] = $v['def'];
+            // }
+        // }
 
-        //validate each item in $pars //pars, meta | errs
-        foreach($this->pars as $k => $v){
-            if(is_null($v) && isset($this->meta[$k]) && $this->meta[$k]['nul']=='NO'){
-                $errs[$k] = "Cannot be null";
-            } 
-            if(isset($vlds[$k])){
-                if($vlds[$k]($v)){                        
-                    $errs[$k] = $vlds[$k]($v);
+        //validate each item in $vals //pars, meta | errs
+        foreach($this->vals as $k => $v){
+            if(isset($ruls[$k])){
+                foreach($ruls[$k] as $frul){
+                    if(!$frul->rule($v)){
+                        $errs[$k] = $frul->emsg;
+                        break;
+                    }
                 }
             }
         }
@@ -119,7 +147,12 @@ class FieldGen{
     
     public function display($disp){ //disp, hand, pars, errs
         foreach($disp as $k => $v){
-            echo $v($k, $this->pars[$k], (isset($this->errs[$k]))?$this->errs[$k]:"");
+            echo $v(
+                $k, 
+                $this->get_lbl($k), 
+                (isset($this->vals[$k]))?$this->vals[$k]:"",
+                (isset($this->errs[$k]))?$this->errs[$k]:""
+            );
         }
     }   
 }
