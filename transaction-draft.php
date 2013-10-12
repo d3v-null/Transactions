@@ -11,7 +11,7 @@ if(!$user->loggedIn()){
     redirect('index.php');
 }
 
-require_once 'metaform.class.php';
+include 'metaform.class.php';
 
 //die if no history ID specified
 $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No History ID specified");
@@ -29,12 +29,21 @@ if(!empty($_POST) && key_exists('delete', $_POST)){
         //Redirect
     }
 }
-$metaform = new MetaForm( MetaForm::metaTable(DB_NAME, $page_table) );
-$metaform->pars['ModificationDate'] = date();
-$metaform->vlds = Array(
-    'Description' =>
+
+$metaform = new MetaForm();
+$metaform->lbls = array(
+    'TransactionDate'   => 'Date of Transaction', 
+    'PaymentDate'       => 'Date of Payment',
+    'ResponsibleParty'  => 'Party responsible for transaction',
+    'AssociatedParty'   => 'Party associated with transaction',
+    'Inflow'            => 'Payment Type'
+}
+$metaform->meta = parse_metadata(DB_NAME, $page_table);
+$metaform->add_rule(
+    'Description',
+    FieldRule(
+        'Description must be unique'
         function($d){
-            if($d == "") return 'Description must be unique and not empty';
             $sql = "SELECT History.Description FROM (
                         SELECT TransactionID, Max(ModificationDate) AS ModificationDate
                         FROM History
@@ -43,23 +52,35 @@ $metaform->vlds = Array(
                     INNER JOIN History ON Latest.TransactionID = History.TransactionID
                     AND Latest.ModificationDate = History.ModificationDate
                     WHERE History.Description = ".$d;
-            $result = mysql_query($sql) or die(mysql_error());
-            if($result) return 'Description must be unique';
-            // return Null;
-        },
-    'StatusID' => 
+            return !mysql_query($sql) or die(mysql_error());
+        }
+    )
+);
+$metaform->add_rule(
+    'StatusID',
+    FieldRule(
+        'A valid status must be selected',  
         function($s){
-            if($s == 0) return 'Please choose a status';
             $sql = "SELECT StatusID FROM Status WHERE StatusID =".$s;
-            $result = mysql_query($sql) or die(mysql_error());
-            if(!$result) return 'Please choose a valid status';
-            // return Null;
-        },
-    'Amount'=>
+            return mysql_query($sql) or die(mysql_error());
+        }
+    )
+);
+$metaform->add_rule(
+    'Amount',
+    FieldRule(
+        'Amount must be numeric',
+        is_numeric
+    )
+);
+$metaform->add_rule(
+    'Amount',
+    FieldRule(
+        'Amount must be positive',
         function($a){
-            if(!is_numeric($a)) return 'Amount must be numeric';
-            if($a < 0) return 'Amount must be positive';
-        },
+            return $a>=0;
+        }
+    )
 );
 
 // If update button was pressed
@@ -68,26 +89,40 @@ if(!empty($_POST) && isset($_POST['update']))
     if (!$user->isTreasurer()){
         echo "<script>alert('You must have treasurer privileges to modify a transaction')</script>";
     } else { 
-        $metaform->$pars['TransacionID'] = $fetch['TransactionID'];
-        $metaform::parse($_POST);
+        $metaform::parse($_POST);    
+        $metaform->pars['ModificationDate'] = date('Y-m-d h:m:s');
+        $metaform->pars['ModificationPersonID'] = date('Y-m-d h:m:s');
+
         
-        $cols = implode(", ", array_keys($metaform->pars));
-        $vals = implode(", ", array_values($metaform->pars));
+        //check for errors
         
         $sql =  "INSERT INTO history (".
-                    $cols.
+                    implode(", ", array_keys($metaform->pars)).
                 ") VALUES (".
-                    $vals.
+                    implode(", ", array_values($metaform->pars)).
                 ") ";
         
-        IF(debug) echo($sql);
+        echo($sql);
         //mysql_query($sql) or die(mysql_error());
         //$id = mysql_insert_id();
     }
 } else {
-    $metaform->pars($fetch);
-    $metaform::validate();
+    $metaform->parse($fetch);
 }
+
+$fmat = array(
+    'Description'=>MetaForm::InputFormat('text'),
+    //'Status'=>,
+    'TransactionDate'=>MetaForm::InputFormat('datetime'),
+    'PaymentDate'=>MetaForm::InputFormat('datetime'),
+    'ResponsibleParty'=>MetaForm::InputFormat('text'),
+    'AssociatedParty'=>MetaForm::InputFormat('text'),
+    // 'Amount'=>MetaForm::InputFormat('text'),
+    // 'Inflow'=>,
+    'Comment'=>MetaForm::InputFormat('text'),
+);    
+
+
 
 ?>  
 <!DOCTYPE html>
@@ -108,7 +143,7 @@ if(!empty($_POST) && isset($_POST['update']))
         <div class="slide-out-div">
             <h3>Transaction History:</h3>
              <?php
-                $sql = "SELECT ID, ModificationDate, ModificationPersonID FROM History WHERE TransactionID = ".$fetch['TransactionID'].
+                $sql = "SELECT ID, ModificationDate, ModificationPersonID FROM History WHERE TransactionID = ".$fetch['TransactionID']." ".
                         "ORDER BY ModificationDate ASC";
                 $result = mysql_query($sql) or die(mysql_error());
                 echo "<ul>";
@@ -123,19 +158,9 @@ if(!empty($_POST) && isset($_POST['update']))
                 <form name="transactionForm" onsubmit="return validateForm(this);" action="transaction.php" method="post">
                     <?php
                     
-                    $fmat = array(
-                        'Description'=>MetaClass::InputFormat('text'),
-                        // 'Status'=>,
-                        'TransactionDate'=>MetaClass::InputFormat('datetime'),
-                        'PaymentDate'=>MetaClass::InputFormat('datetime'),
-                        'ResponsibleParty'=>MetaClass::InputFormat('text'),
-                        'AssociatedParty'=>MetaClass::InputFormat('text'),
-                        // 'Amount'=>MetaClass::InputFormat('text'),
-                        // 'Inflow'=>,
-                        'Comment'=>MetaClass::InputFormat('text'),
-                    );                    
+               
                     
-                    $metaform::display($fmat);
+                    $metaform->display($fmat);
                     ?>
                     <!--<table class = "formatted">
                         <tr>
