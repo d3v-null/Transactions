@@ -1,6 +1,8 @@
 <?php
 
 include 'FieldGen.php';
+$id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No History ID specified");
+$fetch = FieldGen::fetch($page_table, $id);
 $fieldGen = new FieldGen();
 $fieldGen->lbls = array(
     'TransactionDate'   => 'Date of Transaction', 
@@ -10,4 +12,4 @@ $fieldGen->lbls = array(
     'Inflow'            => 'Payment Type',
     'StatusID'          => 'Status'
 );
-echo serialize($fieldGen->lbls);
+echo $fieldGen->lbls;

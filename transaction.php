@@ -1,5 +1,4 @@
 <?php
-
 $page_title = 'Transaction Details';
 $page_table = 'history';
 
@@ -10,8 +9,6 @@ $user = new User();
 if(!$user->loggedIn()){
     redirect('index.php');
 }
-
-
 
 //die if no history ID specified
 $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No History ID specified");
@@ -83,6 +80,15 @@ $fieldGen->add_rule(
         }
     )
 );
+$fieldGen->add_rule(
+    'Inflow',
+    new FieldRule(
+        'A valid payment type must be entered',
+        function($a){
+            return in_array($a, array(1,2));
+        }
+    )
+);
 
 // If update button was pressed
 if(!empty($_POST) && isset($_POST['update']))
@@ -90,16 +96,20 @@ if(!empty($_POST) && isset($_POST['update']))
     if (!$user->isTreasurer()){
         echo "<script>alert('You must have treasurer privileges to modify a transaction')</script>";
     } else { 
-        $fieldGen->parse($_POST);    
-        $fieldGen->pars['ModificationDate'] = date('Y-m-d h:m:s');
-        $fieldGen->pars['ModificationPersonID'] = (isset($_SESSION['loginid']))?$_SESSION['loginid']:die("No login available");
-        
+        $fieldGen->parse($_POST);
+ 
+        $fieldGen->vals['ModificationDate'] = date('Y-m-d h:m:s');
+        $fieldGen->vals['ModificationPersonID'] = 
+            (isset($_SESSION['loginid']))?$_SESSION['loginid']:die("No login available");
+        $fieldGen->vals['Amount'] *= 100;
         //check for errors     
+        echo serialize($fieldGen->vals);
+        echo "</br>";       
         
         $sql =  "INSERT INTO history (".
-                    implode(", ", array_keys($fieldGen->pars)).
+                    implode(", ", array_keys($fieldGen->vals)).
                 ") VALUES (".
-                    implode(", ", array_values($fieldGen->pars)).
+                    implode(", ", array_values($fieldGen->vals)).
                 ") ";
         
         echo($sql);
@@ -112,22 +122,31 @@ if(!empty($_POST) && isset($_POST['update']))
 
 //generate status options
 $rslt = mysql_query("SELECT * FROM Status") or die(mysql_error());
-$sopts = array();
+$sopts = array( 0 => '-- select --' );
 while($row = mysql_fetch_array($rslt))
 {
     $sopts[$row['ID']] = $row['Name'];
 }
 
+$iopts = array( 
+    0 => '-- select --',
+         'inflow',
+         'outflow',
+);
+
 $fmat = array(
-    'Description'       => FieldGen::InputFormat('text'),
-    'StatusID'          =>FieldGen::OptionFormat($sopts),
-    'TransactionDate'   =>FieldGen::InputFormat('datetime'),
-    'PaymentDate'       =>FieldGen::InputFormat('datetime'),
-    'ResponsibleParty'  =>FieldGen::InputFormat('text'),
-    'AssociatedParty'   =>FieldGen::InputFormat('text'),
-    // 'Amount'=>FieldGen::InputFormat('text'),
-    // 'Inflow'=>,
-    'Comment'           =>FieldGen::InputFormat('text'),
+    'Description'       => FieldGen::inputFormat('text'),
+    'StatusID'          => FieldGen::optionFormat($sopts),
+    'TransactionDate'   => FieldGen::inputFormat('date'),
+    'PaymentDate'       => FieldGen::inputFormat('date'),
+    'ResponsibleParty'  => FieldGen::inputFormat('text'),
+    'AssociatedParty'   => FieldGen::inputFormat('text'),
+    'Amount'            => function ($id, $lbl, $val, $err){
+        $fld = "<input name='".$id."' type='text' value='". $val/100 ."'>";
+        return FieldGen::fieldList($id, $lbl, $fld, $err);
+    },   
+    'Inflow'            => FieldGen::optionFormat($iopts),
+    'Comment'           => FieldGen::inputFormat('text'),
 );    
 
 ?>  
@@ -145,15 +164,11 @@ $fmat = array(
         <script src="js/transaction_history_show.js"></script>
         <script src="js/transaction_history_showhistory.js"></script>
     </head>
-    <body id='main'>
-        <div class="slide-out-div">
-            <?php include_once("modificationhistory.php"); ?>
-        </div><!-- end slide out-->
-        
+    <body id='main'>        
         <div id="box">
-            <?php include 'subheader.php' ?>
+            <?php include_once 'subheader.php' ?>
             <div id="content">
-                <form name="transactionForm" onsubmit="return validateForm(this);" action="transaction.php" method="post">
+                <form name="transactionForm" onsubmit="return validateForm(this);" action="" method="post">
                     <?php $fieldGen->display($fmat); ?>
                     <input type='submit' name='update' id='update' value='Update'>
                 </form>                
@@ -162,8 +177,12 @@ $fmat = array(
             </div><!-- end content!-->
         </div><!-- end box -->
         
+        <div class="slide-out-div">
+            <?php //include_once 'modhistory.php' ?>
+        </div><!-- end slide out-->        
+        
         <div id="sidebar">
-            <?php include_once("sidebar.php")?>
+            <?php //include_once 'sidebar.php' ?>
         </div><!-- end sidebar-->
     </body>
 </html>

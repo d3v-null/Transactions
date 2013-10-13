@@ -29,7 +29,7 @@ class FieldGen{
     public static $inputid = 'input';
     public static $errorid = 'error';
 
-    public static function fieldGenList($id, $lbl, $fld, $err){
+    public static function fieldList($id, $lbl, $fld, $err){
         return 
             "<div class='fieldgenlist' id='".$id."'>".
                 "<ul>".
@@ -40,14 +40,14 @@ class FieldGen{
             "</div>";        
     }
     
-    public static function InputFormat($typ){
+    public static function inputFormat($typ){
         return function ($id, $lbl, $val, $err) use($typ){
             $fld = "<input name='".$id."' type='".$typ."' value='".$val."'>";
-            return self::fieldGenList($id, $lbl, $fld, $err);
+            return self::fieldList($id, $lbl, $fld, $err);
         };
     }
     
-    public static function OptionFormat($opts){
+    public static function optionFormat($opts){
         return function ($id, $lbl, $val, $err) use($opts){
             $fld = "<select name=".$id.">";
             foreach($opts as $k => $v){
@@ -55,7 +55,7 @@ class FieldGen{
                 $fld .= "<option value='".$k."' ".$sel.">".$v."</option>";
             }
             $fld .= "</select>";
-            return self::fieldGenList($id, $lbl, $fld, $err);
+            return self::fieldList($id, $lbl, $fld, $err);
         };  
     }
     
@@ -78,9 +78,9 @@ class FieldGen{
     }
     
     public function parse_metadata($db, $table){
-        $meta = array();
         $qry = 
-            "SELECT TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, IS_NULLABLE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH ".
+            "SELECT TABLE_SCHEMA, TABLE_NAME, ".
+            "COLUMN_NAME, IS_NULLABLE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH ".
             "FROM information_schema.COLUMNS ".
             "WHERE table_schema =  '".$db."' ".
             "AND table_name =  '".$table."' ";
@@ -100,7 +100,6 @@ class FieldGen{
             //If text check character length
             //if FK test relation
         }
-        return $meta;
     }
     
     public function add_rule($col, $rule){
@@ -111,12 +110,6 @@ class FieldGen{
         }
     }
     
-    // public function add_rules($rules){
-        // foreach($rules as $k){
-            // $this->add_rule($k[0],$k[1]);
-        // }
-    // }
-    
     public function parse($post){ //post, vlds, meta | pars, errs
         //parse each item in $post //post, meta | pars
         foreach($post as $k => $v){
@@ -124,18 +117,11 @@ class FieldGen{
                 $this->vals[$k]=$v;
             }
         }
-        
-        // //complete $vals with default values //meta | pars
-        // foreach($this->meta as $k => $v){
-            // if(!isset($this->vals[$k])){
-                // $this->vals[$k] = $v['def'];
-            // }
-        // }
 
         //validate each item in $vals //pars, meta | errs
         foreach($this->vals as $k => $v){
             if(isset($ruls[$k])){
-                foreach($ruls[$k] as $frul){
+                foreach($ruls[$k] as $frul
                     if(!$frul->rule($v)){
                         $errs[$k] = $frul->emsg;
                         break;
