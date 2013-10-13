@@ -72,7 +72,6 @@
 
     <body id="main">
         <div id="box">
-        
         <?php include 'subheader.php' ?>
 
         <form method="get" action="search.php" class="content">

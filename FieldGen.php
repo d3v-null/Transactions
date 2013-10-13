@@ -15,9 +15,15 @@ class FieldRule{
             die("rule not specified correctly");//!
         }
     }
+    
+    public function __toString(){
+        return $this->emsg;
+    }
 }  
 
 class FieldGen{
+    public $flds = array(); //fields to be processed
+    
     //for each field...
     public $lbls = array(); //Labels
     public $vals = array(); //values
@@ -29,6 +35,9 @@ class FieldGen{
     public static $inputid = 'input';
     public static $errorid = 'error';
 
+    public static function fieldRow($id, $lbl, $fld, $err){}
+        
+    
     public static function fieldList($id, $lbl, $fld, $err){
         return 
             "<div class='fieldgenlist' id='".$id."'>".
@@ -70,14 +79,14 @@ class FieldGen{
     }
     
     public function get_lbl($col){
-        if(isset($lbls[$col])) {
-            return $lbls[$col]; 
+        if(isset($this->lbls[$col])) {
+            return $this->lbls[$col]; 
         } else {
             return $col;
         }
     }
     
-    public function parse_metadata($db, $table){
+    public function parse_metadata($db, $table){ //gets fields and rules from table
         $qry = 
             "SELECT TABLE_SCHEMA, TABLE_NAME, ".
             "COLUMN_NAME, IS_NULLABLE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH ".
@@ -87,6 +96,7 @@ class FieldGen{
         $result = mysql_query($qry) or die ("error: ".$qry."<br/>".mysql_error());
         if(!$result) die("No fields in table: ".$id);
         while($row = mysql_fetch_array($result)){
+            array_push($this->flds, $row['COLUMN_NAME']);
             if($row['IS_NULLABLE']=='NO'){
                 $this->add_rule(
                     $row['COLUMN_NAME'],
@@ -110,21 +120,23 @@ class FieldGen{
         }
     }
     
-    public function parse($post){ //post, vlds, meta | pars, errs
+    public function parse($post){ //post, vlds, | pars, errs
         //parse each item in $post //post, meta | pars
         foreach($post as $k => $v){
-            if(!isset($this->vals[$k])){//don't over-write.
+            if(in_array($k,$this->flds)){//ignore anything not in table
                 $this->vals[$k]=$v;
             }
         }
-
-        //validate each item in $vals //pars, meta | errs
+    }
+        //validate each item in $vals //pars, $ruls | errs
+    public function validate(){
         foreach($this->vals as $k => $v){
-            if(isset($ruls[$k])){
-                foreach($ruls[$k] as $frul
-                    if(!$frul->rule($v)){
-                        $errs[$k] = $frul->emsg;
-                        break;
+            if(isset($this->ruls[$k])){
+                foreach($this->ruls[$k] as $frul){
+                    $r = $frul->rule;
+                    if(!$r($v)){
+                        echo $frul;
+                        $this->errs[$k] = $frul->emsg;
                     }
                 }
             }
@@ -141,6 +153,18 @@ class FieldGen{
             );
         }
     }   
+    
+    public function __toString(){
+        $out = "";
+        $out .= "rules: \n";
+        foreach($this->ruls as $k => $v){
+            $out .= "->".$k."\n";
+            foreach($v as $r){
+                $out .= "-->".$r."\n";
+            }
+        } 
+        return $out;
+    }
 }
 ?>
         

@@ -37,7 +37,7 @@ $fieldGen->lbls = array(
     'StatusID'          => 'Status'
 );
 $fieldGen->parse_metadata(DB_NAME, $page_table);
-$fieldGen->add_rule(
+$fieldGen->add_rule( 
     'Description',
     new FieldRule(
         'Description must be unique',
@@ -59,7 +59,7 @@ $fieldGen->add_rule(
     new FieldRule(
         'A valid status must be selected',  
         function($s){
-            $sql = "SELECT StatusID FROM Status WHERE StatusID =".$s;
+            $sql = "SELECT ID FROM Status WHERE ID =".$s;
             return mysql_query($sql) or die(mysql_error());
         }
     )
@@ -83,7 +83,7 @@ $fieldGen->add_rule(
 $fieldGen->add_rule(
     'Inflow',
     new FieldRule(
-        'A valid payment type must be entered',
+        'A valid payment type must be chosen',
         function($a){
             return in_array($a, array(1,2));
         }
@@ -102,7 +102,9 @@ if(!empty($_POST) && isset($_POST['update']))
         $fieldGen->vals['ModificationPersonID'] = 
             (isset($_SESSION['loginid']))?$_SESSION['loginid']:die("No login available");
         $fieldGen->vals['Amount'] *= 100;
-        //check for errors     
+        
+        echo $fieldGen->validate();
+        
         echo serialize($fieldGen->vals);
         echo "</br>";       
         
@@ -159,15 +161,24 @@ $fmat = array(
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script>
         <script src="js/jquery.tabSlideOut.v1.3.js"></script>
-
+        
         <script src="js/transaction_history_slide.js"></script>
         <script src="js/transaction_history_show.js"></script>
         <script src="js/transaction_history_showhistory.js"></script>
+        <style>
+            .fieldgenlist li{
+            display: inline;
+            list-style-type: none;
+            padding-right: 20px;
+            }          
+        </style>    
+            
+            
     </head>
     <body id='main'>        
-        <div id="box">
+        <div id='box'>
             <?php include_once 'subheader.php' ?>
-            <div id="content">
+            <div id='content'>
                 <form name="transactionForm" onsubmit="return validateForm(this);" action="" method="post">
                     <?php $fieldGen->display($fmat); ?>
                     <input type='submit' name='update' id='update' value='Update'>
@@ -177,11 +188,11 @@ $fmat = array(
             </div><!-- end content!-->
         </div><!-- end box -->
         
-        <div class="slide-out-div">
+        <div class='slide-out-div'>
             <?php //include_once 'modhistory.php' ?>
         </div><!-- end slide out-->        
         
-        <div id="sidebar">
+        <div id='sidebar'>
             <?php //include_once 'sidebar.php' ?>
         </div><!-- end sidebar-->
     </body>
