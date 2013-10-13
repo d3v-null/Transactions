@@ -105,9 +105,6 @@ if(!empty($_POST) && isset($_POST['update']))
         
         echo $fieldGen->validate();
         
-        echo serialize($fieldGen->vals);
-        echo "</br>";       
-        
         $sql =  "INSERT INTO history (".
                     implode(", ", array_keys($fieldGen->vals)).
                 ") VALUES (".
@@ -136,21 +133,6 @@ $iopts = array(
          'outflow',
 );
 
-$fmat = array(
-    'Description'       => FieldGen::inputFormat('text'),
-    'StatusID'          => FieldGen::optionFormat($sopts),
-    'TransactionDate'   => FieldGen::inputFormat('date'),
-    'PaymentDate'       => FieldGen::inputFormat('date'),
-    'ResponsibleParty'  => FieldGen::inputFormat('text'),
-    'AssociatedParty'   => FieldGen::inputFormat('text'),
-    'Amount'            => function ($id, $lbl, $val, $err){
-        $fld = "<input name='".$id."' type='text' value='". $val/100 ."'>";
-        return FieldGen::fieldList($id, $lbl, $fld, $err);
-    },   
-    'Inflow'            => FieldGen::optionFormat($iopts),
-    'Comment'           => FieldGen::inputFormat('text'),
-);    
-
 ?>  
 <!DOCTYPE html>
 <html>
@@ -166,11 +148,18 @@ $fmat = array(
         <script src="js/transaction_history_show.js"></script>
         <script src="js/transaction_history_showhistory.js"></script>
         <style>
+            content form{
+                
+            }
             .fieldgenlist li{
-            display: inline;
-            list-style-type: none;
-            padding-right: 20px;
-            }          
+                display: inline;
+                list-style-type: none;
+                padding-right: 20px;
+            }        
+            .form-error{
+                color:red;
+                align:center;
+            }
         </style>    
             
             
@@ -180,7 +169,44 @@ $fmat = array(
             <?php include_once 'subheader.php' ?>
             <div id='content'>
                 <form name="transactionForm" onsubmit="return validateForm(this);" action="" method="post">
-                    <?php $fieldGen->display($fmat); ?>
+                    <div>
+                        <?php 
+                        echo $fieldGen->display( array(
+                            'Description' => FieldGen::inputListFormat('text'),
+                            'StatusID'    => FieldGen::optionListFormat($sopts),                            
+                        ) ); 
+                        ?>
+                    </div>
+                    <table>
+                        <?php
+                        echo $fieldGen->display( array(
+                            'TransactionDate'   => FieldGen::inputRowFormat('date'),
+                            'PaymentDate'       => FieldGen::inputRowFormat('date'),
+                            'ResponsibleParty'  => FieldGen::inputRowFormat('text'),
+                            'AssociatedParty'   => FieldGen::inputRowFormat('text'), 
+                        ) );
+                        ?>
+                    </table>
+                    <table>
+                        <?php
+                        echo $fieldGen->display( array(
+                            'Amount'    => function ($id, $lbl, $val, $err){
+                                $fld = "<input name='".$id."' type='text' value='". $val/100 ."'>";
+                                $lbc = "<label for ='".$id."'>".$lbl."</label>";
+                                return FieldGen::fieldRow($id, $lbc, $fld, $err);
+                            },   
+                            'Inflow'    => FieldGen::optionRowFormat($iopts),
+                        ) );
+                        ?>
+                    </table>                    
+                    <div>
+                        <?php
+                        echo $fieldGen->display( array(
+                            'Comment' => FieldGen::inputListFormat('text'),
+                        ) );  
+                        ?>
+                    </div>
+                    
                     <input type='submit' name='update' id='update' value='Update'>
                 </form>                
                 <!--<button onclick="setReadonly('data',false)">Edit</button>

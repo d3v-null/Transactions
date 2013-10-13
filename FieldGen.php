@@ -12,7 +12,7 @@ class FieldRule{
         if($rule){
             $this->rule = $rule;
         } else {
-            die("rule not specified correctly");//!
+            die("rule not specified correctly: ".$this->emsg);//!
         }
     }
     
@@ -31,32 +31,28 @@ class FieldGen{
     public $ruls = array(); //Evaluation rules
     
     //ID's used in generated HTML
-    public static $labelid = 'label';
-    public static $inputid = 'input';
-    public static $errorid = 'error';
 
-    public static function fieldRow($id, $lbl, $fld, $err){}
-        
-    
-    public static function fieldList($id, $lbl, $fld, $err){
-        return 
-            "<div class='fieldgenlist' id='".$id."'>".
-                "<ul>".
-                    "<li id='".self::$labelid."'>".$lbl."</li>".
-                    "<li id='".self::$inputid."'>".$fld."</li>".
-                    "<li id='".self::$errorid."'>".$err."</li>".
-                "</ul>".
-            "</div>";        
+    public static function fieldRow($id, $lbl, $fld, $err){
+        return
+            "<tr class='fieldGenRowIn' id='".$id."'>".
+                "<td>".$lbl."</td>".
+                "<td>".$fld."</td>".
+            "</tr>".
+            "<tr class='fieldGenRowErr'>".
+                "<td class='form-error' classcolspan='2'>".$err."</td>".
+            "</tr>";
     }
     
-    public static function inputFormat($typ){
+    public static function inputRowFormat($typ){
         return function ($id, $lbl, $val, $err) use($typ){
             $fld = "<input name='".$id."' type='".$typ."' value='".$val."'>";
-            return self::fieldList($id, $lbl, $fld, $err);
+            $lbc = "<label for ='".$id."'>".$lbl."</label>";
+            return self::fieldRow($id, $lbc, $fld, $err);
         };
     }
-    
-    public static function optionFormat($opts){
+      
+
+    public static function optionRowFormat($opts){
         return function ($id, $lbl, $val, $err) use($opts){
             $fld = "<select name=".$id.">";
             foreach($opts as $k => $v){
@@ -64,7 +60,40 @@ class FieldGen{
                 $fld .= "<option value='".$k."' ".$sel.">".$v."</option>";
             }
             $fld .= "</select>";
-            return self::fieldList($id, $lbl, $fld, $err);
+            $lbc = "<label for ='".$id."'>".$lbl."</label>";
+            return self::fieldRow($id, $lbc, $fld, $err);
+        };  
+    }
+    
+    public static function fieldList($id, $lbl, $fld, $err){
+        return 
+            "<div class='fieldgenlist' id='".$id."'>".
+                "<ul>".
+                    "<li>".$lbl."</li>".
+                    "<li>".$fld."</li>".
+                    "<li class='form-error'>".$err."</li>".
+                "</ul>".
+            "</div>";        
+    }
+    
+    public static function inputListFormat($typ){
+        return function ($id, $lbl, $val, $err) use($typ){
+            $fld = "<input name='".$id."' type='".$typ."' value='".$val."'>";
+            $lbc = "<label for ='".$id."'>".$lbl."</label>";
+            return self::fieldList($id, $lbc, $fld, $err);
+        };
+    }
+    
+    public static function optionListFormat($opts){
+        return function ($id, $lbl, $val, $err) use($opts){
+            $fld = "<select name=".$id.">";
+            foreach($opts as $k => $v){
+                $sel = ($k = $val)?"selected":"";
+                $fld .= "<option value='".$k."' ".$sel.">".$v."</option>";
+            }
+            $fld .= "</select>";
+            $lbc = "<label for ='".$id."'>".$lbl."</label>";
+            return self::fieldList($id, $lbc, $fld, $err);
         };  
     }
     
@@ -130,28 +159,32 @@ class FieldGen{
     }
         //validate each item in $vals //pars, $ruls | errs
     public function validate(){
+        $valid = true;
         foreach($this->vals as $k => $v){
             if(isset($this->ruls[$k])){
                 foreach($this->ruls[$k] as $frul){
                     $r = $frul->rule;
                     if(!$r($v)){
-                        echo $frul;
                         $this->errs[$k] = $frul->emsg;
+                        $favlid = false;
                     }
                 }
             }
         }
+        return $valid;
     } 
     
     public function display($disp){ //disp, hand, pars, errs
+        $out = "";
         foreach($disp as $k => $v){
-            echo $v(
+            $out .= $v(
                 $k, 
                 $this->get_lbl($k), 
                 (isset($this->vals[$k]))?$this->vals[$k]:"",
                 (isset($this->errs[$k]))?$this->errs[$k]:""
             );
         }
+        return $out;
     }   
     
     public function __toString(){
