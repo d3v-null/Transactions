@@ -88,11 +88,11 @@
 			// http://www.w3schools.com/js/js_form_validation.asp
 			function validateForm()
 			{
-				var error = document.forms["SubCategoryForm"]["SubCategoryName"].value;
+				var error = document.forms["subForm"]["name"].value;
 
 				if (error == null || error == "")
 				{
-					alert("First Name must be filled out");
+					alert("Field 'Name' must be filled out.");
 					return false;
 				}
 			}
@@ -107,7 +107,7 @@
 			<div id="box">
 				<h1>Subcategory Details</h1>
 
-				<form action="subcategory.php?id=<?php echo $id; ?>" method="post" id="content" >
+				<form name="subForm" action="subcategory.php?id=<?php echo $id; ?>" onsubmit="return validateForm()" method="post" id="content" >
 					<input type="hidden" name="id" value=>
 
 					<b>* This field is compulsory</b>
