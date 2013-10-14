@@ -27,7 +27,7 @@
 			$result = mysql_query($sql);
 
 			$actionDelete = mysql_fetch_array($result);
-			//echo "<script>alert('".serialize($actionDelete)."')</script>";
+			//to do: remove echo "<script>alert('".serialize($actionDelete)."')</script>";
 
 			if($actionDelete['HistoryID'] == FALSE){
 				// If this current subcategory isn't associated with transaction
@@ -73,7 +73,7 @@
 			}
 		}
     }
-    //echo "id: ".$id." name: ".$name." desc: ".$desc;
+    //to do: remove echo "id: ".$id." name: ".$name." desc: ".$desc;
 ?>
 
 <!DOCTYPE html>
