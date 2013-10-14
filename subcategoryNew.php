@@ -16,16 +16,22 @@
 		
 		// Inserting new category
 		if (key_exists("subCatName", $_POST) && key_exists("subCatDesc", $_POST) && key_exists("subCatID", $_POST))
-		{
+		{			
 			$catName = $_POST['subCatName'];
 			$description = $_POST['subCatDesc'];
 			$catID = $_POST['subCatID'];
 			
-			// Insert values
-			$slq="INSERT INTO subcategory (CategoryID, Name, Description) VALUES ('$catID','$catName','$description')";
-			mysql_query($slq,$con);
-			
-			echo "<script>alert('Subcategory ". $catName ." was successfully inserted.')</script>";
+			// Check for duplicates
+			$sql = "SELECT Name FROM subcategory WHERE Name LIKE '$catName'";
+			$exists = mysql_fetch_array($sql);
+			if(!$exists){				
+				// Insert values
+				$slq="INSERT INTO subcategory (CategoryID, Name, Description) VALUES ('$catID','$catName','$description')";
+				mysql_query($slq,$con);
+				
+				echo "<script>alert('Subcategory ". $catName ." was successfully inserted.')</script>";
+			} else {
+			}
 		}
 		
 		// Close conection
