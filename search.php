@@ -8,9 +8,9 @@
         redirect('index.php');
     }
 
-    $pars = Array(     
-        'ts' => (isset($_GET['ts']))?$_GET['ts']:0,     //Transaction offset   
-        'tn' => (isset($_GET['tn']))?$_GET['tn']:20,    //transactions / page 
+    $pars = Array(
+        'ts' => (isset($_GET['ts']))?$_GET['ts']:0,     //Transaction offset
+        'tn' => (isset($_GET['tn']))?$_GET['tn']:20,    //transactions / page
         'oc' => (isset($_GET['oc']))?$_GET['oc']:1,     //Order-by column
         'od' => (isset($_GET['od']))?$_GET['od']:0,     //Order direction
         'kw' => (isset($_GET['kw']))?$_GET['kw']:"",    //Keywords
@@ -18,8 +18,8 @@
         'td' => (isset($_GET['td']))?$_GET['td']:"",    //To date
         'st' => (isset($_GET['st']))?$_GET['st']:0,     //Status
     );
-    
-    $cols = Array(           
+
+    $cols = Array(
         Array('TransactionID', function($row){return $row['TransactionID'];}),
         Array('TransactionDate', function($row){return $row['TransactionDate'];}),
         Array('Description', function($row){return $row['Description'];}),
@@ -27,14 +27,14 @@
         Array('Amount', function($row){return $row['Amount'] / 100;}),
         Array('', function($row){return "<a id='edit' href='transaction.php?id=".$row['ID']."'>Edit</a>";}),
     );
-    
+
     $ords = Array(
         Array('Descending', 'DESC'),
         Array('Ascending', 'ASC'),
     );
-    
+
     $view = Array(2,5,20,50,100);
-    
+
     //process pagination
     if(isset($_GET['pag'])){
         switch($_GET['pag']){
@@ -65,9 +65,9 @@
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]
         -->
-        <link rel="stylesheet" type="text/css" href="/css/style2.css">
-        <link rel="stylesheet" type="text/css" href="/css/styling.css">
-        <script src="/js/expander.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/style2.css">
+        <link rel="stylesheet" type="text/css" href="css/styling.css">
+        <script src="js/expander.js"></script>
     </head>
 
     <body id="main">
@@ -130,7 +130,7 @@
                                     }
                                 ?>
                             </select>
-                        </td>                        
+                        </td>
                         <td>
                             <select name='tn'>
                                 <?php
@@ -183,14 +183,14 @@
                     INNER JOIN History ON Latest.TransactionID = History.TransactionID
                     AND Latest.ModificationDate = History.ModificationDate
                     INNER JOIN Status ON Status.ID = History.StatusID ".$whr;
-                
+
                 $result = mysql_query("SELECT COUNT(*) AS Count FROM (".$search.") AS T") or die(mysql_error());;
                 $count = mysql_fetch_array($result)['Count'];
                 $pars['ts'] = max(0, min($count-$pars['tn'],$pars['ts']));
                 $post = "ORDER BY ".$cols[$pars['oc']][0]." ".$ords[$pars['od']][1].
                         " LIMIT ".$pars['tn']." OFFSET ".$pars['ts'].";";
                 $page = mysql_query($search.$post) or die(mysql_error());
-                
+
             ?>
 
             <table id="transaction-list" summary = "List of Transactions">

@@ -6,26 +6,26 @@
     $user = new User();
     if(!$user->loggedIn()){
         redirect('index.php');
-    } 
-    
+    }
+
     //If delete button was pressed
     if(!empty($_POST) && key_exists('delete', $_POST)){
         if (!$user->isTreasurer()){
             echo "<script>alert('You must have treasurer privileges to create a transaction')</script>";
-        } else { 
+        } else {
             //Do delete things
-            
+
         }
     }
-    
+
     //ignore this
-    
+
     // $PARS = Array(
         // 'id' => (isset($_GET['st']))?$_GET['st']:0,   //TransactionID
-        // 'ds' => 
+        // 'ds' =>
         // 'cm' =>
         // 'rd' =>
-        // 'td' => 
+        // 'td' =>
         // 'pd' =>
         // 'md' =>
         // 'rp' =>
@@ -41,24 +41,24 @@
         $string = str_replace("'","\'", $string);
         return str_replace("\"", "\\\"", $string);
     }
-    
+
     // If update button was pressed
     if(isset($_POST['update']))
     {
         if (!$user->isTreasurer()){
             echo "<script>alert('You must have treasurer privileges to modify a transaction')</script>";
-        } else {       
-            $sql =  "INSERT INTO History ( 
-                        TransactionID, 
-                        Description, 
-                        Comment, 
-                        ModificationDate, 
+        } else {
+            $sql =  "INSERT INTO History (
+                        TransactionID,
+                        Description,
+                        Comment,
+                        ModificationDate,
                         TransactionDate,
-                        PaymentDate, 
-                        ResponsibleParty, 
-                        AssociatedParty, 
-                        Amount, 
-                        Inflow, 
+                        PaymentDate,
+                        ResponsibleParty,
+                        AssociatedParty,
+                        Amount,
+                        Inflow,
                         StatusID
                      )".
                     "SELECT".
@@ -73,19 +73,19 @@
                         "'" . $_POST['Amount'] . "', ".
                         "'" .  ($_POST['Type'] == "in") . "', ".
                         "'" . $_POST['Status'] . "' ".
-                    "FROM History ". 
-                    "WHERE ID = '" . $_GET['id'] . "'" ; 
+                    "FROM History ".
+                    "WHERE ID = '" . $_GET['id'] . "'" ;
             IF(debug) echo($sql);
             mysql_query($sql) or die(mysql_error());
         }
     }
-?>  
+?>
 <!DOCTYPE html>
 <html>
     <head>
         <title><?php echo $page_title?></title>
-        <link rel="stylesheet" type="text/css" href="/css/style2.css">
-        <link rel="stylesheet" type="text/css" href="/css/styling.css">
+        <link rel="stylesheet" type="text/css" href="css/style2.css">
+        <link rel="stylesheet" type="text/css" href="css/styling.css">
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script>
         <script src="js/jquery.tabSlideOut.v1.3.js"></script>
@@ -108,7 +108,7 @@
                         "ID = '". $idResultRows['ID'] ."'".
                         "ORDER BY ModificationDate ASC";
                     $result = mysql_query($sql) or die(mysql_error());
-                
+
                     while($row = mysql_fetch_assoc($result))
                     {
                         echo "<ul>";
@@ -128,7 +128,7 @@
                     $result = mysql_query($sql ) or die(mysql_error());
                     $row = mysql_fetch_assoc($result);
                     $statusID = intval($row['StatusID']);
-                ?>	
+                ?>
                 <form name="transactionForm" onsubmit="return validateForm(this);" action="transaction.php" method="post">
                     <table class = "formatted">
                         <tr>
@@ -136,9 +136,9 @@
                                 Description
                             </td>
                             <td>
-                                
+
                             </td>
-                            <td> 
+                            <td>
                                 <div class="transactionTitle">
                                     Status:
                                 </div>
@@ -228,10 +228,10 @@
                     <input type="submit" name="update" id="update" value="Update">
                     <input type='submit' name='delete' value='Delete'>
                 </form>
-                
+
                 <button onclick="setReadonly('data',false)">Edit</button>
                 <!--<button onclick="setReadonly('data',true)">Cancel</button>-->
-                
+
             </div><!-- end content!-->
         </div><!-- end box -->
         <div id="sidebar">
