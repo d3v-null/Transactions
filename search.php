@@ -74,7 +74,7 @@
         <div id="box" class="bordered">
         <?php include 'subheader.php' ?>
 
-        <form method="get" action="search.php" class="content">
+        <form method="get" action="search.php" id="content">
             <div class="bordered">
                 <h2>Search</h2>
                 <input type="submit" name="search" value="Update">
@@ -216,7 +216,7 @@
                 ?>
                 </tbody>
             </table>
-            <input type='hidden' name='ts' value=<?php echo $pars['ts']?>>;
+            <input type='hidden' name='ts' value=<?php echo $pars['ts']?>>
 
             <div id="pagination">
                 <input type="submit" name="pag" value="First">

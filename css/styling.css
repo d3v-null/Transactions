@@ -75,41 +75,42 @@ ul
 #transaction-list
 {
 	width: 100%;
-	margin: 20px 0;
+	margin: 50px 0;
 	text-align: left;
 	background-color:#E6F5F5;
 	color:#216477;
+  text-align:centre;
+  outline:#4380D3 1px solid;
 }
 
 #transaction-list>thead
 {
 	color:black;
 	background:#4380D3;
+  padding: 5px  10px;
 }
 
 #transaction-list>tbody>tr>td
 {
-	height:20px;
+	height:30px;
+  padding: 5px 10px;
 }
 
-#transaction-list>tbody>tr, a{
-	background-color:#E6F5F5;
+#transaction-list>tbody>tr{
+  border-top: 1px solid white;
+	background-color:#C2DFFF;
 	-o-transition:.5s;
 	-ms-transition:.5s;
 	-moz-transition:.5s;
 	-webkit-transition:.5s;
 	transition:.5s;
+  padding: 0 5px;
 }
+
 #transaction-list>tbody>tr:hover
 {
 	color:black;
-	background-color: #C2DFFF;
-}
-
-#transaction-list>tbody>tr:hover a
-{
-	color:black;
-	background-color: #C2DFFF;
+	background-color: #FFF380;
 }
 
 #transaction-list a:link, a:visited{
