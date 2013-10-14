@@ -43,29 +43,35 @@
     }
     
     if(!empty($_POST) && key_exists('save', $_POST)){
-        if(!key_exists('name', $_POST)) {
-            echo "<script>alert('No name specified in $_POST')</script>";
-        } else if(!key_exists('desc', $_POST)){
-            echo "<script>alert('No desc specified in $_POST')</script>";
-        } else if($_POST['name'] == ""){
-            echo "<script>alert('Name must not be empty')</script>";
-        } else If(!$user->isTreasurer()){
-            echo "<script>alert('You must have treasurer privileges to modify a category')</script>";
-        } else {
-            $name = $_POST['name'];
-            $desc = $_POST['desc'];
-            mysql_query("UPDATE subcategory SET Name='".$name."', Description='".$desc."' ".
-                        "WHERE subcategory.ID=".$id) or die(mysql_error());
-            echo "<script>alert('Successfully updated category')</script>";
-        }
-		
-		if($_SERVER['HTTP_REFERER']){
-			redirect($_SERVER['HTTP_REFERER']);
+		// Check user
+		if (!$user->isTreasurer()){
+			echo "<script>alert('You must have treasurer privileges to edit a subcategory. You are going to be redirected to the main page')</script>";
+			echo "<meta http-equiv='Refresh' content='0; URL=search.php'>";
 		} else {
-			redirect("search.php");
+		
+			if(!key_exists('name', $_POST)) {
+				echo "<script>alert('No name specified in $_POST')</script>";
+			} else if(!key_exists('desc', $_POST)){
+				echo "<script>alert('No desc specified in $_POST')</script>";
+			} else if($_POST['name'] == ""){
+				echo "<script>alert('Name must not be empty')</script>";
+			} else If(!$user->isTreasurer()){
+				echo "<script>alert('You must have treasurer privileges to modify a category')</script>";
+			} else {
+				$name = $_POST['name'];
+				$desc = $_POST['desc'];
+				mysql_query("UPDATE subcategory SET Name='".$name."', Description='".$desc."' ".
+							"WHERE subcategory.ID=".$id) or die(mysql_error());
+				echo "<script>alert('Successfully updated category')</script>";
+			}
+			
+			if($_SERVER['HTTP_REFERER']){
+				redirect($_SERVER['HTTP_REFERER']);
+			} else {
+				redirect("search.php");
+			}
 		}
     }
-	else 
     //echo "id: ".$id." name: ".$name." desc: ".$desc;
 ?>
 
