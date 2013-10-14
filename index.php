@@ -48,31 +48,31 @@ try{
 		rate_limit($_SERVER['REMOTE_ADDR']);
 		rate_limit_tick($_SERVER['REMOTE_ADDR'], $_POST['email']);
 
-		// send email to the user
-		// $message = '';
-		// $email = $_POST['email'];
-		// $subject = 'Access Granted!';
+		send email to the user
+		$message = '';
+		$email = $_POST['email'];
+		$subject = 'Access Granted!';
 
-		// if(!User::exists($email)){
-		// 	$subject = "Access Granted!";
-		// 	$message = "Your access to the ledger system is granted!\n\n";
-		// }
+		if(!User::exists($email)){
+			$subject = "Access Granted!";
+			$message = "Your access to the ledger system is granted!\n\n";
+		}
 
 		$user = User::loginOrRegister($_POST['email']);
 
-		// $message.= "You can access the ledger system from this URL:\n";
-		// $message.= get_page_url()."?tkn=".$user->generateToken()."\n\n";
-		// $message.= "The link is going expire automatically after 7 days.";
-		// $result = send_email($fromEmail, $_POST['email'], $subject, $message);
+		$message.= "You can access the ledger system from this URL:\n";
+		$message.= get_page_url()."?tkn=".$user->generateToken()."\n\n";
+		$message.= "The link is going expire automatically after 7 days.";
+		$result = send_email($fromEmail, $_POST['email'], $subject, $message);
 
-		$link = get_page_url()."?tkn=".$user->generateToken()."\n\n";
+		// $link = get_page_url()."?tkn=".$user->generateToken()."\n\n";
 
-		// if (!$result) {
-		// 	throw new Exception("There was an error sending your email. Please try again.");
-		// }
+		if (!$result) {
+			throw new Exception("There was an error sending your email. Please try again.");
+		}
 
 		die(json_encode(array(
-			'message' => $link
+			'message' => "Thank you, we have already sent you the login link to your email."
 		)));
 	}
 }
