@@ -1,5 +1,4 @@
 <?php
-	require_once 'includes/constants.php';
     require_once 'includes/config.php';
     
 	$user = new User();
@@ -28,9 +27,10 @@
 			
 			echo "<script>alert('Subcategory ". $catName ." was successfully inserted.')</script>";
 		}
-	}	
-	// Close conection
-	mysql_close($con);
+		
+		// Close conection
+		mysql_close($con);
+	}
 ?>
 
 <!DOCTYPE html>
