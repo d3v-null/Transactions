@@ -1,19 +1,13 @@
 <?php
     require_once 'includes/config.php';
-    
+    require_once 'includes/transaction_setup.php';
+	
 	$user = new User();
 	
 	if (!$user->isTreasurer()){
 		echo "<script>alert('You must have treasurer privileges to create a new category. You are going to be redirected to the main page')</script>";
 		echo "<meta http-equiv='Refresh' content='0; URL=search.php'>";
-    } else {
-		// Connect to transaction database
-		$dbhost = "localhost";
-		$dbname = "transaction";
-		$dbuser = "root";
-		$con    = mysql_connect($dbhost, $dbuser) or die(mysql_error());
-		mysql_select_db($dbname) or die(mysql_error());
-		
+    } else {		
 		// Inserting new category
 		if (key_exists("subCatName", $_POST) && key_exists("subCatDesc", $_POST) && key_exists("subCatID", $_POST))
 		{			
@@ -23,21 +17,19 @@
 			
 			// Check for duplicates
 			$sql = "SELECT Name FROM subcategory WHERE Name LIKE '$catName'";
-			$row = mysql_query($sql,$con);
+			$row = mysql_query($sql);
 			$exists = mysql_fetch_array($row);
+			
 			if(!$exists){				
 				// Insert values
 				$slq="INSERT INTO subcategory (CategoryID, Name, Description) VALUES ('$catID','$catName','$description')";
-				mysql_query($slq,$con);
+				mysql_query($slq);
 				
 				echo "<script>alert('Subcategory ". $catName ." was successfully inserted.')</script>";
 			} else {
 				echo "<script>alert('ERROR: Impossible insert subcategory named as ". $catName ." because it already exists in current database. Please specify other name.')</script>";
 			}
 		}
-		
-		// Close conection
-		mysql_close($con);
 	}
 ?>
 
