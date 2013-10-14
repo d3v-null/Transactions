@@ -24,8 +24,7 @@
 	{
 		if (!$user->isTreasurer()){
             echo "<script>alert('You must have treasurer privileges to delete a category!You are going to be redirected to the main page')</script>";
-			echo "<meta http-equiv='Refresh' content='0; URL=search.php'>";
-			
+			echo "<meta http-equiv='Refresh' content='0; URL=search.php'>";			
         } else {
 			$canDelete = TRUE;
 			// Check if it can perform delete action
