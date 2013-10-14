@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <?php  
     require_once 'includes/transaction_setup.php';
+    $protocol = strpos(strtolower($_SERVER['SERVER_PROTOCOL']),'https') === FALSE ? 'http' : 'https';
+    $host     = $_SERVER['HTTP_HOST'];
+    $script   = $_SERVER['SCRIPT_NAME'];
+    $params   = $_SERVER['QUERY_STRING'];
+    $urlsub = $script . '?' . $params;
+    $urlsearch = $script ;
 ?>
 <html>
   <head>
@@ -49,9 +55,16 @@
 					<div class='panel-body'>";
 					while ($subRow = mysql_fetch_array($subCats)) 
 					{
- 
-						  echo "<li><a href='subcategory.php?id=".$subRow['ID']."'>
-						  <span><input type='checkbox' name='Subcategories[]' value='".$subRow['ID']."'>".$subRow['Name']."<br></span></a></li>";
+              if ($urlsearch != '/search.php')
+              {
+                echo "<li><a href='subcategory.php?id=".$subRow['ID']."'>
+                <span>".$subRow['Name']."</span></a></li>";
+              } 
+              else                
+              {  
+                echo "<li><a href='subcategory.php?id=".$subRow['ID']."'>
+                <span><input type='checkbox' name='Subcategories[]' value='".$subRow['ID']."'>".$subRow['Name']."<br></span></a></li>";
+              } 
 					}
 					   echo "<li class='last'><a href='subcategoryNew.php?ID=".$catID."'>
 					     <span>Add New Subcategory</span></a></li>";
