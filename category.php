@@ -9,9 +9,23 @@
     if(!$user->loggedIn()){
         redirect('index.php');
     }
+    
+    if(key_exists('new', $_POST) or key_exists('new', $_GET)){
+        if (!$user->isTreasurer()){
+            echo "<script>alert('You must have treasurer privileges to create a category')</script>";
+        } else {
+            $qry = "SELECT MAX(ID) AS ID FROM Category";
+            $result = mysql_query($qry) or die(mysql_error());
+            echo serialize($result);
+            $max = mysql_fetch_array($result)['ID'];
+            $sql="INSERT INTO Category (Name, Description) VALUES ('New Category (".$max.")','')";
+            mysql_query($sql) or die("Category cannot be created: ".mysql_error());
+        }
 
-    //die if no category ID specified
-    $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No Category ID specified");
+        $id = mysql_insert_id();
+    } else {
+        $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No category specified");
+    }    
 
     //Check ID is valid
     $sql = "SELECT Name, Description FROM Category WHERE ID=" . $id . "";
@@ -73,23 +87,7 @@
 			}
         }
     }
-    //If new button was pressed
-    // if(!empty($_POST) && key_exists('new', $_POST)){
-        // if (!$user->isTreasurer()){
-            // echo "<script>alert('You must have treasurer privileges to create a category')</script>";
-        // } else {
-            // $qry = "SELECT MAX(ID) AS ID FROM Category";
-            // $result = mysql_query($qry) or die(mysql_error());
-            // echo serialize($result);
-            // $max = mysql_fetch_array($result)['ID'];
-            // $sql="INSERT INTO Category (Name, Description) VALUES ('New Category (".$max.")','')";
-            // mysql_query($sql) or die("Category cannot be created: ".mysql_error());
-        // }
 
-        // $id = mysql_insert_id();
-    // } else {
-        // $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No category specified");
-    // }
 
     //Does the ID Correspond to a valid category?
     $sql = "SELECT Name, Description FROM category WHERE ID=".$id;

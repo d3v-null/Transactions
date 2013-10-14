@@ -10,11 +10,14 @@ if(!$user->loggedIn()){
     redirect('index.php');
 }
 
+$fieldGen = new FieldGen();
+
 //If new button was pressed
-if(!empty($_POST) && key_exists('new', $_POST)){
+if(key_exists('new', $_POST) or key_exists('new', $_GET)){
     if (!$user->isTreasurer()){
         echo "<script>alert('You must have treasurer privileges to create a transaction')</script>";
     } else {
+        
         //Check things
         //Do new things
         //set ID
@@ -27,18 +30,6 @@ $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No History ID specified");
 //Check ID is valid
 $fetch = FieldGen::fetch($page_table, $id);
 
-//If delete button was pressed
-if(!empty($_POST) && key_exists('delete', $_POST)){
-    if (!$user->isTreasurer()){
-        echo "<script>alert('You must have treasurer privileges to delete a transaction')</script>";
-    } else {
-        //Check things
-        //Do delete things
-        //Redirect
-    }
-}
-
-$fieldGen = new FieldGen();
 $fieldGen->lbls = array(
     'TransactionDate'   => 'Date of Transaction',
     'PaymentDate'       => 'Date of Payment',
@@ -102,28 +93,23 @@ $fieldGen->add_rule(
 );
 
 // If update button was pressed
-if(!empty($_POST) && isset($_POST['update']))
+if(key_exists('update',$_POST))
 {
     if (!$user->isTreasurer()){
         echo "<script>alert('You must have treasurer privileges to modify a transaction')</script>";
     } else {
         $fieldGen->parse($_POST);
-
         $fieldGen->vals['ModificationDate'] = date('Y-m-d h:m:s');
         $fieldGen->vals['ModificationPersonID'] =
             (isset($_SESSION['loginid']))?$_SESSION['loginid']:die("No login available");
         $fieldGen->vals['Amount'] *= 100;
-
         $fieldGen->validate();
-
 
         $sql =  "INSERT INTO history (".
                     implode(", ", array_keys($fieldGen->vals)).
                 ") VALUES (".
                     implode(", ", array_map(['FieldGen', 'sqlFormat'], array_values($fieldGen->vals))).
                 ") ";
-
-        echo($sql);
         mysql_query($sql) or die(mysql_error());
         $id = mysql_insert_id();
     }

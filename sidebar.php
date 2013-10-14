@@ -79,7 +79,7 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-            <a href="categoryNew.php" class='accordion-toggle' data-parent='#accordion'>
+            <a href="category.php?new" class='accordion-toggle' data-parent='#accordion'>
               Create New Category
             </a>
           </div>
