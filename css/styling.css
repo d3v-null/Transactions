@@ -71,17 +71,34 @@ ul
 /*******************************************************************/
 /* Tables */
 
+
+
+
+/* Search */
+
+
+#search{
+  background-color:white;/**#E6F5F5;**/
+}
+
 /*Transaction Table*/
 #transaction-list
 {
 	width: 100%;
 	margin: 50px 0;
 	text-align: left;
-	background-color:#E6F5F5;
+ background-color: white;/**#E6F5F5;**/
 	color:#216477;
   text-align:centre;
-  outline:#4380D3 1px solid;
+  outline:#4380D3 2px solid;
+  
 }
+
+/**
+#transaction-list tbody tr:nth-child(odd) {
+  background-color:;
+}
+**/
 
 #transaction-list>thead
 {
@@ -97,14 +114,13 @@ ul
 }
 
 #transaction-list>tbody>tr{
-  border-top: 1px solid white;
-	background-color:#C2DFFF;
+  border-top: 1.5px solid white;
+	/**background-color:#C2DFFF;**/
 	-o-transition:.5s;
 	-ms-transition:.5s;
 	-moz-transition:.5s;
 	-webkit-transition:.5s;
 	transition:.5s;
-  padding: 0 5px;
 }
 
 #transaction-list>tbody>tr:hover
@@ -303,3 +319,4 @@ div.tabContent
 }
 
 **/
+

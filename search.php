@@ -75,7 +75,7 @@
         <?php include 'subheader.php' ?>
 
         <form method="get" action="search.php" id="content">
-            <div class="bordered">
+            <div id="search" class="bordered">
                 <h2>Search</h2>
                 <input type="submit" name="search" value="Update">
 
