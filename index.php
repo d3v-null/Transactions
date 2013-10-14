@@ -102,7 +102,6 @@ catch(Exception $e){
 		<div class="jumbotron">
 			<div class="container">
 				<h2>Welcome to the Swedish Club of WA Ledger System</h2>
-				<p>blah la blah la</p>
 				<a data-toggle="modal" data-target="#register" href="#register" class="btn btn-primary btn-lg">Request Access</a>
 			  <div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			    <div class="modal-dialog">
