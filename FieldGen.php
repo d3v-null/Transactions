@@ -30,7 +30,16 @@ class FieldGen{
     public $errs = array(); //Errors
     public $ruls = array(); //Evaluation rules
     
-    //ID's used in generated HTML
+    public static function fieldList($id, $lbl, $fld, $err){
+        return 
+            "<div class='fieldgenlist' id='".$id."'>".
+                "<ul>".
+                    "<li>".$lbl."</li>".
+                    "<li>".$fld."</li>".
+                    "<li class='form-error'>".$err."</li>".
+                "</ul>".
+            "</div>";        
+    }
 
     public static function fieldRow($id, $lbl, $fld, $err){
         return
@@ -43,17 +52,17 @@ class FieldGen{
             "</tr>";
     }
     
-    public static function inputRowFormat($typ){
-        return function ($id, $lbl, $val, $err) use($typ){
+    public static function inputFormat($typ, $arr){
+        return function ($id, $lbl, $val, $err) use($typ, $arr){
             $fld = "<input name='".$id."' type='".$typ."' value='".$val."'>";
             $lbc = "<label for ='".$id."'>".$lbl."</label>";
-            return self::fieldRow($id, $lbc, $fld, $err);
+            return $arr($id, $lbc, $fld, $err);
         };
     }
       
 
-    public static function optionRowFormat($opts){
-        return function ($id, $lbl, $val, $err) use($opts){
+    public static function optionFormat($opts, $arr){
+        return function ($id, $lbl, $val, $err) use($opts, $arr){
             $fld = "<select name=".$id.">";
             foreach($opts as $k => $v){
                 $sel = ($k = $val)?"selected":"";
@@ -61,39 +70,7 @@ class FieldGen{
             }
             $fld .= "</select>";
             $lbc = "<label for ='".$id."'>".$lbl."</label>";
-            return self::fieldRow($id, $lbc, $fld, $err);
-        };  
-    }
-    
-    public static function fieldList($id, $lbl, $fld, $err){
-        return 
-            "<div class='fieldgenlist' id='".$id."'>".
-                "<ul>".
-                    "<li>".$lbl."</li>".
-                    "<li>".$fld."</li>".
-                    "<li class='form-error'>".$err."</li>".
-                "</ul>".
-            "</div>";        
-    }
-    
-    public static function inputListFormat($typ){
-        return function ($id, $lbl, $val, $err) use($typ){
-            $fld = "<input name='".$id."' type='".$typ."' value='".$val."'>";
-            $lbc = "<label for ='".$id."'>".$lbl."</label>";
-            return self::fieldList($id, $lbc, $fld, $err);
-        };
-    }
-    
-    public static function optionListFormat($opts){
-        return function ($id, $lbl, $val, $err) use($opts){
-            $fld = "<select name=".$id.">";
-            foreach($opts as $k => $v){
-                $sel = ($k = $val)?"selected":"";
-                $fld .= "<option value='".$k."' ".$sel.">".$v."</option>";
-            }
-            $fld .= "</select>";
-            $lbc = "<label for ='".$id."'>".$lbl."</label>";
-            return self::fieldList($id, $lbc, $fld, $err);
+            return $arr($id, $lbc, $fld, $err);
         };  
     }
     

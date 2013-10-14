@@ -186,18 +186,18 @@ $iopts = array(
                     <div>
                         <?php
                         echo $fieldGen->display( array(
-                            'Description' => FieldGen::inputListFormat('text'),
-                            'StatusID'    => FieldGen::optionListFormat($sopts),
+                            'Description' => FieldGen::inputFormat('text', ['FieldGen','fieldList']),
+                            'StatusID'    => FieldGen::optionFormat($sopts, ['FieldGen','fieldList']),
                         ) );
                         ?>
                     </div>
                     <table>
                         <?php
                         echo $fieldGen->display( array(
-                            'TransactionDate'   => FieldGen::inputRowFormat('date'),
-                            'PaymentDate'       => FieldGen::inputRowFormat('date'),
-                            'ResponsibleParty'  => FieldGen::inputRowFormat('text'),
-                            'AssociatedParty'   => FieldGen::inputRowFormat('text'),
+                            'TransactionDate'   => FieldGen::inputFormat('date', ['FieldGen','fieldRow']),
+                            'PaymentDate'       => FieldGen::inputFormat('date', ['FieldGen','fieldRow']),
+                            'ResponsibleParty'  => FieldGen::inputFormat('text', ['FieldGen','fieldRow']),
+                            'AssociatedParty'   => FieldGen::inputFormat('text', ['FieldGen','fieldRow']),
                         ) );
                         ?>
                     </table>
@@ -209,22 +209,23 @@ $iopts = array(
                                 $lbc = "<label for ='".$id."'>".$lbl."</label>";
                                 return FieldGen::fieldRow($id, $lbc, $fld, $err);
                             },
-                            'Inflow'    => FieldGen::optionRowFormat($iopts),
+                            'Inflow'    => FieldGen::optionFormat($iopts, ['FieldGen','fieldRow']),
                         ) );
                         ?>
                     </table>
                     <div>
                         <?php
                         echo $fieldGen->display( array(
-                            'Comment' => FieldGen::inputListFormat('text'),
+                            'Comment' => FieldGen::inputFormat('text', ['FieldGen','fieldList']),
                         ) );
                         ?>
                     </div>
 
                     <input type='submit' name='update' id='update' value='Update'>
+                    <button onclick="setReadonly('data',false)">Edit</button>
                 </form>
-                <!--<button onclick="setReadonly('data',false)">Edit</button>
-                <button onclick="setReadonly('data',true)">Cancel</button>-->
+                
+                <!--<button onclick="setReadonly('data',true)">Cancel</button>-->
             </div><!-- end content!-->
         </div><!-- end box -->
 
