@@ -96,7 +96,7 @@ $fieldGen->add_rule(
     new FieldRule(
         'A valid payment type must be chosen',
         function($a){
-            return in_array($a, array(1,2));
+            return in_array($a, [1,2]);
         }
     )
 );
@@ -114,18 +114,16 @@ if(!empty($_POST) && isset($_POST['update']))
             (isset($_SESSION['loginid']))?$_SESSION['loginid']:die("No login available");
         $fieldGen->vals['Amount'] *= 100;
 
-        //echo $fieldGen->validate();
-
-        // echo FieldGen::sqlFormat("herp");
+        $fieldGen->validate();
 
 
-        //$sql =  "INSERT INTO history (".
-                    // implode(", ", array_keys($fieldGen->vals)).
-                // ") VALUES (".
-                    // implode(", ", array_map("FieldGen::sqlFormat", array_values($fieldGen->vals))).
-                // ") ";
+        $sql =  "INSERT INTO history (".
+                    implode(", ", array_keys($fieldGen->vals)).
+                ") VALUES (".
+                    implode(", ", array_map(['FieldGen', 'sqlFormat'], array_values($fieldGen->vals))).
+                ") ";
 
-        //echo($sql);
+        echo($sql);
         //mysql_query($sql) or die(mysql_error());
         //$id = mysql_insert_id();
     }
@@ -147,6 +145,8 @@ $iopts = array(
          'outflow',
 );
 
+echo serialize($_POST);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -161,10 +161,8 @@ $iopts = array(
         <script src="js/transaction_history_slide.js"></script>
         <script src="js/transaction_history_show.js"></script>
         <script src="js/transaction_history_showhistory.js"></script>
+        <!-- local css -->
         <style>
-            content form{
-
-            }
             .fieldgenlist li{
                 display: inline;
                 list-style-type: none;
@@ -186,7 +184,7 @@ $iopts = array(
                     <div>
                         <?php
                         echo $fieldGen->display( array(
-                            'Description' => FieldGen::inputFormat('text', ['FieldGen','fieldList']),
+                            'Description' => FieldGen::textFormat(['FieldGen','fieldList']),
                             'StatusID'    => FieldGen::optionFormat($sopts, ['FieldGen','fieldList']),
                         ) );
                         ?>
@@ -216,7 +214,7 @@ $iopts = array(
                     <div>
                         <?php
                         echo $fieldGen->display( array(
-                            'Comment' => FieldGen::inputFormat('text', ['FieldGen','fieldList']),
+                            'Comment' => FieldGen::textFormat(['FieldGen','fieldList']),
                         ) );
                         ?>
                     </div>

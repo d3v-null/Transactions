@@ -36,7 +36,7 @@ class FieldGen{
                 "<ul>".
                     "<li>".$lbl."</li>".
                     "<li>".$fld."</li>".
-                    "<li class='form-error'>".$err."</li>".
+                    (($err != "")?"<li class='form-error'>".$err."</li>":"").
                 "</ul>".
             "</div>";        
     }
@@ -48,7 +48,7 @@ class FieldGen{
                 "<td>".$fld."</td>".
             "</tr>".
             "<tr class='fieldGenRowErr'>".
-                "<td class='form-error' classcolspan='2'>".$err."</td>".
+                (($err != "")?"<td class='form-error' classcolspan='2'>".$err."</td>":"").
             "</tr>";
     }
     
@@ -63,15 +63,23 @@ class FieldGen{
 
     public static function optionFormat($opts, $arr){
         return function ($id, $lbl, $val, $err) use($opts, $arr){
-            $fld = "<select name=".$id.">";
+            $fld = "<select name='".$id."'>";
             foreach($opts as $k => $v){
-                $sel = ($k = $val)?"selected":"";
+                $sel = ($k == $val)?"selected":"";
                 $fld .= "<option value='".$k."' ".$sel.">".$v."</option>";
             }
             $fld .= "</select>";
             $lbc = "<label for ='".$id."'>".$lbl."</label>";
             return $arr($id, $lbc, $fld, $err);
         };  
+    }
+    
+    public static function textFormat($arr){
+        return function ($id, $lbl, $val, $err) use ($arr){
+            $fld = "<textarea name='".$id."'>".$val."</textarea>";
+            $lbc = "<label for ='".$id."'>".$lbl."</label>";
+            return $arr($id, $lbc, $fld, $err);
+        };
     }
     
     public static function sqlFormat($s){
