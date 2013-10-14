@@ -97,6 +97,12 @@ class FieldGen{
         };  
     }
     
+    public static function sqlFormat($s){
+        if($s=="") return "";
+        $s = mysql_real_escape_string($s);
+        return "\"".$s."\"";
+    }
+    
     public static function fetch($table, $id) {
         $qry = "SELECT * FROM ".$table." WHERE ID = ".$id;
         $result = mysql_query($qry) or die(mysql_error());
@@ -198,6 +204,8 @@ class FieldGen{
         } 
         return $out;
     }
+    
+//    public function 
 }
 ?>
         

@@ -10,6 +10,17 @@ if(!$user->loggedIn()){
     redirect('index.php');
 }
 
+//If new button was pressed
+if(!empty($_POST) && key_exists('new', $_POST)){
+    if (!$user->isTreasurer()){
+        echo "<script>alert('You must have treasurer privileges to create a transaction')</script>";
+    } else { 
+        //Check things
+        //Do new things
+        //set ID
+    }
+}
+
 //die if no history ID specified
 $id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No History ID specified");
 
@@ -19,7 +30,7 @@ $fetch = FieldGen::fetch($page_table, $id);
 //If delete button was pressed
 if(!empty($_POST) && key_exists('delete', $_POST)){
     if (!$user->isTreasurer()){
-        echo "<script>alert('You must have treasurer privileges to create a transaction')</script>";
+        echo "<script>alert('You must have treasurer privileges to delete a transaction')</script>";
     } else { 
         //Check things
         //Do delete things
@@ -103,15 +114,18 @@ if(!empty($_POST) && isset($_POST['update']))
             (isset($_SESSION['loginid']))?$_SESSION['loginid']:die("No login available");
         $fieldGen->vals['Amount'] *= 100;
         
-        echo $fieldGen->validate();
+        //echo $fieldGen->validate();
         
-        $sql =  "INSERT INTO history (".
-                    implode(", ", array_keys($fieldGen->vals)).
-                ") VALUES (".
-                    implode(", ", array_values($fieldGen->vals)).
-                ") ";
+        // echo FieldGen::sqlFormat("herp");
         
-        echo($sql);
+        
+        //$sql =  "INSERT INTO history (".
+                    // implode(", ", array_keys($fieldGen->vals)).
+                // ") VALUES (".
+                    // implode(", ", array_map("FieldGen::sqlFormat", array_values($fieldGen->vals))).
+                // ") ";
+        
+        //echo($sql);
         //mysql_query($sql) or die(mysql_error());
         //$id = mysql_insert_id();
     }
@@ -215,11 +229,11 @@ $iopts = array(
         </div><!-- end box -->
         
         <div class='slide-out-div'>
-            <?php //include_once 'modhistory.php' ?>
+            <?php include_once 'modhistory.php' ?>
         </div><!-- end slide out-->        
         
         <div id='sidebar'>
-            <?php //include_once 'sidebar.php' ?>
+            <?php include_once 'sidebar.php' ?>
         </div><!-- end sidebar-->
     </body>
 </html>
