@@ -97,7 +97,7 @@
 							</tr><tr>* This field is compulsory</tr>
 					</table>
 					<br>
-						<button input type="submit">Save Sub Category</button>
+						<button input type="submit">Save Subcategory</button>
 						</form>
 
 				</div>
