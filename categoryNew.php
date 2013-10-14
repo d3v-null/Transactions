@@ -12,7 +12,8 @@
     mysql_select_db(DB_NAME) or die(mysql_error());
     
 	if (!$user->isTreasurer()){
-        echo "<script>alert('You must have treasurer privileges to create a new category')</script>";
+        echo "<script>alert('You must have treasurer privileges to create a new category. You are going to be redirected to the main page')</script>";
+		echo "<meta http-equiv='Refresh' content='0; URL=search.php'>";
     } else {
 		$sql="INSERT INTO Category (Name, Description) VALUES ('New Category','')";
 		mysql_query($sql) or die("Category cannot be created: ".mysql_error());

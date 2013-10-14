@@ -5,8 +5,8 @@
 	$user = new User();
 	
 	if (!$user->isTreasurer()){
-        //to do: this msg wasn't showed echo "<script>alert('You must have treasurer privileges to create a new category')</script>";		
-        redirect("search.php");
+		echo "<script>alert('You must have treasurer privileges to create a new category. You are going to be redirected to the main page')</script>";
+		echo "<meta http-equiv='Refresh' content='0; URL=search.php'>";
     } else {
 		// Connect to transaction database
 		$dbhost = "localhost";

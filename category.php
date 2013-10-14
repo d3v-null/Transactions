@@ -23,7 +23,9 @@
     if(!empty($_POST) && key_exists('delete', $_POST))
 	{
 		if (!$user->isTreasurer()){
-            echo "<script>alert('You must have treasurer privileges to delete a category!')</script>";
+            echo "<script>alert('You must have treasurer privileges to delete a category!You are going to be redirected to the main page')</script>";
+			echo "<meta http-equiv='Refresh' content='0; URL=search.php'>";
+			
         } else {
 			$canDelete = TRUE;
 			// Check if it can perform delete action
@@ -111,6 +113,7 @@
             echo "<script>alert('Name must not be empty')</script>";
         } else If(!$user->isTreasurer()){
             echo "<script>alert('You must have treasurer privileges to modify a category')</script>";
+			redirect("search.php");
         } else {
             $name = $_POST['name'];
             $desc = $_POST['desc'];

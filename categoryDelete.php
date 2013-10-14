@@ -14,7 +14,8 @@
     if(!key_exists('id', $_GET)){
         echo "<script>alert('Category ID Not specified')</script>";
     } else if (!$user->isTreasurer()){
-        echo "<script>alert('You must have treasurer privileges to delete a category')</script>";
+        echo "<script>alert('You must have treasurer privileges to delete a category.You are going to be redirected to the main page')</script>";
+		echo "<meta http-equiv='Refresh' content='0; URL=search.php'>";
     } else {
         $sql="DELETE FROM category WHERE category.ID ='". $_GET['id']."'";
         mysql_query($sql) or die("cannot delete category: ".mysql_error());
