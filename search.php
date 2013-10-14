@@ -196,9 +196,11 @@
             <table id="transaction-list" summary = "List of Transactions">
                 <thead>
                     <?php
+                        echo "<tr>";
                         foreach($cols as $v){
                             echo "<td>".$v[0]."</td>";
                         }
+                        echo "</tr>";
                     ?>
                 </thead>
                 <tbody>
