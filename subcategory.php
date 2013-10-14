@@ -27,7 +27,7 @@
 			$result = mysql_query($sql);
 
 			$actionDelete = mysql_fetch_array($result);
-			echo "<script>alert('".serialize($actionDelete)."')</script>";
+			//echo "<script>alert('".serialize($actionDelete)."')</script>";
 
 			if($actionDelete['HistoryID'] == FALSE){
 				// If this current subcategory isn't associated with transaction
