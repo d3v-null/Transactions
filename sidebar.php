@@ -12,6 +12,7 @@
     <![endif]-->
   </head>
   <body>
+    <form name="myform" action="http://www.mydomain.com/myformhandler.cgi" method="POST">
     <div class="panel-group" id="accordion">
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -48,13 +49,15 @@
 					<div class='panel-body'>";
 					while ($subRow = mysql_fetch_array($subCats)) 
 					{
-						echo "<li><a href='subcategory.php?id=".$subRow['ID']."'>
-						<span>".$subRow['Name']."</span></a></li>";
+ 
+						  echo "<li><a href='subcategory.php?id=".$subRow['ID']."'>
+						  <span><input type='checkbox' name='".$subRow['Name']."' value='".$subRow['Name']."'>".$subRow['Name']."<br></span></a></li>";
 					}
-					echo "<li class='last'><a href='subcategoryNew.php?ID=".$catID."'>
-					  <span>Add New Subcategory</span></a></li>";
-				  echo "</div>";
-				echo"</div>";
+					   echo "<li class='last'><a href='subcategoryNew.php?ID=".$catID."'>
+					     <span>Add New Subcategory</span></a></li>";
+				      echo "</div>";
+            echo"</div>";
+
 			  
             }
       ?>
