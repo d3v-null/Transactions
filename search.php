@@ -71,10 +71,11 @@
     </head>
 
     <body id="main">
+        <form method="get" action=""> 
         <div id="box" class="bordered">
         <?php include 'subheader.php' ?>
 
-        <form method="get" action="search.php" id="content">
+        <div id="content">
             <div id="search" class="bordered">
                 <h2>Search</h2>
                 <input type="submit" name="search" value="Update">
@@ -227,7 +228,8 @@
                 <input type="submit" name="pag" value="Next">
                 <input type="submit" name="pag" value="Last">
             </div><!-- end pagination -->
-        </form>
+        </div><!-- end content-->
+    </form>
     </div><!-- end box -->
     <div id="sidebar" class="bordered">
         <?php include_once("sidebar.php")?>
