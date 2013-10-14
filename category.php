@@ -118,7 +118,7 @@
             $desc = $_POST['desc'];
             mysql_query("UPDATE category SET Name='".$name."', Description='".$desc."' ".
                         "WHERE category.ID=".$id) or die(mysql_error());
-            //echo "<script>alert('Successfully updated category')</script>";
+            echo "<script>alert('Successfully updated category')</script>";
         }
     } 
     //echo "id: ".$id." name: ".$name." desc: ".$desc." row: ".$row;
