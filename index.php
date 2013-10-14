@@ -48,7 +48,7 @@ try{
 		rate_limit($_SERVER['REMOTE_ADDR']);
 		rate_limit_tick($_SERVER['REMOTE_ADDR'], $_POST['email']);
 
-		send email to the user
+		// send email to the user
 		$message = '';
 		$email = $_POST['email'];
 		$subject = 'Access Granted!';
