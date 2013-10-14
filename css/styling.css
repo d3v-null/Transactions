@@ -75,7 +75,6 @@ ul
 #transaction-list
 {
 	width: 100%;
-	height: ;
 	margin: 20px 0;
 	text-align: left;
 	background-color:#E6F5F5;
@@ -295,3 +294,11 @@ div.tabContent
 }
 
 
+/**
+
+#panel-body{
+  opacity:0.6;
+  background-color:red;
+}
+
+**/

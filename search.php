@@ -71,7 +71,7 @@
     </head>
 
     <body id="main">
-        <div id="box">
+        <div id="box" class="bordered">
         <?php include 'subheader.php' ?>
 
         <form method="get" action="search.php" class="content">
@@ -229,7 +229,7 @@
             </div><!-- end pagination -->
         </form>
     </div><!-- end box -->
-    <div id="sidebar">
+    <div id="sidebar" class="bordered">
         <?php include_once("sidebar.php")?>
     </div>
     </body>
