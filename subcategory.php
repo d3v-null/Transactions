@@ -19,7 +19,8 @@
     
     if(!empty($_POST) && key_exists('delete', $_POST)){
         if (!$user->isTreasurer()){
-            echo "<script>alert('You must have treasurer privileges to delete a category')</script>";
+            echo "<script>alert('You must have treasurer privileges to delete a category. You are going to be redirected to the main page')</script>";
+			echo "<meta http-equiv='Refresh' content='0; URL=search.php'>";
         } else {
 			
 			$sql = "SELECT HistoryID FROM Categorization WHERE SubCategoryID ='". $_GET['id']."'";
