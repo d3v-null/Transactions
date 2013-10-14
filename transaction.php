@@ -124,8 +124,8 @@ if(!empty($_POST) && isset($_POST['update']))
                 ") ";
 
         echo($sql);
-        //mysql_query($sql) or die(mysql_error());
-        //$id = mysql_insert_id();
+        mysql_query($sql) or die(mysql_error());
+        $id = mysql_insert_id();
     }
 } else {
     $fieldGen->parse($fetch);
@@ -196,12 +196,6 @@ echo serialize($_POST);
                             'PaymentDate'       => FieldGen::inputFormat('date', ['FieldGen','fieldRow']),
                             'ResponsibleParty'  => FieldGen::inputFormat('text', ['FieldGen','fieldRow']),
                             'AssociatedParty'   => FieldGen::inputFormat('text', ['FieldGen','fieldRow']),
-                        ) );
-                        ?>
-                    </table>
-                    <table>
-                        <?php
-                        echo $fieldGen->display( array(
                             'Amount'    => function ($id, $lbl, $val, $err){
                                 $fld = "<input name='".$id."' type='text' value='". $val/100 ."'>";
                                 $lbc = "<label for ='".$id."'>".$lbl."</label>";
@@ -218,10 +212,14 @@ echo serialize($_POST);
                         ) );
                         ?>
                     </div>
-
-                    <input type='submit' name='update' id='update' value='Update'>
+                    <input type='hidden' name='TransactionID' value=<?php echo $fieldGen->vals['TransactionID']; ?>>
+                    <input type='submit' name='update' value='Update'>
                     <button onclick="setReadonly('data',false)">Edit</button>
                 </form>
+                <div id='categories'>
+                    <?php //include_once 'assoc_categories.php' ?>
+                </div><!-- end sidebar-->                
+                
                 
                 <!--<button onclick="setReadonly('data',true)">Cancel</button>-->
             </div><!-- end content!-->

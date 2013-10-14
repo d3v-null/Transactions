@@ -22,10 +22,11 @@ class FieldRule{
 }  
 
 class FieldGen{
-    public $flds = array(); //fields to be processed
+    
     
     //for each field...
     public $lbls = array(); //Labels
+    public $meta = array(); //Metadata
     public $vals = array(); //values
     public $errs = array(); //Errors
     public $ruls = array(); //Evaluation rules
@@ -83,7 +84,6 @@ class FieldGen{
     }
     
     public static function sqlFormat($s){
-        if($s=="") return "";
         $s = mysql_real_escape_string($s);
         return "\"".$s."\"";
     }
@@ -115,8 +115,11 @@ class FieldGen{
             "AND table_name =  '".$table."' ";
         $result = mysql_query($qry) or die ("error: ".$qry."<br/>".mysql_error());
         if(!$result) die("No fields in table: ".$id);
-        while($row = mysql_fetch_array($result)){
-            array_push($this->flds, $row['COLUMN_NAME']);
+        while($row = mysql_fetch_assoc($result)){
+            $this->meta[$row['COLUMN_NAME']] = array(
+                'DATA_TYPE'     => $row['DATA_TYPE'],
+                'IS_NULLABLE'   => $row['IS_NULLABLE']
+            );
             if($row['IS_NULLABLE']=='NO'){
                 $this->add_rule(
                     $row['COLUMN_NAME'],
@@ -143,7 +146,7 @@ class FieldGen{
     public function parse($post){ //post, vlds, | pars, errs
         //parse each item in $post //post, meta | pars
         foreach($post as $k => $v){
-            if(in_array($k,$this->flds)){//ignore anything not in table
+            if(array_key_exists($k,$this->meta)){//ignore anything not in table
                 $this->vals[$k]=$v;
             }
         }
