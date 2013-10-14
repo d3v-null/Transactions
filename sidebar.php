@@ -51,7 +51,7 @@
 					{
  
 						  echo "<li><a href='subcategory.php?id=".$subRow['ID']."'>
-						  <span><input type='checkbox' name='".$subRow['Name']."' value='".$subRow['Name']."'>".$subRow['Name']."<br></span></a></li>";
+						  <span><input type='checkbox' name='Subcategories[]' value='".$subRow['ID']."'>".$subRow['Name']."<br></span></a></li>";
 					}
 					   echo "<li class='last'><a href='subcategoryNew.php?ID=".$catID."'>
 					     <span>Add New Subcategory</span></a></li>";
