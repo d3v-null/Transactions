@@ -23,7 +23,8 @@
 			
 			// Check for duplicates
 			$sql = "SELECT Name FROM subcategory WHERE Name LIKE '$catName'";
-			$exists = mysql_fetch_array($sql);
+			$row = mysql_query($sql,$con);
+			$exists = mysql_fetch_array($row);
 			if(!$exists){				
 				// Insert values
 				$slq="INSERT INTO subcategory (CategoryID, Name, Description) VALUES ('$catID','$catName','$description')";
@@ -31,6 +32,7 @@
 				
 				echo "<script>alert('Subcategory ". $catName ." was successfully inserted.')</script>";
 			} else {
+				echo "<script>alert('ERROR: Impossible insert subcategory named as ". $catName ." because it already exists in current database. Please specify other name.')</script>";
 			}
 		}
 		
