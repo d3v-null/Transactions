@@ -1,3 +1,38 @@
+<?php
+	require_once 'includes/constants.php';
+    require_once 'includes/config.php';
+    
+	$user = new User();
+	
+	if (!$user->isTreasurer()){
+        //to do: this msg wasn't showed echo "<script>alert('You must have treasurer privileges to create a new category')</script>";		
+        redirect("search.php");
+    } else {
+		// Connect to transaction database
+		$dbhost = "localhost";
+		$dbname = "transaction";
+		$dbuser = "root";
+		$con    = mysql_connect($dbhost, $dbuser) or die(mysql_error());
+		mysql_select_db($dbname) or die(mysql_error());
+		
+		// Inserting new category
+		if (key_exists("subCatName", $_POST) && key_exists("subCatDesc", $_POST) && key_exists("subCatID", $_POST))
+		{
+			$catName = $_POST['subCatName'];
+			$description = $_POST['subCatDesc'];
+			$catID = $_POST['subCatID'];
+			
+			// Insert values
+			$slq="INSERT INTO subcategory (CategoryID, Name, Description) VALUES ('$catID','$catName','$description')";
+			mysql_query($slq,$con);
+			
+			echo "<script>alert('Subcategory ". $catName ." was successfully inserted.')</script>";
+		}
+	}	
+	// Close conection
+	mysql_close($con);
+?>
+
 <!DOCTYPE html>
 
 <html>
@@ -33,34 +68,7 @@
 					
 				<div id="content">
 
-					<table class = "formatted">
-						
-						<!-- Insert Category Code -->
-						<?php
-							// Connect to transaction database
-							$dbhost = "localhost";
-							$dbname = "transaction";
-							$dbuser = "root";
-							$con    = mysql_connect($dbhost, $dbuser) or die(mysql_error());
-							mysql_select_db($dbname) or die(mysql_error());
-							
-							// Inserting new category
-							if (key_exists("subCatName", $_POST) && key_exists("subCatDesc", $_POST) && key_exists("subCatID", $_POST))
-							{
-								$catName = $_POST['subCatName'];
-								$description = $_POST['subCatDesc'];
-								$catID = $_POST['subCatID'];
-								
-								// Insert values
-								$slq="INSERT INTO subcategory (CategoryID, Name, Description) VALUES ('$catID','$catName','$description')";
-								mysql_query($slq,$con);
-								
-								echo "Subcategory ". $catName ." was successfully inserted <br><br>";
-							}
-									
-							// Close conection
-							mysql_close($con);
-						?>
+					<table class = "formatted">			
 
 						<form name="SubCategoryForm" action="subcategoryNew.php?ID=<?php echo $_GET["ID"]; ?>" onsubmit="return validateForm()" method="post">
 							<tr>
