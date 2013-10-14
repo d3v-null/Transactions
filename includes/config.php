@@ -30,7 +30,7 @@ session_start();
 /**
  * Email Settings
  */
-$fromEmail = "xiaofan2406@me.com";
+$fromEmail = 'swedi361@swedishclubofwa.org';
 
 if(!$fromEmail){
 	$fromEmail = 'noreply@'.$_SERVER['SERVER_NAME'];
