@@ -7,6 +7,12 @@
     if(!$user->loggedIn()){
         redirect('index.php');
     }
+    
+    $subsel = array();
+    $result = mysql_query("SELECT ID FROM Subcategory");
+    while($row = mysql_get_assoc($result)){
+        $subsel[$row['ID']]=1;
+    }
 
     $pars = Array(
         'ts' => (isset($_GET['ts']))?$_GET['ts']:0,     //Transaction offset
@@ -17,6 +23,7 @@
         'fd' => (isset($_GET['fd']))?$_GET['fd']:"",    //From date
         'td' => (isset($_GET['td']))?$_GET['td']:"",    //To date
         'st' => (isset($_GET['st']))?$_GET['st']:0,     //Status
+        
     );
 
     $cols = Array(
