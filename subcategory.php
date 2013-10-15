@@ -33,8 +33,9 @@
 				// If this current subcategory isn't associated with transaction
 				$sql="DELETE FROM subcategory WHERE subcategory.ID ='". $_GET['id']."'";
 				mysql_query($sql) or die("cannot delete category: ".mysql_error());
-
-				redirect("search.php");
+				
+				echo "<script>alert('Category successfully deleted')</script>";
+				echo "<meta http-equiv='Refresh' content='0; URL=search.php'>";
 			}
 			else{
 				// Else you can't delete!
@@ -63,7 +64,7 @@
 				$desc = $_POST['desc'];
 				mysql_query("UPDATE subcategory SET Name='".$name."', Description='".$desc."' ".
 							"WHERE subcategory.ID=".$id) or die(mysql_error());
-				echo "<script>alert('Successfully updated category')</script>";
+				echo "<script>alert('Category successfully updated')</script>";
 				echo "<meta http-equiv='Refresh' content='0; URL=subcategory.php?id=". $id ."'>";
 			}
 

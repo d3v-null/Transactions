@@ -79,7 +79,8 @@
 				$sql="DELETE FROM category WHERE category.ID ='". $_GET['id']."'";
 				mysql_query($sql) or die("cannot delete category: ".mysql_error());
 
-				redirect("search.php");
+				echo "<script>alert('Category and Subcategories were successfully deleted')</script>";
+				echo "<meta http-equiv='Refresh' content='0; URL=search.php'>";
 			}
 			else{
 				// Else you can't delete!
@@ -114,12 +115,30 @@
         } else {
             $name = $_POST['name'];
             $desc = $_POST['desc'];
-            mysql_query("UPDATE category SET Name='".$name."', Description='".$desc."' ".
-                        "WHERE category.ID=".$id) or die(mysql_error());
-            echo "<script>alert('Successfully updated category')</script>";
+			
+			// Check if there is any Categorization associated with it
+			$sql = "SELECT Name FROM Category WHERE Name = '". $name ."'";
+			$CategList = mysql_query($sql);
+			$canDelete = TRUE;
+			
+			while($CategListNames = mysql_fetch_array($CategList))
+			{
+				// If it exists at least one matching on Categorization table
+				if ($CategListNames != FALSE)
+				{
+					// Can't delete
+					$canDelete = FALSE;
+				}
+			}
+			if ($canDelete) {
+				mysql_query("UPDATE category SET Name='".$name."', Description='".$desc."' ".
+							"WHERE category.ID=".$id) or die("".mysql_error());
+				echo "<script>alert('Successfully updated category')</script>";
+			} else {
+				echo "<script>alert('ERROR: This name already exists on database. Please specify other.')</script>";
+			}
         }
     }
-    //echo "id: ".$id." name: ".$name." desc: ".$desc." row: ".$row;
 ?>
 
 <!DOCTYPE html>
