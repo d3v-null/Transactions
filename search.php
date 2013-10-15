@@ -146,7 +146,7 @@
                     </table>
                     <a id="search-expander">Show advanced options</a>
                     <a id="search-hider" style="display:none">Hide advanced options</a>
-                </div><!-- end bordered-->
+                </div><!-- end search-->
 
                 <?php
                     //select the transactions to display on the page
