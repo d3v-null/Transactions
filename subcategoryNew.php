@@ -66,8 +66,6 @@
 			<div id="box">
 				<h1>Create New Sub Category</h1>
 
-				<div id="content">
-
 					<table class = "formatted">
 
 						<form name="SubCategoryForm" action="subcategoryNew.php?ID=<?php echo $_GET["ID"]; ?>" onsubmit="return validateForm()" method="post">
@@ -87,6 +85,7 @@
 									<input type="text" class="data" name="subCatName" size="50" maxlength="50">
 								</td>
 							</tr>
+                            
 							<tr>
 								<td class = "SubCategoryDescription">
 									Description:
@@ -94,24 +93,23 @@
 								<td>
 									<input type="text" class="data" name="subCatDesc" size="50" maxlength="225">
 								</td>
-							</tr><tr>* This field is compulsory</tr>
+							</tr>
+                            
+                            <tr>* This field is compulsory</tr>
 					</table>
-					<br>
-						<button input type="submit">Save Subcategory</button>
+					<br/>
+                    <button input type="submit">Save Subcategory</button>
 						</form>
-
-				</div>
-				<!-- end content!-->
 
 			</div><!-- end box -->
 
-			<div id="sidebar">
-
-				<?php include_once("sidebar.php");?>
-
-       		</div><!-- end sidebar -->
-
 		</div><!-- end main -->
+        
+        <div id="sidebar">
+
+            <?php include_once("sidebar.php");?>
+
+        </div><!-- end sidebar -->
 
 	</body>
 </html>
