@@ -257,12 +257,11 @@ textarea:focus {
 }
 
 
-/**
 
-#panel-body{
-  opacity:0.6;
-  background-color:red;
+
+.panel-title{
+  font-size:1px;
 }
 
-**/
+
 

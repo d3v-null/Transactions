@@ -98,14 +98,15 @@ a:hover {
     text-align:left;
 	width: 20%;
 	display: inline;
-	padding: 20px 10px 0;
+	padding: 20px 0 0 0;
 	margin-right: 20px;
     height:800px;
     border:none;
-    min-width:100px;
+    min-width:200px;
     height:100%;
     box-shadow: 5px 5px 5px #8E8E8C;
-
+    overflow-y:auto;
+    
     background-image: linear-gradient(right bottom, #ACC4D4 16%, #E4E4EB 58%);
     background-image: -o-linear-gradient(right bottom, #ACC4D4 16%, #E4E4EB 58%);
     background-image: -moz-linear-gradient(right bottom, #ACC4D4 16%, #E4E4EB 58%);
@@ -124,6 +125,7 @@ a:hover {
     background-color:#e4e4eb;
     <![endif]-->
 }
+
 
 #sidebar h2 {
 	color: #3F064D;
