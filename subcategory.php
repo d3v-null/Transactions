@@ -64,13 +64,14 @@
 				mysql_query("UPDATE subcategory SET Name='".$name."', Description='".$desc."' ".
 							"WHERE subcategory.ID=".$id) or die(mysql_error());
 				echo "<script>alert('Successfully updated category')</script>";
+				echo "<meta http-equiv='Refresh' content='0; URL=subcategory.php?id=". $id ."'>";
 			}
 
-			if($_SERVER['HTTP_REFERER']){
-				redirect($_SERVER['HTTP_REFERER']);
-			} else {
-				redirect("search.php");
-			}
+			//if($_SERVER['HTTP_REFERER']){
+			//	redirect($_SERVER['HTTP_REFERER']);
+			//} else {
+			//	redirect("search.php");
+			//}
 		}
     }
     //to do: remove echo "id: ".$id." name: ".$name." desc: ".$desc;
