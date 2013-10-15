@@ -109,7 +109,7 @@ ul
 
 #transaction-list>thead>tr>td
 {
-    padding: 10px 8px;
+    padding: 10px 9px;
 }
 
 #transaction-list>tbody>tr>td
@@ -118,7 +118,8 @@ ul
     padding: 5px 10px;
 }
 
-#transaction-list>tbody>tr{
+#transaction-list>tbody>tr, #transaction-list>tbody>tr a
+{
     border-top: 1.5px solid white;
     /**background-color:#C2DFFF;**/
     -o-transition:.5s;
@@ -128,15 +129,12 @@ ul
     transition:.5s;
 }
 
-#transaction-list>tbody>tr:hover
+#transaction-list>tbody>tr:hover, #transaction-list>tbody>tr:hover a
 {
 	color:black;
 	background-color: #FFF380;
 }
 
-#transaction-list a:link, a:visited{
-	color:#216477
-}
 
 #transaction-list>tbody>tr
 {

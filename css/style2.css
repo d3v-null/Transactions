@@ -107,19 +107,24 @@ a:hover {
     height:100%;
     box-shadow: 5px 5px 5px #8E8E8C;
 
-    background-image: linear-gradient(bottom, rgb(59,50,57) 25%, rgb(142,158,158) 70%);
-    background-image: -o-linear-gradient(bottom, rgb(59,50,57) 25%, rgb(142,158,158) 70%);
-    background-image: -moz-linear-gradient(bottom, rgb(59,50,57) 25%, rgb(142,158,158) 70%);
-    background-image: -webkit-linear-gradient(bottom, rgb(59,50,57) 25%, rgb(142,158,158) 70%);
-    background-image: -ms-linear-gradient(bottom, rgb(59,50,57) 25%, rgb(142,158,158) 70%);
+
+    background-image: linear-gradient(right bottom, #8898A3 16%, #E4E4EB 58%);
+    background-image: -o-linear-gradient(right bottom, #8898A3 16%, #E4E4EB 58%);
+    background-image: -moz-linear-gradient(right bottom, #8898A3 16%, #E4E4EB 58%);
+    background-image: -webkit-linear-gradient(right bottom, #8898A3 16%, #E4E4EB 58%);
+    background-image: -ms-linear-gradient(right bottom, #8898A3 16%, #E4E4EB 58%);
 
     background-image: -webkit-gradient(
-    linear,
-    left bottom,
-    left top,
-    color-stop(0.25, rgb(59,50,57)),
-    color-stop(0.7, rgb(142,158,158))
+        linear,
+        right bottom,
+        left top,
+        color-stop(0.16, #8898A3),
+        color-stop(0.58, #E4E4EB)
     );
+
+
+
+
 
     <!--[if IE]>
     background-color:8e9e9e;
