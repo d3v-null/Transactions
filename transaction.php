@@ -179,61 +179,52 @@ while($row = mysql_fetch_array($rslt)){
 
     </head>
     <body id='main'>
-        <div id='box'>
-            <?php include_once 'subheader.php' ?>
-                <form name="transactionForm" onsubmit="return validateForm(this);" action="transaction.php?id=<?php echo $id; ?>" method="post">
-                    <div>
-                        <?php
-                        echo $fieldGen->display( array(
-                            'Description' => FieldGen::textFormat(['FieldGen','fieldList']),
-                            'StatusID'    => FieldGen::optionFormat($sopts, ['FieldGen','fieldList']),
-                        ) );
-                        ?>
-                    </div>
-                    <table>
-                        <?php
-                        echo $fieldGen->display( array(
-                            'TransactionDate'   => FieldGen::inputFormat('date', ['FieldGen','fieldRow']),
-                            'PaymentDate'       => FieldGen::inputFormat('date', ['FieldGen','fieldRow']),
-                            'ResponsibleParty'  => FieldGen::inputFormat('text', ['FieldGen','fieldRow']),
-                            'AssociatedParty'   => FieldGen::inputFormat('text', ['FieldGen','fieldRow']),
-                            'Amount'    => function ($id, $lbl, $val, $rqd, $err){
-                                $fld = "<input name='".$id."' type='text' value='". $val/100 ."' ".(($rqd)?"required":"").">";
-                                $lbc = "<label for ='".$id."'>".$lbl.(($rqd)?"*":"")."</label>";
-                                return FieldGen::fieldRow($id, $lbc, $fld, $err);
-                            },
-                            'Inflow'    => FieldGen::optionFormat($iopts, ['FieldGen','fieldRow']),
-                        ) );
-                        ?>
-                     </table>
-                    <div>
-                        <?php
-                        echo $fieldGen->display( array(
-                            'Comment' => FieldGen::textFormat(['FieldGen','fieldList']),
-                        ) );
-                        ?>
-                    </div>
-                    <div>
-                        
-                    </div>    
-                    <input type='hidden' name='TransactionID' value=<?php echo $fieldGen->vals['TransactionID']; ?>>
-                    <input type='submit' name='update' value='Update'>
-                    <button onclick="setReadonly('data',false)">Edit</button>
-                </form>
-                <div id='categories'>
-                    <?php //include_once 'assoc_categories.php' ?>
-                </div><!-- end sidebar-->                
-                
-                <!--<button onclick="setReadonly('data',true)">Cancel</button>-->
-        </div><!-- end box -->
-
+        <form name="transactionForm" action="transaction.php?id=<?php echo $id; ?>" method="post">
+            <div id='box'>
+                <?php include_once 'subheader.php' ?>
+                    
+                <div>
+                    <?php
+                    echo $fieldGen->display( array(
+                        'Description' => FieldGen::textFormat(['FieldGen','fieldList']),
+                        'StatusID'    => FieldGen::optionFormat($sopts, ['FieldGen','fieldList']),
+                    ) );
+                    ?>
+                </div>
+                <table>
+                    <?php
+                    echo $fieldGen->display( array(
+                        'TransactionDate'   => FieldGen::inputFormat('date', ['FieldGen','fieldRow']),
+                        'PaymentDate'       => FieldGen::inputFormat('date', ['FieldGen','fieldRow']),
+                        'ResponsibleParty'  => FieldGen::inputFormat('text', ['FieldGen','fieldRow']),
+                        'AssociatedParty'   => FieldGen::inputFormat('text', ['FieldGen','fieldRow']),
+                        'Amount'    => function ($id, $lbl, $val, $rqd, $err){
+                            $fld = "<input name='".$id."' type='text' value='". $val/100 ."' ".(($rqd)?"required":"").">";
+                            $lbc = "<label for ='".$id."'>".$lbl.(($rqd)?"*":"")."</label>";
+                            return FieldGen::fieldRow($id, $lbc, $fld, $err);
+                        },
+                        'Inflow'    => FieldGen::optionFormat($iopts, ['FieldGen','fieldRow']),
+                    ) );
+                    ?>
+                 </table>
+                <div>
+                    <?php
+                    echo $fieldGen->display( array(
+                        'Comment' => FieldGen::textFormat(['FieldGen','fieldList']),
+                    ) );
+                    ?>
+                </div>
+                <input type='hidden' name='TransactionID' value=<?php echo $fieldGen->vals['TransactionID']; ?>>
+                <input type='submit' name='update' value='Update'>            
+            </div><!-- end box -->        
+            <div id='sidebar'>
+                <?php include_once 'sidebar.php' ?>
+            </div><!-- end sidebar-->
+        </form>
         <div class='slide-out-div'>
             <?php include_once 'modhistory.php' ?>
         </div><!-- end slide out-->
 
-        <div id='sidebar'>
-            <?php include_once 'sidebar.php' ?>
-        </div><!-- end sidebar-->
         
     </body>
 </html>
