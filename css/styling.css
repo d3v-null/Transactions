@@ -79,6 +79,7 @@ ul
 
 #search{
   background-color:white;/**#E6F5F5;**/
+  border:2px solid RoyalBlue;
 }
 
 /*Transaction Table*/
@@ -87,7 +88,7 @@ ul
 	width: 100%;
 	margin: 50px 0;
 	text-align: left;
- background-color: white;/**#E6F5F5;**/
+  background-color: white;/**#E6F5F5;**/
 	color:#216477;
   text-align:centre;
   outline:#4380D3 2px solid;
@@ -142,7 +143,7 @@ ul
 	
 	<!--[if IE]>
 		table-layout: fixed;
-        width: 100px;
+    width: 100px;
 	<![endif]-->
 
 }
@@ -153,10 +154,8 @@ ul
 	padding-top:20px;
 }
 
-
-.bordered
+#box,#sidebar,#search
 {
-	border:2px solid RoyalBlue;
 	-webkit-border-radius: 9px;
 	-moz-border-radius: 9px;
 	border-radius: 9px;

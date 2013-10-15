@@ -130,14 +130,13 @@
 				</form>
 
 			</div>
+		</div> <!-- end main-->
 
-			<div id="sidebar">
+        <div id="sidebar">
 
-				<?php include_once("sidebar.php");?>
+            <?php include_once("sidebar.php");?>
 
-       		</div>
-
-		</div>
+        </div>
 
 	</body>
 </html>

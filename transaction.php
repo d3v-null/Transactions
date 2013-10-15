@@ -131,7 +131,6 @@ $iopts = array(
          'outflow',
 );
 
-echo serialize($_POST);
 
 ?>
 <!DOCTYPE html>
@@ -165,7 +164,6 @@ echo serialize($_POST);
     <body id='main'>
         <div id='box'>
             <?php include_once 'subheader.php' ?>
-            <div id='content'>
                 <form name="transactionForm" onsubmit="return validateForm(this);" action="" method="post">
                     <div>
                         <?php
@@ -190,7 +188,7 @@ echo serialize($_POST);
                             'Inflow'    => FieldGen::optionFormat($iopts, ['FieldGen','fieldRow']),
                         ) );
                         ?>
-                    </table>
+                     </table>
                     <div>
                         <?php
                         echo $fieldGen->display( array(
@@ -208,7 +206,6 @@ echo serialize($_POST);
                 
                 
                 <!--<button onclick="setReadonly('data',true)">Cancel</button>-->
-            </div><!-- end content!-->
         </div><!-- end box -->
 
         <div class='slide-out-div'>

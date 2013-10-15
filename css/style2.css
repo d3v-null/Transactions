@@ -1,9 +1,8 @@
 /*------>---- GENERAL BODY ELEMENTS -----<-----------------*/
 
 html , body{
-	height: 1000px;
+	height: 800px;
   /**background-color:	#98AFC7;**/
-
 }
 
 body {
@@ -40,11 +39,6 @@ a:hover {
 
 /*-------->- OTHER ELEMENTS ---------<---------------------*/
 
-/* #box,  #sidebar{
-
-	-moz-border-radius: 15px;
-	border-radius: 15px;
-} */
 
 /*-- SEARCH BOX ------------------*/
 
@@ -55,11 +49,8 @@ a:hover {
 #main {
 	margin: 20px;
 	padding: 0;        
-	text-align: left;
-	height:100%;
-	
+	text-align: right;
 }
-
 /*-- END MAIN ------------------*/
 
 /*-- PAGE ------------------*/
@@ -71,58 +62,67 @@ a:hover {
 	
 #box {
 	float: right;
-	width: 600px;
 	padding: 10px;
 	margin: 0;
 	border: 1px solid #8E8E8C;
-	height:100%;
   box-shadow: 5px 5px 5px #8E8E8C;
-  background-color:#A1B3FF;
-
+  background-color:	#DCEBEB;
+	height:800px;
+    min-width:500px;
 }
 
 #box h1 {
 	color: #3F064D;
-	width: 500px;
 	font-size: 1.5em;
 	padding: 20px 0 20px 0;
 	margin: 0;
 	text-align: center;
-  text-transform: uppercase;
+    text-transform: uppercase;
 }
 
 /*-- END BOX ------------------*/
 
-
-/*-- CONTENT ------------------*/
-
-#content {
-    padding:10px;
-}
-
-
-/*-- END CONTENT ---------------------*/
 
 
 
 /*-- SIDEBAR --------------------*/
 
 #sidebar {
-  float: right;
-	width: 200px;
+    float: right;
+    text-align:left;
+	width: 20%;
 	display: inline;
-	padding: 20px 10px;
-	margin-right: 10px;
-  border:none;
-	background-color:#82CAFF;
-  height:100%;
-  box-shadow: 5px 5px 5px #8E8E8C;
+	padding: 20px 10px 0;
+	margin-right: 20px;
+    height:800px;
+    border:none;
+    min-width:100px;
+    /*background-color:#A1AEC1;/*#82CAFF;*/
+    height:100%;
+    box-shadow: 5px 5px 5px #8E8E8C;
+
+    background-image: linear-gradient(bottom, rgb(59,50,57) 25%, rgb(142,158,158) 70%);
+    background-image: -o-linear-gradient(bottom, rgb(59,50,57) 25%, rgb(142,158,158) 70%);
+    background-image: -moz-linear-gradient(bottom, rgb(59,50,57) 25%, rgb(142,158,158) 70%);
+    background-image: -webkit-linear-gradient(bottom, rgb(59,50,57) 25%, rgb(142,158,158) 70%);
+    background-image: -ms-linear-gradient(bottom, rgb(59,50,57) 25%, rgb(142,158,158) 70%);
+
+    background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.25, rgb(59,50,57)),
+    color-stop(0.7, rgb(142,158,158))
+    );
+
+    <!--[if IE]>
+    background-color:8e9e9e;
+    <![endif]-->
 }
 
 #sidebar h2 {
 	color: #3F064D;
 	font-size: 1.8em;
-	width: 200px;
 	padding: 60px 0 40px 0;
 	margin: 0;
 	text-align: center;
