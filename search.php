@@ -81,7 +81,6 @@
             <form method="get" action=""> 
         <div id="box">
             <?php include 'subheader.php' ?>
-             <div id="fakeHR"></div>
 
                 <div id="search">
                     <h2>Search</h2>

@@ -6,5 +6,17 @@
         echo "<a href='admin.php' class='btn btn-info'>Admin</a>";
     }
     echo "logged in as "
-    //do lookup
-?>            
+    //do 
+?>       
+<html>
+	<head>
+		<title>Create New Sub Category</title>
+
+		<style type="text/css" media="screen">
+			@import url("css/style2.css");
+			@import url("css/styling.css");
+		</style>
+             <div id="fakeHR"></div>
+    </head>
+</html>
+     
