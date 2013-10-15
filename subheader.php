@@ -4,6 +4,7 @@
     require_once 'includes/config.php';
     if ($user->isAdmin()) {
         echo "<a href='admin.php' class='btn btn-info'>Admin</a>";
+        echo "<a href='transaction.php?new' class='btn btn-info'>New Transaction</a>";
     }
     echo "logged in as "
     //do 

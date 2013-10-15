@@ -128,14 +128,15 @@ if(key_exists('new', $_POST) or key_exists('new', $_GET)){ //If new button was p
 
 //generate status options
 $rslt = mysql_query("SELECT * FROM Status") or die(mysql_error());
-$sopts = array( 0 => '-- select --' );
+//$sopts = array( 0 => '-- select --' );
 while($row = mysql_fetch_array($rslt))
 {
     $sopts[$row['ID']] = $row['Name'];
 }
 
 //Inflow options
-$iopts = array( 0 => '-- select --', 'inflow', 'outflow' );
+//$iopts = array( 0 => '-- select --', 'inflow', 'outflow' );
+$iopts = array( 0 => 'outflow', 'inflow' );
 
 $scats = array();
 $rslt = mysql_query("
