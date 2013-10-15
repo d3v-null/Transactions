@@ -2,7 +2,6 @@ ISSUES
 Pagination description incorrect -> "0 - 20 of 4....."
 next/previous buttons should be disabled if at the first or last entry
 Amount is in float/double not int as specified by client
-Issue with including sidebar -> cant have a html, body etc in already open html body tags
 Transaction table -> if not treasurer, should be "view" not "edit"
 Should probably be a page listing all categories. And on this note, the sidebar should accomodate for the fact that the the treasurer may end up creating more categories that can be displayed on the sidebar; i.e make the sidebar go to a scrolldown after a max limit has been exceeded or have something so that maybe the treasurer can choose which categories to display?)
 Update for transactions still goes through even if there is an error with the form -> update should only occur if form is valid
