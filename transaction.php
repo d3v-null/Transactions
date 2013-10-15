@@ -103,15 +103,15 @@ if(key_exists('update',$_POST))
         $fieldGen->vals['ModificationPersonID'] =
             (isset($_SESSION['loginid']))?$_SESSION['loginid']:die("No login available");
         $fieldGen->vals['Amount'] *= 100;
-        $fieldGen->validate();
-
-        $sql =  "INSERT INTO history (".
-                    implode(", ", array_keys($fieldGen->vals)).
-                ") VALUES (".
-                    implode(", ", array_map(['FieldGen', 'sqlFormat'], array_values($fieldGen->vals))).
-                ") ";
-        mysql_query($sql) or die(mysql_error());
-        $id = mysql_insert_id();
+        if( $fieldGen->validate() ){
+            $sql =  "INSERT INTO history (".
+                        implode(", ", array_keys($fieldGen->vals)).
+                    ") VALUES (".
+                        implode(", ", array_map(['FieldGen', 'sqlFormat'], array_values($fieldGen->vals))).
+                    ") ";
+            mysql_query($sql) or die(mysql_error());
+            $id = mysql_insert_id();
+        }
     }
 } else {
     $fieldGen->parse($fetch);

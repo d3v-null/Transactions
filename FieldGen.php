@@ -160,7 +160,7 @@ class FieldGen{
                     $r = $frul->rule;
                     if(!$r($v)){
                         $this->errs[$k] = $frul->emsg;
-                        $favlid = false;
+                        $valid = false;
                     }
                 }
             }

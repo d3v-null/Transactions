@@ -10,7 +10,7 @@
     
     $subsel = array();
     $result = mysql_query("SELECT ID FROM Subcategory");
-    while($row = mysql_get_assoc($result)){
+    while($row = mysql_fetch_array($result)){
         $subsel[$row['ID']]=1;
     }
 
