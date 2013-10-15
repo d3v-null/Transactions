@@ -215,5 +215,6 @@ $iopts = array(
         <div id='sidebar'>
             <?php include_once 'sidebar.php' ?>
         </div><!-- end sidebar-->
+        
     </body>
 </html>

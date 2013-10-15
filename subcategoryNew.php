@@ -60,8 +60,7 @@
 		</script>
 	</head>
 
-	<body>
-		<div id="main">
+	<body id="main">
 
 			<div id="box">
 				<h1>Create New Sub Category</h1>

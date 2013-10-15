@@ -101,8 +101,7 @@
 
     </head>
 
-	<body>
-		<div id="main">
+	<body id="main">
 
 			<div id="box">
 				<h1>Subcategory Details</h1>
@@ -130,7 +129,6 @@
 				</form>
 
 			</div>
-		</div> <!-- end main-->
 
         <div id="sidebar">
 

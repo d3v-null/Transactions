@@ -47,9 +47,11 @@ a:hover {
 /*-- MAIN ------------------*/
 
 #main {
-	margin: 20px;
+	margin-left:auto;
+    margin-right:auto;
 	padding: 0;        
 	text-align: right;
+    width:960px;
 }
 /*-- END MAIN ------------------*/
 
@@ -65,19 +67,20 @@ a:hover {
 	padding: 10px;
 	margin: 0;
 	border: 1px solid #8E8E8C;
-  box-shadow: 5px 5px 5px #8E8E8C;
-  background-color:	#DCEBEB;
+    box-shadow: 5px 5px 5px #8E8E8C;
+    background-color:	#DCEBEB;
 	height:800px;
-    min-width:500px;
+    min-width:600px;
 }
 
 #box h1 {
-	color: #3F064D;
-	font-size: 1.5em;
+/*	color: #0000A0;*/
+	font-size: 2em;
 	padding: 20px 0 20px 0;
 	margin: 0;
 	text-align: center;
     text-transform: uppercase;
+    font-weight:bold;
 }
 
 /*-- END BOX ------------------*/
