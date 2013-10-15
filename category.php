@@ -14,11 +14,9 @@
         if (!$user->isTreasurer()){
             echo "<script>alert('You must have treasurer privileges to create a category')</script>";
         } else {
-            $qry = "SELECT MAX(ID) AS ID FROM Category";
-            $result = mysql_query($qry) or die(mysql_error());
-            echo serialize($result);
-            $max = mysql_fetch_array($result)['ID'];
-            $sql="INSERT INTO Category (Name, Description) VALUES ('New Category (".$max.")','')";
+            $result = mysql_query("SELECT MAX(ID) AS ID FROM Category") or die(mysql_error());
+            $newID = mysql_fetch_array($result)['ID'] + 1;
+            $sql="INSERT INTO Category (Name, Description) VALUES ('New Category (".$newID.")','')";
             mysql_query($sql) or die("Category cannot be created: ".mysql_error());
         }
 

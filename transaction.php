@@ -11,25 +11,7 @@ if(!$user->loggedIn()){
 }
 
 $fieldGen = new FieldGen();
-
-//If new button was pressed
-if(key_exists('new', $_POST) or key_exists('new', $_GET)){
-    if (!$user->isTreasurer()){
-        echo "<script>alert('You must have treasurer privileges to create a transaction')</script>";
-    } else {
-        
-        //Check things
-        //Do new things
-        //set ID
-    }
-}
-
-//die if no history ID specified
-$id=(key_exists('id', $_GET)) ? $_GET["id"] : die("No History ID specified");
-
-//Check ID is valid
-$fetch = FieldGen::fetch($page_table, $id);
-
+$fieldGen->parse_metadata(DB_NAME, $page_table);
 $fieldGen->lbls = array(
     'TransactionDate'   => 'Date of Transaction',
     'PaymentDate'       => 'Date of Payment',
@@ -37,24 +19,6 @@ $fieldGen->lbls = array(
     'AssociatedParty'   => 'Party associated with transaction',
     'Inflow'            => 'Payment Type',
     'StatusID'          => 'Status'
-);
-$fieldGen->parse_metadata(DB_NAME, $page_table);
-$fieldGen->add_rule(
-    'Description',
-    new FieldRule(
-        'Description must be unique',
-        function($d){
-            $sql = "SELECT History.Description FROM (
-                        SELECT TransactionID, Max(ModificationDate) AS ModificationDate
-                        FROM History
-                        GROUP BY TransactionID
-                    ) AS Latest
-                    INNER JOIN History ON Latest.TransactionID = History.TransactionID
-                    AND Latest.ModificationDate = History.ModificationDate
-                    WHERE History.Description = ".$d;
-            return !mysql_query($sql) or die(mysql_error());
-        }
-    )
 );
 $fieldGen->add_rule(
     'StatusID',
@@ -78,7 +42,7 @@ $fieldGen->add_rule(
     new FieldRule(
         'Amount must be positive',
         function($a){
-            return $a>=0;
+            return $a>0;
         }
     )
 );
@@ -91,30 +55,75 @@ $fieldGen->add_rule(
         }
     )
 );
+$fieldGen->add_rule(
+    'Description',
+    new FieldRule(
+        'Description must be unique',
+        function($d){
+            $sql = "SELECT History.Description FROM (
+                        SELECT TransactionID, Max(ModificationDate) AS ModificationDate
+                        FROM History
+                        GROUP BY TransactionID
+                    ) AS Latest
+                    INNER JOIN History ON Latest.TransactionID = History.TransactionID
+                    AND Latest.ModificationDate = History.ModificationDate
+                    WHERE History.Description = ".$d;
+            return !mysql_query($sql) or die(mysql_error());
+        }
+    )
+);
 
-// If update button was pressed
-if(key_exists('update',$_POST))
-{
+
+if(key_exists('new', $_POST) or key_exists('new', $_GET)){ //If new button was pressed
     if (!$user->isTreasurer()){
-        echo "<script>alert('You must have treasurer privileges to modify a transaction')</script>";
-    } else {
-        $fieldGen->parse($_POST);
+        echo "<script>alert('You must have treasurer privileges to create a transaction')</script>";
+    } else {                
         $fieldGen->vals['ModificationDate'] = date('Y-m-d h:m:s');
         $fieldGen->vals['ModificationPersonID'] =
             (isset($_SESSION['loginid']))?$_SESSION['loginid']:die("No login available");
-        $fieldGen->vals['Amount'] *= 100;
+        $result = mysql_query("SELECT MAX(TransactionID) AS ID FROM History") or die(mysql_error());
+        $newID = mysql_fetch_array($result)['ID'] + 1;
+        $fieldGen->vals['TransactionID'] = $newID;
+        $fieldGen->vals['Description'] = "New Transaction (".$newID.")";
+        //messy 
+        $fieldGen->vals['StatusID'] = 1; 
+        $fieldGen->vals['Inflow'] = 1;
+        
+        //might not be the best way of doing this   
         if( $fieldGen->validate() ){
-            $sql =  "INSERT INTO history (".
-                        implode(", ", array_keys($fieldGen->vals)).
-                    ") VALUES (".
-                        implode(", ", array_map(['FieldGen', 'sqlFormat'], array_values($fieldGen->vals))).
-                    ") ";
-            mysql_query($sql) or die(mysql_error());
+            $fieldGen->mysql_insert();
             $id = mysql_insert_id();
+            redirect("transaction.php?id=".$id);
+        } else {
+            FieldGen::exit_gracefully("could not create a new transaction");
         }
     }
-} else {
-    $fieldGen->parse($fetch);
+} else {    
+    if(key_exists('id', $_GET)){
+        $id=$_GET["id"];
+    } else {
+        FieldGen::exit_gracefully("No ID Specified");
+    }
+    if(key_exists('update',$_POST)){ // If update button was pressed
+        if (!$user->isTreasurer()){
+            echo "<script>alert('You must have treasurer privileges to modify a transaction')</script>";
+        } else {
+            $fieldGen->parse($_POST);
+            $fieldGen->vals['ModificationDate'] = date('Y-m-d h:m:s');
+            $fieldGen->vals['ModificationPersonID'] =
+                (isset($_SESSION['loginid']))?$_SESSION['loginid']:die("No login available");
+            $fieldGen->vals['Amount'] *= 100;
+            if( $fieldGen->validate() ){
+                $fieldGen->mysql_insert();
+                $id = mysql_insert_id();
+                redirect("transaction.php?id=".$id);
+            } else {
+                echo "<script>alert('could not modify transaction')</script>";
+            }
+        }
+    } else {
+        $fieldGen->parse(FieldGen::fetch($page_table, $id));
+    }
 }
 
 //generate status options
@@ -125,11 +134,8 @@ while($row = mysql_fetch_array($rslt))
     $sopts[$row['ID']] = $row['Name'];
 }
 
-$iopts = array(
-    0 => '-- select --',
-         'inflow',
-         'outflow',
-);
+//Inflow options
+$iopts = array( 0 => '-- select --', 'inflow', 'outflow' );
 
 $scats = array();
 $rslt = mysql_query("
@@ -141,6 +147,8 @@ $rslt = mysql_query("
 while($row = mysql_fetch_array($rslt)){
     $scats[$row['scid']] = [$row['cname'], $row['scname']];
 }
+
+//echo serialize($fieldGen->meta);
 ?>
 <!DOCTYPE html>
 <html>
@@ -152,7 +160,7 @@ while($row = mysql_fetch_array($rslt)){
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script>
         <script src="js/jquery.tabSlideOut.v1.3.js"></script>
 
-        <script src="js/transaction_history_slide.js"></script>
+        <!--<script src="js/transaction_history_slide.js"></script>-->
         <script src="js/transaction_history_show.js"></script>
         <script src="js/transaction_history_showhistory.js"></script>
         <!-- local css -->
@@ -173,7 +181,7 @@ while($row = mysql_fetch_array($rslt)){
     <body id='main'>
         <div id='box'>
             <?php include_once 'subheader.php' ?>
-                <form name="transactionForm" onsubmit="return validateForm(this);" action="" method="post">
+                <form name="transactionForm" onsubmit="return validateForm(this);" action="transaction.php?id=<?php echo $id; ?>" method="post">
                     <div>
                         <?php
                         echo $fieldGen->display( array(
@@ -189,9 +197,9 @@ while($row = mysql_fetch_array($rslt)){
                             'PaymentDate'       => FieldGen::inputFormat('date', ['FieldGen','fieldRow']),
                             'ResponsibleParty'  => FieldGen::inputFormat('text', ['FieldGen','fieldRow']),
                             'AssociatedParty'   => FieldGen::inputFormat('text', ['FieldGen','fieldRow']),
-                            'Amount'    => function ($id, $lbl, $val, $err){
-                                $fld = "<input name='".$id."' type='text' value='". $val/100 ."'>";
-                                $lbc = "<label for ='".$id."'>".$lbl."</label>";
+                            'Amount'    => function ($id, $lbl, $val, $rqd, $err){
+                                $fld = "<input name='".$id."' type='text' value='". $val/100 ."' ".(($rqd)?"required":"").">";
+                                $lbc = "<label for ='".$id."'>".$lbl.(($rqd)?"*":"")."</label>";
                                 return FieldGen::fieldRow($id, $lbc, $fld, $err);
                             },
                             'Inflow'    => FieldGen::optionFormat($iopts, ['FieldGen','fieldRow']),
@@ -215,7 +223,6 @@ while($row = mysql_fetch_array($rslt)){
                 <div id='categories'>
                     <?php //include_once 'assoc_categories.php' ?>
                 </div><!-- end sidebar-->                
-                
                 
                 <!--<button onclick="setReadonly('data',true)">Cancel</button>-->
         </div><!-- end box -->

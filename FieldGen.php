@@ -44,56 +44,66 @@ class FieldGen{
 
     public static function fieldRow($id, $lbl, $fld, $err){
         return
-            "<tr class='fieldGenRowIn' id='".$id."'>".
+            "<tr id='".$id."'>".
                 "<td>".$lbl."</td>".
                 "<td>".$fld."</td>".
-            "</tr>".
-            "<tr class='fieldGenRowErr'>".
-                (($err != "")?"<td class='form-error' classcolspan='2'>".$err."</td>":"").
-            "</tr>";
+            "</tr>".(
+                ($err != "")?
+                    "<tr><td class='form-error' classcolspan='2'>".$err."</td></tr>":
+                    ""
+            );
     }
     
     public static function inputFormat($typ, $arr){
-        return function ($id, $lbl, $val, $err) use($typ, $arr){
-            $fld = "<input name='".$id."' type='".$typ."' value='".$val."'>";
-            $lbc = "<label for ='".$id."'>".$lbl."</label>";
+        return function ($id, $lbl, $val, $rqd, $err) use($typ, $arr){  
+            if($rqd) echo $id;
+            $fld = "<input name='".$id."' type='".$typ."' value='".$val."' ".
+                (($rqd)?"required":"").">";
+            $lbc = "<label for ='".$id."'>".$lbl.(($rqd)?"*":"")."</label>";
             return $arr($id, $lbc, $fld, $err);
         };
     }
       
 
     public static function optionFormat($opts, $arr){
-        return function ($id, $lbl, $val, $err) use($opts, $arr){
+        return function ($id, $lbl, $val, $rqd, $err) use($opts, $arr){
             $fld = "<select name='".$id."'>";
             foreach($opts as $k => $v){
                 $sel = ($k == $val)?"selected":"";
                 $fld .= "<option value='".$k."' ".$sel.">".$v."</option>";
             }
             $fld .= "</select>";
-            $lbc = "<label for ='".$id."'>".$lbl."</label>";
+            $lbc = "<label for ='".$id."'>".$lbl.(($rqd)?"*":"")."</label>";
             return $arr($id, $lbc, $fld, $err);
         };  
     }
     
     public static function textFormat($arr){
-        return function ($id, $lbl, $val, $err) use ($arr){
-            $fld = "<textarea name='".$id."'>".$val."</textarea>";
-            $lbc = "<label for ='".$id."'>".$lbl."</label>";
+        return function ($id, $lbl, $val, $rqd, $err) use ($arr){
+            $fld = "<textarea name='".$id."' ".(($rqd)?" required ":"").">".$val."</textarea>";
+            $lbc = "<label for ='".$id."'>".$lbl.(($rqd)?"*":"")."</label>";
             return $arr($id, $lbc, $fld, $err);
         };
     }
     
     public static function sqlFormat($s){
-        $s = mysql_real_escape_string($s);
-        return "\"".$s."\"";
+        return "\"".mysql_real_escape_string($s)."\"";
     }
     
     public static function fetch($table, $id) {
         $qry = "SELECT * FROM ".$table." WHERE ID = ".$id;
         $result = mysql_query($qry) or die(mysql_error());
-        if(!$result) die("No rows in database match given ID: ".$id);
+        if(!$result) {
+            echo "<script>alert('No rows in database match given ID: ".$id."')</script>";
+        }
         return mysql_fetch_array($result);
     }
+    
+    public static function exit_gracefully($msg){
+        echo "<script>alert('".$msg."')</script>";
+        exit;
+    }
+        
 
     public function __construct(){
     }
@@ -117,8 +127,8 @@ class FieldGen{
         if(!$result) die("No fields in table: ".$id);
         while($row = mysql_fetch_assoc($result)){
             $this->meta[$row['COLUMN_NAME']] = array(
-                'DATA_TYPE'     => $row['DATA_TYPE'],
-                'IS_NULLABLE'   => $row['IS_NULLABLE']
+                'type'     => $row['DATA_TYPE'],
+                'required' => $row['IS_NULLABLE']=="NO"
             );
             if($row['IS_NULLABLE']=='NO'){
                 $this->add_rule(
@@ -175,11 +185,36 @@ class FieldGen{
                 $k, 
                 $this->get_lbl($k), 
                 (isset($this->vals[$k]))?$this->vals[$k]:"",
+                (isset($this->meta[$k]))?$this->meta[$k]['required']:0,
                 (isset($this->errs[$k]))?$this->errs[$k]:""
             );
         }
         return $out;
     }   
+    
+    // public function auto_table($disp){
+        // $out = "";
+        // $out .= "<table class='auto_table'>";
+        // foreach($disp as $k => $v){
+            // $fmt = (!is_null($v))?$v:['this','fieldRow'];
+            // $out .= $v(
+                // $k, 
+                // $this->get_lbl($k), 
+                // (isset($this->vals[$k]))?$this->vals[$k]:"",
+                // (isset($this->meta[$k]['required'])?$this->meta[$k]['required']:False,
+                // (isset($this->errs[$k]))?$this->errs[$k]:""
+            // ); 
+            // } else {
+                
+        // $out .= "</table>";
+    
+    public function mysql_insert(){
+        mysql_query("INSERT INTO history (".
+                        implode(", ", array_keys($this->vals)).
+                    ") VALUES (".
+                        implode(", ", array_map(['self', 'sqlFormat'], array_values($this->vals))).
+                    ") ") or $this::exit_gracefully("Could not insert row: ".mysql_error());
+    }
     
     public function __toString(){
         $out = "";
