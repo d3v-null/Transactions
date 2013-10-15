@@ -3,3 +3,4 @@ Pagination description incorrect -> "0 - 20 of 4....."
 next/previous buttons should be disabled if at the first or last entry
 Amount is in float/double not int as specified by client
 Issue with including sidebar -> cant have a html, body etc in already open html body tags
+Transaction table -> if not treasurer, should be "view" not "edit"
