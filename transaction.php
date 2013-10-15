@@ -131,7 +131,16 @@ $iopts = array(
          'outflow',
 );
 
-
+$scats = array();
+$rslt = mysql_query("
+    SELECT 
+        Category.Name AS cname, 
+        Subcategory.Name AS scname, 
+        Subcategory.ID AS scid
+    FROM Subcategory LEFT JOIN Category ON Subcategory.CategoryID = Category.ID");
+while($row = mysql_fetch_array($rslt)){
+    $scats[$row['scid']] = [$row['cname'], $row['scname']];
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -196,6 +205,9 @@ $iopts = array(
                         ) );
                         ?>
                     </div>
+                    <div>
+                        
+                    </div>    
                     <input type='hidden' name='TransactionID' value=<?php echo $fieldGen->vals['TransactionID']; ?>>
                     <input type='submit' name='update' value='Update'>
                     <button onclick="setReadonly('data',false)">Edit</button>
