@@ -65,9 +65,8 @@ a:hover {
 	float: right;
 	padding: 10px;
 	margin: 0;
-	border: 1px solid #8E8E8C;
     box-shadow: 5px 5px 5px #8E8E8C;
-    background-color:	#DCEBEB;
+    background-color:	#A9CDFF;
 	height:800px;
     min-width:600px;
 }
