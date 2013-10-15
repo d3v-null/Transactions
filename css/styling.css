@@ -154,8 +154,7 @@ ul
 	padding-top:20px;
 }
 
-#box,#sidebar,#search
-{
+#box,#sidebar,#search{
 	-webkit-border-radius: 9px;
 	-moz-border-radius: 9px;
 	border-radius: 9px;

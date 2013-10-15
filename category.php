@@ -140,11 +140,11 @@
                 <b>* This field is compulsory</b>
 				<br><br>
                 <table class = "formatted">
-                    <tr class = "spaceBelow">
-                        <td>Name*:</td>
+                    <tr>
+                        <td class = "spaceBelow">Name*:</td>
                         <td><input type="text" name="name" class="data" value="<?php echo $name ?>"></td>
                     </tr>
-                    <tr class = "spaceBelow">
+                    <tr>
                         <td>Description:</td>
                         <td></td>
                     </tr>
