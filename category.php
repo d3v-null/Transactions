@@ -12,7 +12,8 @@
     
     if(key_exists('new', $_POST) or key_exists('new', $_GET)){
         if (!$user->isTreasurer()){
-            echo "<script>alert('You must have treasurer privileges to create a category')</script>";
+            echo "<script>alert('You must have treasurer privileges to delete a category! You are going to be redirected to the main page')</script>";			
+			echo "<meta http-equiv='Refresh' content='0; URL=search.php'>";
         } else {
             $result = mysql_query("SELECT MAX(ID) AS ID FROM Category") or die(mysql_error());
             $newID = mysql_fetch_array($result)['ID'] + 1;
@@ -37,7 +38,7 @@
     if(!empty($_POST) && key_exists('delete', $_POST))
 	{
 		if (!$user->isTreasurer()){
-            echo "<script>alert('You must have treasurer privileges to delete a category!You are going to be redirected to the main page')</script>";
+            echo "<script>alert('You must have treasurer privileges to delete a category! You are going to be redirected to the main page')</script>";
 			echo "<meta http-equiv='Refresh' content='0; URL=search.php'>";
         } else {
 			$canDelete = TRUE;
@@ -110,8 +111,8 @@
         else if($_POST['name'] == ""){
             echo "<script>alert('Name must not be empty')</script>";
         } else If(!$user->isTreasurer()){
-            echo "<script>alert('You must have treasurer privileges to modify a category')</script>";
-			redirect("search.php");
+            echo "<script>alert('You must have treasurer privileges to delete a category! You are going to be redirected to the main page')</script>";
+			echo "<meta http-equiv='Refresh' content='0; URL=search.php'>";
         } else {
             $name = $_POST['name'];
             $desc = $_POST['desc'];
