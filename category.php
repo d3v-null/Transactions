@@ -18,6 +18,8 @@
             $newID = mysql_fetch_array($result)['ID'] + 1;
             $sql="INSERT INTO Category (Name, Description) VALUES ('New Category (".$newID.")','')";
             mysql_query($sql) or die("Category cannot be created: ".mysql_error());
+			redirect("category.php?id=".mysql_insert_id());
+			
         }
 
         $id = mysql_insert_id();
