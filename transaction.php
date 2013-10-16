@@ -219,7 +219,10 @@ while($row = mysql_fetch_array($rslt)){
                 <input type='submit' name='update' value='Update'>            
             </div><!-- end box -->        
             <div id='sidebar'>
-                <?php include_once 'sidebar.php' ?>
+                <?php
+                    $showBoxes=true;
+                    include_once 'sidebar.php';
+                ?>
             </div><!-- end sidebar-->
         </form>
         <div class='slide-out-div'>

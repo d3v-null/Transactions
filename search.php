@@ -8,11 +8,14 @@
         redirect('index.php');
     }
     
-    $subsel = array();
+    
+    
+    $checked = array();
     $result = mysql_query("SELECT ID FROM Subcategory");
     while($row = mysql_fetch_array($result)){
-        $subsel[$row['ID']]=1;
+        $checked[$row['ID']]=true;
     }
+    echo serialize($checked);
 
     $pars = Array(
         'ts' => (isset($_GET['ts']))?$_GET['ts']:0,     //Transaction offset
