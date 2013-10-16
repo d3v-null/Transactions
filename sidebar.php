@@ -16,9 +16,17 @@ $checked   = (isset($checked))?$checked:[];
 
 <link href="js/jquery.mCustomScrollbar.css" rel="stylesheet" />
 <!-- http://manos.malihu.gr/jquery-custom-content-scroller/ -->
+
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
 <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.9.1.min.js"%3E%3C/script%3E'))</script>
+
 <script src="js/innerScroll.js"></script>
+<script type="text/javascript">
+    MYLIBRARY.init("#sidebar");
+    MYLIBRARY.scroll();
+</script>
+
 <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
 <style>
   input.checkbox{

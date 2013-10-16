@@ -145,6 +145,9 @@
         <title><?php echo $page_title ?></title>
         <link rel="stylesheet" type="text/css" href="css/style2.css">
         <link rel="stylesheet" type="text/css" href="css/styling.css">
+        
+        
+        
     </head>
 
     <body id="main">
@@ -180,18 +183,18 @@
                     <thead>
                         <tr>
                             <th id="categName">Name</th>
-                            <th>Description</th>
+                            <th id="categDesc">Description</th>
                             <th id="editCol"></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="catBod">
                         <?php
                             $sql = mysql_query("SELECT * FROM Subcategory WHERE CategoryID = '". $_GET['id']."' ORDER BY Name ASC");
                             // For each row of Category
                             while ($row = mysql_fetch_array($sql)) {
                                 echo "<tr>";
                                 echo "<td id='categName'>". $row["Name"] ."</td>";
-                                echo "<td>". $row["Description"] ."</td>";
+                                echo "<td id='categDesc'>". $row["Description"] ."</td>";
                                 echo "<td id='editCol'><a href='subcategory.php?id=".$row['ID']."'>Edit</a></td>";
                                 echo "</tr>";
                             }
