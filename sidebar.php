@@ -20,6 +20,11 @@ $checked   = (isset($checked))?$checked:[];
 <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.9.1.min.js"%3E%3C/script%3E'))</script>
 <script src="js/innerScroll.js"></script>
 <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+<style>
+  input.checkbox{
+    float:right;
+  }
+</style>
 <div class="panel-group" id="accordion">
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -61,36 +66,36 @@ $checked   = (isset($checked))?$checked:[];
           "<div id='expanded".$row['ID']."'' class='panel-collapse collapse'>".
             "<div class='panel-body'>";
         
+        if($showRadios)                       
+        {  
+          echo 
+              "<li>".
+                "<a>".
+                  "<span>None  </span>".
+                "</a><input type='radio' name='".$row['ID']."'value='0' class='checkbox' CHECKED>".
+              "</li>"; 
+        } 
         while ($subRow = mysql_fetch_array($subCats)) 
         {
             echo "<li>".
                     "<a href='subcategory.php?id=".$subRow['ID']."'>".
-                      "<span>".$subRow['Name']."</span>".
+                      "<span>".$subRow['Name']."  </span>".
                     "</a>";
             if($showBoxes){
                 echo 
-                    "<input type='checkbox' name='sc[]' ".
+                    "<input type='checkbox' name='sc[]' class='checkbox' ".
                     ((in_array($subRow['ID'], $checked))?"checked ":"").
                     "value='".$subRow['ID']."'>";
             }
 
             if($showRadios){
               echo 
-                  "<input type='radio' name='".$row['ID']."'".
+                  "<input type='radio' name='".$row['ID']."' class='checkbox' ".
                   ((in_array($subRow['ID'], $checked))?"checked ":"").
                   "value='".$subRow['ID']."'>";
             }
             echo "</li>";
-        }
-        if($showRadios)                       
-        {  
-          echo 
-              "<li>".
-                "<a href='subcategoryNew.php?ID=".$catID."'>".
-                  "<span>None</span>".
-                "</a><input type='radio' name='".$row['ID']."'value='0' CHECKED>".
-              "</li>"; 
-        }       
+        }      
         echo "<li class='last'>".
               "<a href='subcategoryNew.php?ID=".$catID."'>".
                 "<span>Add New Subcategory</span>".
