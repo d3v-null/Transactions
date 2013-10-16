@@ -59,7 +59,7 @@ $checked   = (isset($checked))?$checked:[];
             "<div class='panel-heading'>".
               "<h4 class='panel-title'>".
                 "<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#expanded".$row['ID']."'>".
-                  "<span>".$row['Name']."</span>".
+                  $row['Name'].
                 "</a>".
                 "<a href='category.php?id=".$row['ID']."'>".
                   "<img src='images/pencil.png' border='0' align='right' />".
@@ -78,16 +78,20 @@ $checked   = (isset($checked))?$checked:[];
         {  
           echo 
               "<li>".
-                "None".
-                "<input type='radio' name='rb".$row['ID']."' value='0' class='checkbox' checked/>".
+                "<div>".
+                  "None".
+                  "<input type='radio' name='rb".$row['ID']."' value='0' class='checkbox' checked/>".
+                "</div>".
               "</li>"; 
         } 
         while ($subRow = mysql_fetch_array($subCats)) 
         {
-            echo "<li>".
-                    "<a href='subcategory.php?id=".$subRow['ID']."'>".
-                      "<span>".$subRow['Name']."  </span>".
-                    "</a>";
+            echo 
+                "<li>".
+                 "<div>".
+                  "<a href='subcategory.php?id=".$subRow['ID']."'>".
+                    "<span>".$subRow['Name']."  </span>".
+                  "</a>";
             if($showBoxes){
                 echo 
                     "<input type='checkbox' name='sc[]' class='checkbox' ".
@@ -101,7 +105,9 @@ $checked   = (isset($checked))?$checked:[];
                     ((in_array($subRow['ID'], $checked))?"checked ":"").
                     "value='".$subRow['ID']."'/>";
             }
-            echo "</li>";
+            echo 
+                  "</div>".
+                "</li>";
         }      
         echo 
             "<li class='last'>".
