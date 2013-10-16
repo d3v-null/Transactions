@@ -13,12 +13,6 @@
     while($row = mysql_fetch_array($rslt)){
         $subcats[$row['ID']]=$row['Name'];
     }
-    $sc_all = array();
-    foreach($subcats as $k => $v){
-        $sc_all[$k]=true;
-    }
-    // echo serialize($checked);
-    echo serialize($_GET);
 
     $pars = Array(
         'ts' => (isset($_GET['ts']))?$_GET['ts']:0,     //Transaction offset
@@ -29,7 +23,7 @@
         'fd' => (isset($_GET['fd']))?$_GET['fd']:"",    //From date
         'td' => (isset($_GET['td']))?$_GET['td']:"",    //To date
         'st' => (isset($_GET['st']))?$_GET['st']:0,     //Status
-        'sc' => (isset($_GET['sc']))?$_GET['sc']:$sc_all
+        'sc' => (isset($_GET['sc']))?$_GET['sc']:array_keys($subcats) //subcategories selected
     );
 
     $cols = Array(
@@ -81,9 +75,6 @@
         <link rel="stylesheet" type="text/css" href="css/style2.css">
         <link rel="stylesheet" type="text/css" href="css/styling.css">
         <script src="js/expander.js"></script>
-        
-        
- 
     </head>
 
     <body id="main">
@@ -179,8 +170,8 @@
                     }
                     if ($whr != "") {
                         $whr = "WHERE " . $whr;
-                    }
-
+                    }  
+                        
                     $search="
                         SELECT
                             History.ID As ID,
@@ -190,7 +181,8 @@
                             History.Amount AS Amount,
                             Status.Name AS Status,
                             Status.ID AS StatusID
-                        FROM (
+                        FROM 
+                        (
                             SELECT TransactionID, Max(ModificationDate) AS ModificationDate
                             FROM History
                             GROUP BY TransactionID
@@ -198,13 +190,13 @@
                         INNER JOIN History ON Latest.TransactionID = History.TransactionID
                         AND Latest.ModificationDate = History.ModificationDate
                         INNER JOIN Status ON Status.ID = History.StatusID ".$whr;
-
                     $result = mysql_query("SELECT COUNT(*) AS Count FROM (".$search.") AS T") or die(mysql_error());;
                     $count = mysql_fetch_array($result)['Count'];
                     $pars['ts'] = max(0, min($count-$pars['tn'],$pars['ts']));
                     $post = "ORDER BY ".$cols[$pars['oc']][0]." ".$ords[$pars['od']][1].
                             " LIMIT ".$pars['tn']." OFFSET ".$pars['ts'].";";
                     $page = mysql_query($search.$post) or die(mysql_error());
+                    
 
                 ?>
 

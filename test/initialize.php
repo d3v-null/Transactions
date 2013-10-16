@@ -95,7 +95,7 @@
 	mysql_query("         
         CREATE TABLE Categorization (
             ID INT AUTO_INCREMENT,
-            HistoryID INT NOT NULL,
+            TransactionID INT NOT NULL,
             SubCategoryID INT NOT NULL,
             
             PRIMARY KEY (ID),
