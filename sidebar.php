@@ -14,29 +14,16 @@
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <!--[if lt IE 9]>
-      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    
-    
-      <link href="js/jquery.mCustomScrollbar.css" rel="stylesheet" />
 
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.9.1.min.js"%3E%3C/script%3E'))</script>
-        <!-- custom scrollbars plugin -->
-        <!-- http://manos.malihu.gr/jquery-custom-content-scroller/ -->
-        <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-        <script>
-            (function($){
-                $(window).load(function(){
-                    $("#sidebar").mCustomScrollbar({
-                        scrollButtons:{
-                            enable:true
-                        },
-					theme:"dark"
-				});
-                });
-            })(jQuery);
-        </script>   
+    <link href="js/jquery.mCustomScrollbar.css" rel="stylesheet" />
+    <!-- http://manos.malihu.gr/jquery-custom-content-scroller/ -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.9.1.min.js"%3E%3C/script%3E'))</script>
+    <script src="js/innerScroll.js"></script>
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+  
   </head>
   <body>
     <form name="myform" action="http://www.mydomain.com/myformhandler.cgi" method="POST">
