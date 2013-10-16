@@ -177,22 +177,27 @@
 				<br><br>
 
 				<h4>Subcategory List</h4>
-				<table border="1">
-					<tr>
-						<th>Name</th>
-						<th>Description</th>
-					</tr>
-					<?php
-						$sql = mysql_query("SELECT * FROM Subcategory WHERE CategoryID = '". $_GET['id']."' ORDER BY Name ASC");
-						// For each row of Category
-						while ($row = mysql_fetch_array($sql)) {
-							echo "<tr>";
-							echo "<td>". $row["Name"] ."</td>";
-							echo "<td>". $row["Description"] ."</td>";
-							echo "<td><a href='subcategory.php?id=".$row['ID']."'>Edit</a></td>";
-							echo "</tr>";
-						}
-					?>
+				<table id="categTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            $sql = mysql_query("SELECT * FROM Subcategory WHERE CategoryID = '". $_GET['id']."' ORDER BY Name ASC");
+                            // For each row of Category
+                            while ($row = mysql_fetch_array($sql)) {
+                                echo "<tr>";
+                                echo "<td>". $row["Name"] ."</td>";
+                                echo "<td>". $row["Description"] ."</td>";
+                                echo "<td><a href='subcategory.php?id=".$row['ID']."'>Edit</a></td>";
+                                echo "</tr>";
+                            }
+                        ?>
+                    </tbody>
 				</table>
 
             </form>
