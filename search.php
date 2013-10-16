@@ -16,7 +16,7 @@
 
     $pars = Array(
         'ts' => (isset($_GET['ts']))?$_GET['ts']:0,     //Transaction offset
-        'tn' => (isset($_GET['tn']))?$_GET['tn']:20,    //transactions / page
+        'tn' => (isset($_GET['tn']))?$_GET['tn']:10,    //transactions / page
         'oc' => (isset($_GET['oc']))?$_GET['oc']:1,     //Order-by column
         'od' => (isset($_GET['od']))?$_GET['od']:0,     //Order direction
         'kw' => (isset($_GET['kw']))?$_GET['kw']:"",    //Keywords
@@ -35,13 +35,19 @@
         Array('Amount', function($row){return $row['Amount'] / 100;}),
         Array('', function($row){return "<a id='edit' href='transaction.php?id=".$row['ID']."'>Edit</a>";}),
     );
+    
+    $lbls = [
+        'TransactionID'   => 'ID',
+        'TransactionDate' => 'Date'
+    ];
+        
 
     $ords = Array(
         Array('Descending', 'DESC'),
         Array('Ascending', 'ASC'),
     );
 
-    $view = Array(2,5,20,50,100);
+    $view = Array(2,5,10,20);
 
     //process pagination
     if(isset($_GET['pag'])){
@@ -229,7 +235,7 @@
                         <?php
                             echo "<tr>";
                             foreach($cols as $v){
-                                echo "<td>".$v[0]."</td>";
+                                echo "<td>".((isset($lbls[$v[0]]))?$lbls[$v[0]]:$v[0])."</td>";
                             }
                             echo "</tr>";
                         ?>
