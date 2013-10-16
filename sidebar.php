@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php  
     require_once 'includes/transaction_setup.php';
-    $displayBoxes = (isset($displayBoxes))?$displayBoxes:false;
+    $showBoxes = (isset($displayBoxes))?$displayBoxes:false;
     $subsel       = (isset($subsel))?$subsel:[];
     // $protocol = strpos(strtolower($_SERVER['SERVER_PROTOCOL']),'https') === FALSE ? 'http' : 'https';
     // $host     = $_SERVER['HTTP_HOST'];
