@@ -121,7 +121,6 @@
 			$sql = "SELECT Name FROM Category WHERE Name = '". $name ."'";
 			$CategList = mysql_query($sql);
 			$canDelete = TRUE;
-			
 			while($CategListNames = mysql_fetch_array($CategList))
 			{
 				// If it exists at least one matching on Categorization table
@@ -137,6 +136,7 @@
 				echo "<script>alert('Successfully updated category')</script>";
 			} else {
 				echo "<script>alert('ERROR: This name already exists on database. Please specify other.')</script>";
+				echo "<meta http-equiv='Refresh' content='0; URL=category.php?id=". $id ."'>";
 			}
         }
     }
