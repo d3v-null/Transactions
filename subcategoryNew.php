@@ -25,7 +25,7 @@
 				$slq="INSERT INTO subcategory (CategoryID, Name, Description) VALUES ('$catID','$catName','$description')";
 				mysql_query($slq);
 
-				echo "<script>alert('Subcategory ". $catName ." was successfully inserted.')</script>";
+				echo "<script>alert('Subcategory ". $catName ." was successfully created.')</script>";
 			} else {
 				echo "<script>alert('ERROR: Impossible insert subcategory named as ". $catName ." because it already exists in current database. Please specify other name.')</script>";
 			}
