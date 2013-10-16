@@ -67,7 +67,7 @@ if (isset($_GET['remove'])) {
                   <button type="submit" class="btn btn-default btn-xs" name="toTreasurer" value="<?=$user->id?>">To Treasurer</button>
                   <button type="submit" class="btn btn-default btn-xs" name="toRegular" value="<?=$user->id?>">To Regular</button>
                   <?php if($user->rank != 2 && $user->rank != 3): ?>
-                  <button type="submit" class="btn btn-default btn-xs" name="remove" value="<?=$user->id?>">Remove</button>
+                  <button type="submit" class="btn btn-default btn-xs" name="remove" value="<?=$user->id?>">Delete User</button>
                   <?php endif; ?>
                 </td>
               </tr>
