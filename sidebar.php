@@ -74,18 +74,24 @@ $checked   = (isset($checked))?$checked:[];
                     "value='".$subRow['ID']."'>";
             }
 
-            {
-              if($showRadios){
-                echo 
-                      "<input type='radio' name='sc[]' ".
-                      ((in_array($subRow['ID'], $checked))?"checked ":"").
-                      "value='".$subRow['ID']."'>";
-              }
+            if($showRadios){
+              echo 
+                  "<input type='radio' name='".$row['ID']."'".
+                  ((in_array($subRow['ID'], $checked))?"checked ":"").
+                  "value='".$subRow['ID']."'>";
             }
             echo "</li>";
-        }                
-        echo 
-            "<li class='last'>".
+        }
+        if($showRadios)                       
+        {  
+          echo 
+              "<li>".
+                "<a href='subcategoryNew.php?ID=".$catID."'>".
+                  "<span>None</span>".
+                "</a><input type='radio' name='".$row['ID']."'value='0' CHECKED>".
+              "</li>"; 
+        }       
+        echo "<li class='last'>".
               "<a href='subcategoryNew.php?ID=".$catID."'>".
                 "<span>Add New Subcategory</span>".
               "</a>".
