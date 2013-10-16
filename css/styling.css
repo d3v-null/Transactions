@@ -122,9 +122,8 @@ ul
 }
 
 
-#transaction-list>tbody>tr, #transaction-list>tbody>tr a
+#transaction-list>tbody>tr, #transaction-list>tbody>tr a, #categTable>tbody>tr>td, #categTable>tbody>tr a
 {
-    border-top: 1.5px solid white;
     -o-transition:.5s;
     -ms-transition:.5s;
     -moz-transition:.5s;
@@ -161,8 +160,32 @@ ul
 
 #categTable >thead>tr>th{
     border-bottom: 2px solid #6678b1;
-    text-align:center;'
+    text-align: center;
+    color: #151B54;
 }
+
+#categTable>tbody>tr>td {
+    color: #1F5881;
+}
+
+#categTable>tbody>tr:hover, #categTable>tbody>tr:hover a, #categTable>tbody>tr:last-child:hover{
+	color: black;
+	background-color: #D6EBEB;
+    border-radius:9px;
+}
+
+#categTable>tbody tr:hover td
+{
+	color: black;
+}
+
+#categTable>tbody>tr:last-child{
+   -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color: white;
+}
+
 /*
 #categTable tbody tr:nth-child(odd) {
   background-color:red;
