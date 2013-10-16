@@ -3,13 +3,8 @@
 
 require_once 'includes/transaction_setup.php';
 $showBoxes = (isset($showBoxes))?$showBoxes:false;
+$showRadios = (isset($showRadios))?$showRadios:false;
 $checked   = (isset($checked))?$checked:[];
-// $protocol = strpos(strtolower($_SERVER['SERVER_PROTOCOL']),'https') === FALSE ? 'http' : 'https';
-// $host     = $_SERVER['HTTP_HOST'];
-// $script   = $_SERVER['SCRIPT_NAME'];
-// $params   = $_SERVER['QUERY_STRING'];
-// $urlsub = $script . '?' . $params;
-// $urlsearch = $script ;
 
 ?>
 
@@ -45,6 +40,7 @@ $checked   = (isset($checked))?$checked:[];
         // Save Category ID
         $catID = $row['ID'];
 
+
         echo 
           "<div class='panel panel-default'>".
             "<div class='panel-heading'>".
@@ -64,6 +60,7 @@ $checked   = (isset($checked))?$checked:[];
         echo 
           "<div id='expanded".$row['ID']."'' class='panel-collapse collapse'>".
             "<div class='panel-body'>";
+        
         while ($subRow = mysql_fetch_array($subCats)) 
         {
             echo "<li>".
@@ -75,6 +72,15 @@ $checked   = (isset($checked))?$checked:[];
                     "<input type='checkbox' name='sc[]' ".
                     ((in_array($subRow['ID'], $checked))?"checked ":"").
                     "value='".$subRow['ID']."'>";
+            }
+
+            {
+              if($showRadios){
+                echo 
+                      "<input type='radio' name='sc[]' ".
+                      ((in_array($subRow['ID'], $checked))?"checked ":"").
+                      "value='".$subRow['ID']."'>";
+              }
             }
             echo "</li>";
         }                

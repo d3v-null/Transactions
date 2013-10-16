@@ -220,7 +220,7 @@ while($row = mysql_fetch_array($rslt)){
             </div><!-- end box -->        
             <div id='sidebar'>
                 <?php
-                    $showBoxes=true;
+                    $showRadios=true;
                     include_once 'sidebar.php';
                 ?>
             </div><!-- end sidebar-->
