@@ -44,14 +44,13 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-            <a href="search.php" class='accordion-toggle' data-parent='#accordion'>
+            <a href="search.php">
               Home 
             </a>
-          </div>
+          </h4>
         </div>
       </div>
 
-      <div class="panel-group" id="accordion">
         <?php
         // Select everything from Category
             $sql = mysql_query("SELECT * FROM Category");
@@ -91,19 +90,19 @@
 					     <span>Add New Subcategory</span></a></li>";
 				      echo "</div>";
             echo"</div>";
-
+            echo "</div>";
 			  
             }
       ?>
-    </div>
-      <div class="panel-group" id="accordion">
+
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
             <a href="category.php?new" class='accordion-toggle' data-parent='#accordion'>
               Create New Category
             </a>
-          </div>
+          </h4>
+        </div>
         </div>
       </div>    
 
