@@ -104,6 +104,18 @@ if(key_exists('new', $_POST) or key_exists('new', $_GET)){ //If new button was p
     } else {
         FieldGen::exit_gracefully("No ID Specified");
     }
+    
+    $fetch = FieldGen::fetch($page_table, $id);
+    
+    $subcategories = [];
+    $rslt = mysql_query("
+        SELECT SubcategoryID FROM Categorization WHERE TransactionID = ".
+        $fetch['TransactionID']
+    ) or FieldGen::exit_gracefully(mysql_error());
+    while($row = mysql_fetch_assoc($rslt)){
+        array_push($subcategories, $row['SubcategoryID']);
+    }    
+    
     if(key_exists('update',$_POST)){ // If update button was pressed
         if (!$user->isTreasurer()){
             echo "<script>alert('You must have treasurer privileges to modify a transaction')</script>";
@@ -113,16 +125,40 @@ if(key_exists('new', $_POST) or key_exists('new', $_GET)){ //If new button was p
             $fieldGen->vals['ModificationPersonID'] =
                 (isset($_SESSION['loginid']))?$_SESSION['loginid']:die("No login available");
             $fieldGen->vals['Amount'] *= 100;
+            
+            //validate radio buttons
+            $selected = [];
+            $cats = mysql_query("SELECT ID FROM Category") or FieldGen::exit_gracefully(mysql_error());
+            while($row = mysql_fetch_assoc($cats)){
+                if(isset($_POST["rb".$row['ID']]) and $_POST["rb".$row['ID']] != 0)
+                    array_push($selected,$_POST["rb".$row['ID']]);
+            }
+           
             if( $fieldGen->validate() ){
                 $fieldGen->mysql_insert();
                 $id = mysql_insert_id();
+                
+                $adds = array_diff(array_merge($subcategories,$selected), $subcategories);
+                foreach($adds as $v){
+                    mysql_query("
+                        INSERT INTO Categorization (TransactionID, SubcategoryID) 
+                        VALUES (".$fetch['TransactionID'].", ".$v.")"
+                    ) or FieldGen::exit_gracefully(mysql_error());
+                }
+                $dels = array_diff(array_merge($subcategories,$selected), $selected);  
+                foreach($dels as $v){
+                    mysql_query("
+                        DELETE FROM Categorization
+                        WHERE TransactionID=".$fetch['TransactionID']." AND SubcategoryID=".$v
+                    ) or FieldGen::exit_gracefully(mysql_error());     
+                }
                 redirect("transaction.php?id=".$id);
             } else {
                 echo "<script>alert('could not modify transaction')</script>";
             }
         }
     } else {
-        $fieldGen->parse(FieldGen::fetch($page_table, $id));
+        $fieldGen->parse($fetch);
     }
 }
 
@@ -141,15 +177,15 @@ $iopts = array( 0 => 'outflow', 'inflow' );
 $scats = array();
 $rslt = mysql_query("
     SELECT 
-        Category.Name AS cname, 
-        Subcategory.Name AS scname, 
-        Subcategory.ID AS scid
+    Category.Name AS cname, 
+    Subcategory.Name AS scname, 
+    Subcategory.ID AS scid
     FROM Subcategory LEFT JOIN Category ON Subcategory.CategoryID = Category.ID");
 while($row = mysql_fetch_array($rslt)){
     $scats[$row['scid']] = [$row['cname'], $row['scname']];
 }
 
-//echo serialize($fieldGen->meta);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -221,6 +257,7 @@ while($row = mysql_fetch_array($rslt)){
             <div id='sidebar'>
                 <?php
                     $showRadios=true;
+                    $checked = $subcategories;
                     include_once 'sidebar.php';
                 ?>
             </div><!-- end sidebar-->

@@ -41,9 +41,9 @@ $checked   = (isset($checked))?$checked:[];
             <img src="images/homeIcon2.png"alt="Home" height="27" width="23"  style="margin-right:5px";/>
             Home 
           </a>
-      </h4>
-    </div><!-- end panel panel-default-->
-  </div><!-- end panel group-->
+        </h4>
+      </div><!-- end panel panel-default-->
+    </div><!-- end panel group-->
 
     <?php
     // Select everything from Category
@@ -78,9 +78,8 @@ $checked   = (isset($checked))?$checked:[];
         {  
           echo 
               "<li>".
-                "<a>".
-                  "<span>None  </span>".
-                "</a><input type='radio' name='".$row['ID']."'value='0' class='checkbox' CHECKED>".
+                "None".
+                "<input type='radio' name='rb".$row['ID']."' value='0' class='checkbox' checked/>".
               "</li>"; 
         } 
         while ($subRow = mysql_fetch_array($subCats)) 
@@ -93,20 +92,21 @@ $checked   = (isset($checked))?$checked:[];
                 echo 
                     "<input type='checkbox' name='sc[]' class='checkbox' ".
                     ((in_array($subRow['ID'], $checked))?"checked ":"").
-                    "value='".$subRow['ID']."'>";
+                    "value='".$subRow['ID']."'/>";
             }
 
             if($showRadios){
-              echo 
-                  "<input type='radio' name='".$row['ID']."' class='checkbox' ".
-                  ((in_array($subRow['ID'], $checked))?"checked ":"").
-                  "value='".$subRow['ID']."'>";
+                echo 
+                    "<input type='radio' name='rb".$row['ID']."' class='checkbox' ".
+                    ((in_array($subRow['ID'], $checked))?"checked ":"").
+                    "value='".$subRow['ID']."'/>";
             }
             echo "</li>";
         }      
-        echo "<li class='last'>".
+        echo 
+            "<li class='last'>".
               "<a href='subcategoryNew.php?ID=".$catID."'>".
-                "<span>Add New Subcategory</span>".
+                "Add New Subcategory".
               "</a>".
             "</li>";
           

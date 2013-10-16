@@ -94,7 +94,7 @@ class FieldGen{
         $qry = "SELECT * FROM ".$table." WHERE ID = ".$id;
         $result = mysql_query($qry) or die(mysql_error());
         if(!$result) {
-            echo "<script>alert('No rows in database match given ID: ".$id."')</script>";
+            echo "<html><body><script>alert('No rows in database match given ID: ".$id."')</script>";
         }
         return mysql_fetch_array($result);
     }
