@@ -87,9 +87,6 @@ $checked   = (isset($checked))?$checked:[];
         echo 
             "</div><!-- end panel-body -->".
           "</div><!-- end expanded -->";
-          
-
-      
     }
   ?>
   <div class="panel panel-default">

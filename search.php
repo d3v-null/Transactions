@@ -7,9 +7,7 @@
     if(!$user->loggedIn()){
         redirect('index.php');
     }
-    
-    
-    
+        
     $checked = array();
     $result = mysql_query("SELECT ID FROM Subcategory");
     while($row = mysql_fetch_array($result)){
@@ -84,10 +82,9 @@
     </head>
 
     <body id="main">
-            <form method="get" action=""> 
+      <form method="get" action=""> 
         <div id="box">
             <?php include 'subheader.php' ?>
-
                 <div id="search">
                     <h2>Search</h2>
                     <input type="submit" name="search" value="Update">
@@ -240,7 +237,7 @@
                     <input type="submit" name="pag" value="Next">
                     <input type="submit" name="pag" value="Last">
                 </div><!-- end pagination -->
-            </form>
+            
         </div><!-- end box -->
         <div id="sidebar">
             <?php
@@ -248,6 +245,6 @@
                 include_once("sidebar.php");
             ?>
         </div>
-    
+      </form>
     </body>
 </html>
