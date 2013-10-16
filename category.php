@@ -180,9 +180,9 @@
 				<table id="categTable">
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th id="categName">Name</th>
                             <th>Description</th>
-                            <th></th>
+                            <th id="editCol"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -191,9 +191,9 @@
                             // For each row of Category
                             while ($row = mysql_fetch_array($sql)) {
                                 echo "<tr>";
-                                echo "<td>". $row["Name"] ."</td>";
+                                echo "<td id='categName'>". $row["Name"] ."</td>";
                                 echo "<td>". $row["Description"] ."</td>";
-                                echo "<td><a href='subcategory.php?id=".$row['ID']."'>Edit</a></td>";
+                                echo "<td id='editCol'><a href='subcategory.php?id=".$row['ID']."'>Edit</a></td>";
                                 echo "</tr>";
                             }
                         ?>

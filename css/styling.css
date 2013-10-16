@@ -154,18 +154,25 @@ ul
 
 /* ~~ Category Table ~~ */
 #categTable {
-    width:80%;
+    table-layout:fixed;
+    width:90%;
     background-color:white;
+}
+
+#categTable>thead>tr>th, #categTable>tbody>tr>td {
+    text-overflow:ellipsis;
+    overflow:hidden;
 }
 
 #categTable >thead>tr>th{
     border-bottom: 2px solid #6678b1;
     text-align: center;
-    color: #151B54;
+    color: black;
 }
 
 #categTable>tbody>tr>td {
     color: #1F5881;
+    width:auto;
 }
 
 #categTable>tbody>tr:hover, #categTable>tbody>tr:hover a, #categTable>tbody>tr:last-child:hover{
@@ -186,6 +193,15 @@ ul
     background-color: white;
 }
 
+#categName {
+    font-weight:bold;
+    text-align:left;
+    padding-left:111110px;
+}
+
+#editCol, #categName {
+    width:100px;
+}
 /*
 #categTable tbody tr:nth-child(odd) {
   background-color:red;
