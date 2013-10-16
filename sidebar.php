@@ -29,9 +29,10 @@ $checked   = (isset($checked))?$checked:[];
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <a href="search.php" class='accordion-toggle' data-parent='#accordion'>
-          Home 
-        </a>
+          <a href="search.php" id="home">
+            <img src="images/homeIcon2.png"alt="Home" height="27" width="23"  style="margin-right:5px";/>
+            Home 
+          </a>
       </h4>
     </div><!-- end panel panel-default-->
   </div><!-- end panel group-->
