@@ -240,7 +240,10 @@
             </form>
         </div><!-- end box -->
         <div id="sidebar">
-            <?php include_once("sidebar.php")?>
+            <?php
+                $showBoxes = true;
+                include_once("sidebar.php");
+            ?>
         </div>
     
     </body>

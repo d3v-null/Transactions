@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <?php  
     require_once 'includes/transaction_setup.php';
-    $showBoxes = (isset($displayBoxes))?$displayBoxes:false;
-    $subsel       = (isset($subsel))?$subsel:[];
+    $showBoxes = (isset($showBoxes))?$showBoxes:false;
+    $subsel    = (isset($subsel))?$subsel:[];
     // $protocol = strpos(strtolower($_SERVER['SERVER_PROTOCOL']),'https') === FALSE ? 'http' : 'https';
     // $host     = $_SERVER['HTTP_HOST'];
     // $script   = $_SERVER['SCRIPT_NAME'];
@@ -70,7 +70,7 @@
             {
                 echo 
                   "<li>".
-                    (($displayBoxes)?"<input type='checkbox' name='Subcategories[]' value='".$subRow['ID']."'>":"").
+                    (($showBoxes)?"<input type='checkbox' name='Subcategories[]' value='".$subRow['ID']."'>":"").
                     "<a href='subcategory.php?id=".$subRow['ID']."'>".
                       "<span>".$subRow['Name']."</span>".
                     "</a>".
