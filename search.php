@@ -23,7 +23,8 @@
         'fd' => (isset($_GET['fd']))?$_GET['fd']:"",    //From date
         'td' => (isset($_GET['td']))?$_GET['td']:"",    //To date
         'st' => (isset($_GET['st']))?$_GET['st']:0,     //Status
-        'sc' => (isset($_GET['sc']))?$_GET['sc']:array_keys($subcats) //subcategories selected
+        'sc' => (isset($_GET['sc']))?$_GET['sc']:array_keys($subcats), //subcategories selected
+        'fs' => (isset($_GET['fs']))?$_GET['fs']:0      //Filter by subcategories
     );
 
     $cols = Array(
@@ -87,9 +88,9 @@
 
                     <table id="options-basic">
                         <tr>
-                            <td>Keywords</td>
-                            <td>From date</td>
-                            <td>To date</td>
+                            <td><label for='kw'>Keywords</label></td>
+                            <td><label for='fd'>From date</label></td>
+                            <td><label for='td'>To date</label></td>
                         </tr>
                         <tr>
                             <td><input type='text' name='kw' value='<?php echo $pars['kw']?>'></td>
@@ -99,10 +100,11 @@
                     </table>
                     <table id="options-advanced">
                         <tr>
-                            <td>Status</td>
-                            <td>Order by</td>
-                            <td>Order direction</td>
-                            <td>Transactions per page</td>
+                            <td><label for='st'>Status</label></td>
+                            <td><label for='oc'>Order by</label></td>
+                            <td><label for='od'>Order direction</label></td>
+                            <td><label for='tn'>Transactions per page</label></td>
+                            <td><label for='fs'>Filter by Subcategories</label></td>
                         </tr>
                         <tr>
                             <td>
@@ -147,6 +149,9 @@
                                     ?>
                                 </select>
                             </td>
+                            <td>
+                                <input name='fs' type='checkbox' <?php echo (($pars['fs'])?"checked":"") ?> >
+                            </td>
                         </tr>
                     </table>
                     <a id="search-expander">Show advanced options</a>
@@ -155,41 +160,60 @@
 
                 <?php
                     //select the transactions to display on the page
-                    $whr = "";
+                    $whrs = array(1);
                     if ($pars['st'] != 0) {
-                        $whr = $whr . "StatusID = ".$pars['st']."\nAND ";
+                        array_push($whrs, "StatusID = ".$pars['st']);
                     }
                     if ($pars['fd'] != Null AND $pars['td'] != Null) {
-                        $whr = $whr . "TransactionDate BETWEEN ".$pars['fd']." AND ".$pars['td']."\nAND ";
+                        array_push($whrs, "TransactionDate BETWEEN ".$pars['fd']." AND ".$pars['td']);
                     }
                     if ($pars['kw'] != "") {
-                        $whr = $whr . "History.Description LIKE '%".$pars['kw']."%' OR Comment LIKE '%".$pars['kw']."%'\nAND ";
+                        array_push($whrs, "History.Description LIKE '%".$pars['kw']."%' OR Comment LIKE '%".$pars['kw']);
                     }
-                    if (substr($whr,-4) == "AND ") {
-                        $whr = substr($whr,0,strlen($whr)-4);
+                    
+                    if($pars['fs']){
+                        $kernel = "
+                            (
+                                SELECT DISTINCT Transaction.ID
+                                FROM 
+                                    Categorization 
+                                    INNER JOIN Transaction
+                                ON Categorization.TransactionID = Transaction.ID
+                                WHERE Categorization.SubcategoryID IN (".implode(", ",$pars['sc']).")
+                            ) 
+                            AS Transaction";
+                    } else {
+                        $kernel = "Transaction";
                     }
-                    if ($whr != "") {
-                        $whr = "WHERE " . $whr;
-                    }  
-                        
+
                     $search="
                         SELECT
-                            History.ID As ID,
-                            History.TransactionID AS TransactionID,
+                            History.ID                    AS ID,
+                            History.TransactionID         AS TransactionID,
                             DATE(History.TransactionDate) AS TransactionDate,
-                            History.Description AS Description,
-                            History.Amount AS Amount,
-                            Status.Name AS Status,
-                            Status.ID AS StatusID
+                            History.Description           AS Description,
+                            History.Amount                AS Amount,
+                            Status.Name                   AS Status,
+                            Status.ID                     AS StatusID
                         FROM 
-                        (
-                            SELECT TransactionID, Max(ModificationDate) AS ModificationDate
-                            FROM History
-                            GROUP BY TransactionID
-                        ) AS Latest
-                        INNER JOIN History ON Latest.TransactionID = History.TransactionID
-                        AND Latest.ModificationDate = History.ModificationDate
-                        INNER JOIN Status ON Status.ID = History.StatusID ".$whr;
+                            (
+                                SELECT 
+                                    Transaction.ID,
+                                    max(ModificationDate) AS ModificationDate
+                                FROM 
+                                    ".$kernel."
+                                    INNER JOIN History
+                                    ON History.TransactionID = Transaction.ID
+                                GROUP BY History.TransactionID
+                            )
+                            AS LATEST
+                            INNER JOIN History 
+                            ON Latest.ID = History.TransactionID 
+                            AND Latest.ModificationDate = History.ModificationDate
+                            INNER JOIN Status
+                            ON Status.ID = History.StatusID 
+                        WHERE ".implode(" AND ", $whrs)." ";
+                    //echo $search;
                     $result = mysql_query("SELECT COUNT(*) AS Count FROM (".$search.") AS T") or die(mysql_error());;
                     $count = mysql_fetch_array($result)['Count'];
                     $pars['ts'] = max(0, min($count-$pars['tn'],$pars['ts']));
@@ -229,7 +253,7 @@
                     <input type="submit" name="pag" value="First">
                     <input type="submit" name="pag" value="Previous">
                     <?php
-                        echo "Displaying transactions ".$pars['ts']." to ".($pars['ts']+$pars['tn'])." of ".$count
+                        echo "Displaying transactions ".$pars['ts']." to ".($pars['ts']+$pars['tn'])." of ".$count." results.";
                     ?>
                     <input type="submit" name="pag" value="Next">
                     <input type="submit" name="pag" value="Last">

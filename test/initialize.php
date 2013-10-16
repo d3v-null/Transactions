@@ -28,6 +28,7 @@
             Category,
             History,
             Status,
+            Transaction,
             Users;
     ") or die(mysql_error());
     
@@ -67,11 +68,19 @@
 		);
     ") or die(mysql_error());
     
+    If ($debug) echo "<h3>Creating Transaction table</h3>";
+	mysql_query("   
+		CREATE TABLE Transaction (
+			ID INT AUTO_INCREMENT,
+            PRIMARY KEY (ID)
+		);
+    ") or die(mysql_error());    
+    
     If ($debug) echo "<h3>Creating History table</h3>";
     mysql_query("     
         CREATE TABLE History (
             ID INT AUTO_INCREMENT,
-            TransactionID INT NOT NULL,
+            TransactionID INT,
             Description VARCHAR(255) NOT NULL,
             Comment TEXT,
             ModificationDate TIMESTAMP DEFAULT NOW(),
@@ -87,6 +96,9 @@
             PRIMARY KEY (ID),
             FOREIGN KEY (StatusID) 
                 REFERENCES Status(ID)
+                ON DELETE CASCADE,
+            FOREIGN KEY (TransactionID)
+                REFERENCES Transaction(ID)
                 ON DELETE CASCADE
 		);        
     ") or die(mysql_error());
@@ -99,8 +111,8 @@
             SubCategoryID INT NOT NULL,
             
             PRIMARY KEY (ID),
-            FOREIGN KEY (HistoryID)
-                REFERENCES History(ID)
+            FOREIGN KEY (TransactionID)
+                REFERENCES Transaction(ID)
                 ON DELETE CASCADE,
             FOREIGN KEY (SubCategoryID)
                 REFERENCES SubCategory(ID)
@@ -120,6 +132,18 @@
     ") or die(mysql_error());
     
     If ($debug) echo "<h2>Populating tables</h2>";
+    
+    If ($debug) echo "<h3>Populating transaction</h3>";
+	mysql_query("
+		INSERT INTO Transaction (ID) VALUES
+            (1), 
+            (2),
+            (10),
+            (11),
+            (13);
+    ") or die(mysql_error()); 
+        
+    
     If ($debug) echo "<h3>Populating status</h3>";
 	mysql_query("
 		INSERT INTO Status (Name) VALUES 
@@ -127,6 +151,7 @@
 			('Processed'),
 			('Void');
     ") or die(mysql_error()); 
+    
     
     If ($debug) echo "<h3>Populating History</h3>";
     mysql_query("
@@ -173,13 +198,10 @@
     
     If ($debug) echo "<h3>Populating Categorization</h3>";
     mysql_query("   
-        INSERT INTO Categorization (HistoryID, SubCategoryID) 
+        INSERT INTO Categorization (TransactionID, SubCategoryID) 
         VALUES
             (
-                (
-                    SELECT ID FROM History 
-                    WHERE TransactionID = 1 AND ModificationDate='2013-09-22 18:48:43'
-                ),
+                1,
                 (
                     SELECT SubCategory.ID FROM SubCategory 
                     INNER JOIN Category ON Subcategory.CategoryID = Category.ID
@@ -187,10 +209,7 @@
                 )
             ),
             (
-                (
-                    SELECT ID FROM History 
-                    WHERE TransactionID = 2 AND ModificationDate='2013-09-22 18:48:44'
-                ),
+                2,
                 (
                     SELECT SubCategory.ID FROM SubCategory 
                     INNER JOIN Category ON Subcategory.CategoryID = Category.ID
@@ -209,7 +228,7 @@
      
     If ($debug) echo "<h1>Initializing User database</h1>";
     
-	If ($debug) echo "<h2>Creating transaction database</h2>";
+	If ($debug) echo "<h2>Creating user_db database</h2>";
     mysql_query("
         CREATE DATABASE user_db
     ");
