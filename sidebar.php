@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <?php  
     require_once 'includes/transaction_setup.php';
-    $protocol = strpos(strtolower($_SERVER['SERVER_PROTOCOL']),'https') === FALSE ? 'http' : 'https';
-    $host     = $_SERVER['HTTP_HOST'];
-    $script   = $_SERVER['SCRIPT_NAME'];
-    $params   = $_SERVER['QUERY_STRING'];
-    $urlsub = $script . '?' . $params;
-    $urlsearch = $script ;
+    $displayBoxes = (isset($displayBoxes))?$displayBoxes:false;
+    $subsel       = (isset($subsel))?$subsel:[];
+    // $protocol = strpos(strtolower($_SERVER['SERVER_PROTOCOL']),'https') === FALSE ? 'http' : 'https';
+    // $host     = $_SERVER['HTTP_HOST'];
+    // $script   = $_SERVER['SCRIPT_NAME'];
+    // $params   = $_SERVER['QUERY_STRING'];
+    // $urlsub = $script . '?' . $params;
+    // $urlsearch = $script ;
 ?>
 <html>
   <head>
@@ -26,62 +28,69 @@
   
   </head>
   <body>
-    <form name="myform" action="http://www.mydomain.com/myformhandler.cgi" method="POST">
     <div class="panel-group" id="accordion">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-            <a href="search.php">
+            <a href="search.php" class='accordion-toggle' data-parent='#accordion'>
               Home 
             </a>
           </h4>
-        </div>
-      </div>
+        </div><!-- end panel panel-default-->
+      </div><!-- end panel group-->
 
         <?php
         // Select everything from Category
-            $sql = mysql_query("SELECT * FROM Category");
-            // For each row of Category
-            while ($row = mysql_fetch_array($sql)) {
-                // Save Category ID
-                $catID = $row['ID'];
+        $sql = mysql_query("SELECT * FROM Category");
+        // For each row of Category
+        while ($row = mysql_fetch_array($sql)) {
+            // Save Category ID
+            $catID = $row['ID'];
 
-				echo "<div class='panel panel-default'>";
-				echo "<div class='panel-heading'>";
-				echo "<h4 class='panel-title'>";
-				echo "<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#expanded".$row['ID']."''>
-					<span>".$row['Name']."</span></a>";
-				echo "<a href='category.php?id=".$row['ID']."'>
-					<img src='images/pencil.png' border='0' align='right' />
-					</a>
-				  </h4>
-				</div>";
-				$subCats = mysql_query("SELECT * FROM SubCategory WHERE SubCategory.CategoryID=".$catID." 
-										ORDER BY Name ASC");
-				echo "<div id='expanded".$row['ID']."'' class='panel-collapse collapse'>
-					<div class='panel-body'>";
-					while ($subRow = mysql_fetch_array($subCats)) 
-					{
-              if ($urlsearch != '/search.php')
-              {
-                echo "<li><a href='subcategory.php?id=".$subRow['ID']."'>
-                <span>".$subRow['Name']."</span></a></li>";
-              } 
-              else                
-              {  
-                echo "<li><a href='subcategory.php?id=".$subRow['ID']."'>
-                <span><input type='checkbox' name='Subcategories[]' value='".$subRow['ID']."'>".$subRow['Name']."<br></span></a></li>";
-              } 
-					}
-					   echo "<li class='last'><a href='subcategoryNew.php?ID=".$catID."'>
-					     <span>Add New Subcategory</span></a></li>";
-				      echo "</div>";
-            echo"</div>";
-            echo "</div>";
-			  
-            }
+            echo 
+              "<div class='panel panel-default'>".
+                "<div class='panel-heading'>".
+                  "<h4 class='panel-title'>".
+                    "<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#expanded".$row['ID']."'>".
+                      "<span>".$row['Name']."</span>".
+                    "</a>".
+                    "<a href='category.php?id=".$row['ID']."'>".
+                      "<img src='images/pencil.png' border='0' align='right' />".
+                    "</a>".
+                  "</h4>".
+                "</div><!-- end panel panel-heading-->".    
+              "</div><!-- end panel-default-->";  
+            
+            $subCats = mysql_query("SELECT * FROM SubCategory WHERE SubCategory.CategoryID=".$catID." 
+                                    ORDER BY Name ASC");
+            echo 
+              "<div id='expanded".$row['ID']."'' class='panel-collapse collapse'>".
+                "<div class='panel-body'>";
+            while ($subRow = mysql_fetch_array($subCats)) 
+            {
+                echo 
+                  "<li>".
+                    (($displayBoxes)?"<input type='checkbox' name='Subcategories[]' value='".$subRow['ID']."'>":"").
+                    "<a href='subcategory.php?id=".$subRow['ID']."'>".
+                      "<span>".$subRow['Name']."</span>".
+                    "</a>".
+                  "</li>";
+            }                
+            echo 
+                "<li class='last'>".
+                  "<a href='subcategoryNew.php?ID=".$catID."'>".
+                    "<span>Add New Subcategory</span>".
+                  "</a>".
+                "</li>";
+              
+            echo 
+                "</div><!-- end panel-body -->".
+              "</div><!-- end expanded -->";
+              
+
+          
+        }
       ?>
-
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
@@ -89,10 +98,9 @@
               Create New Category
             </a>
           </h4>
-        </div>
-        </div>
-      </div>    
-
+        </div><!--end panel-heading-->
+      </div><!--end panel panel-default-->
+    </div><!--end panel-group-->  
     <script src='//code.jquery.com/jquery.js'></script>
     <script src='//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js'></script>
   </body>
