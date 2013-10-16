@@ -81,8 +81,8 @@ if(key_exists('new', $_POST) or key_exists('new', $_GET)){ //If new button was p
         $fieldGen->vals['ModificationDate'] = date('Y-m-d h:m:s');
         $fieldGen->vals['ModificationPersonID'] =
             (isset($_SESSION['loginid']))?$_SESSION['loginid']:die("No login available");
-        $result = mysql_query("SELECT MAX(TransactionID) AS ID FROM History") or die(mysql_error());
-        $newID = mysql_fetch_array($result)['ID'] + 1;
+        mysql_query("INSERT INTO Transaction () VALUES()");
+        $newID = mysql_insert_id();
         $fieldGen->vals['TransactionID'] = $newID;
         $fieldGen->vals['Description'] = "New Transaction (".$newID.")";
         //messy 
