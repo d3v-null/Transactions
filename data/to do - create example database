@@ -9,3 +9,4 @@ Do we want the transaction-list table to have a fixed height so the table doesnt
 Make "next", "previous", etc buttons so that when clicked user is not directed back to top of page (slightly frustrating)
 In creating new category 'new' button seems redundant. Also message after creating should not be 'updated' but rather 'created' -> misleading otherwise
 [RESOLVED] Change or find a way to edit bootstrap css stuff -> need to be able to modify it to apply changes such as font size so that sidebar categories are displayed properly without overflowing oddly
+Cannot update category description-> error thrown

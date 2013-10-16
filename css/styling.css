@@ -168,6 +168,8 @@ ul
     border-bottom: 2px solid #6678b1;
     text-align: center;
     color: black;
+    background-color:;
+    border-top: 1px solid #6678b1
 }
 
 #categTable>tbody>tr>td {
@@ -176,14 +178,14 @@ ul
 }
 
 #categTable>tbody>tr:hover, #categTable>tbody>tr:hover a, #categTable>tbody>tr:last-child:hover{
-	color: black;
+	color: #00001D;
 	background-color: #D6EBEB;
     border-radius:9px;
 }
 
 #categTable>tbody tr:hover td
 {
-	color: black;
+	color: #00001D;
 }
 
 #categTable>tbody>tr:last-child{
@@ -194,13 +196,14 @@ ul
 }
 
 #categName {
+    width:100px;
     font-weight:bold;
     text-align:left;
     padding-left:111110px;
 }
 
-#editCol, #categName {
-    width:100px;
+#editCol {
+    width:50px;
 }
 /*
 #categTable tbody tr:nth-child(odd) {
