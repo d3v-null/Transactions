@@ -54,8 +54,8 @@ if (isset($_GET['remove'])) {
             <thead>
               <tr>
                 <th>Email</th>
-                <th>Type</th>
-                <th>Privileges</th>
+                <th>Current Privileges</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <?php foreach ($users as $user): ?>
