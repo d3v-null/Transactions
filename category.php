@@ -175,7 +175,7 @@
 
                 <input type="submit" name="save" value="Save">
                 <input type="submit" name="delete" value="Delete">
-                <input type="submit" name="new" value="New">
+                <!--<input type="submit" name="new" value="New">-->
 
 				<br><br>
 
