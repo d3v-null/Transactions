@@ -105,9 +105,6 @@
         if(!key_exists('name', $_POST)) {
             echo "<script>alert('No name specified in $_POST')</script>";
         }
-        // if(!key_exists('desc', $_POST)){
-            // echo "<script>alert('No desc specified in $_POST')</script>";
-        // }
         else if($_POST['name'] == ""){
             echo "<script>alert('Name must not be empty')</script>";
         } else If(!$user->isTreasurer()){
@@ -175,7 +172,6 @@
 
                 <input type="submit" name="save" value="Save">
                 <input type="submit" name="delete" value="Delete">
-                <!--<input type="submit" name="new" value="New">-->
 
 				<br><br>
 
@@ -204,11 +200,6 @@
 				</table>
 
             </form>
-            <!--<form action="categoryDelete.php" method="get">
-                <input type="hidden" name="id" value="<?php echo $id ?>">
-                <input type="submit" value="Delete">
-            </form>
-            <button onclick="location.href='categoryDelete.php?id=<?php echo $id ?>'">Delete</button> -->
         </div><!-- end box-->
         <div id="sidebar">
 				<?php include_once("sidebar.php");?>
