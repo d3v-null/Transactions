@@ -8,12 +8,17 @@
         redirect('index.php');
     }
         
-    $checked = array();
-    $result = mysql_query("SELECT ID FROM Subcategory");
-    while($row = mysql_fetch_array($result)){
-        $checked[$row['ID']]=true;
+    $subcats= array();
+    $rslt = mysql_query("SELECT ID, Name FROM Subcategory");
+    while($row = mysql_fetch_array($rslt)){
+        $subcats[$row['ID']]=$row['Name'];
     }
-    echo serialize($checked);
+    $sc_all = array();
+    foreach($subcats as $k => $v){
+        $sc_all[$k]=true;
+    }
+    // echo serialize($checked);
+    echo serialize($_GET);
 
     $pars = Array(
         'ts' => (isset($_GET['ts']))?$_GET['ts']:0,     //Transaction offset
@@ -24,7 +29,7 @@
         'fd' => (isset($_GET['fd']))?$_GET['fd']:"",    //From date
         'td' => (isset($_GET['td']))?$_GET['td']:"",    //To date
         'st' => (isset($_GET['st']))?$_GET['st']:0,     //Status
-        
+        'sc' => (isset($_GET['sc']))?$_GET['sc']:$sc_all
     );
 
     $cols = Array(
@@ -242,6 +247,7 @@
         <div id="sidebar">
             <?php
                 $showBoxes = true;
+                $checked = $pars['sc'];
                 include_once("sidebar.php");
             ?>
         </div>

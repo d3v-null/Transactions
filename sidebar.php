@@ -72,7 +72,7 @@ $checked   = (isset($checked))?$checked:[];
                     "</a>";
             if($showBoxes){
                 echo 
-                    "<input type='checkbox' name='Subcategories[]' ".
+                    "<input type='checkbox' name='sc[]' ".
                     ((in_array($subRow['ID'], $checked))?"checked ":"").
                     "value='".$subRow['ID']."'>";
             }
