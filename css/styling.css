@@ -59,9 +59,6 @@ ul
 
 
 /*******************************************************************/
-/* Tables */
-
-
 
 
 /* Search */
@@ -74,7 +71,29 @@ ul
   margin:0 auto;
 }
 
-/*Transaction Table*/
+/* Tables */
+
+#categTable>tbody>tr>td, #transaction-list>tbody>tr>td
+{
+    height:30px;
+    padding: 10px;
+}
+
+
+#categTable>thead>tr>th, #transaction-list>thead>tr>td {
+    padding:10px 9px;
+}
+
+
+#box,#sidebar,#search,#transaction-list,#categTable{
+	-webkit-border-radius: 9px;
+	-moz-border-radius: 9px;
+	border-radius: 9px;
+	padding: 15px;
+}
+
+/* ~~ Transaction Table ~~ */
+
 #transaction-list
 {
     width: 100%;
@@ -83,7 +102,8 @@ ul
     background-color: white;/**#E6F5F5;**/
     color:#216477;
     text-align:centre;
-    outline:#4380D3 2px solid;
+    /*outline:#4380D3 2px solid;*/
+    box-shadow: 0px 0px 0pt 2pt #4380D3;
 }
 
 /**
@@ -92,6 +112,8 @@ ul
 }
 **/
 
+
+
 #transaction-list>thead
 {
     color:black;
@@ -99,21 +121,10 @@ ul
     font-weight:bold;
 }
 
-#transaction-list>thead>tr>td
-{
-    padding: 10px 9px;
-}
-
-#transaction-list>tbody>tr>td
-{
-    height:30px;
-    padding: 5px 10px;
-}
 
 #transaction-list>tbody>tr, #transaction-list>tbody>tr a
 {
     border-top: 1.5px solid white;
-    /**background-color:#C2DFFF;**/
     -o-transition:.5s;
     -ms-transition:.5s;
     -moz-transition:.5s;
@@ -142,18 +153,22 @@ ul
 
 }
 
-/* Table just for formatting */
-.formatted
-{
-	padding-top:20px;
+/* ~~ Category Table ~~ */
+#categTable {
+    width:80%;
+    background-color:white;
 }
 
-#box,#sidebar,#search,#transaction-list{
-	-webkit-border-radius: 9px;
-	-moz-border-radius: 9px;
-	border-radius: 9px;
-	padding: 15px;
+#categTable >thead>tr>th{
+    border-bottom: 2px solid #6678b1;
+    text-align:center;'
 }
+/*
+#categTable tbody tr:nth-child(odd) {
+  background-color:red;
+}*/
+
+
 
 /*******************************************************************/
 

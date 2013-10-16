@@ -156,7 +156,7 @@
 
                 <b>* This field is compulsory</b>
 				<br><br>
-                <table class = "formatted">
+                <table>
                     <tr>
                         <td class = "spaceBelow">Name*:</td>
                         <td><input type="text" name="name" class="data" value="<?php echo $name ?>"></td>
