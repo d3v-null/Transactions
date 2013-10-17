@@ -14,3 +14,8 @@ Make "next", "previous", etc buttons so that when clicked user is not directed b
  -> Click the pencil button next to "Memebership" type in "werwrre (or anthing else :P) in the Description box and then press save. I get "ERROR: This name already exists on database. Please specify other."
  Style inside of search box to make items neat
  Search expand
+ Sidebar expand items styling
+Pop out history tab-> not finding js file or something else..?
+transaction page indenting
+Not all transaction entries showing
+Create transaction page -> im assuming this will be php genretaed too? -> link needed on sidebar or search page!!
