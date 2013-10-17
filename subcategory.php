@@ -23,13 +23,13 @@
 			echo "<meta http-equiv='Refresh' content='0; URL=search.php'>";
         } else {
 
-			$sql = "SELECT HistoryID FROM Categorization WHERE SubCategoryID ='". $_GET['id']."'";
+			$sql = "SELECT TransactionID FROM Categorization WHERE SubCategoryID ='". $_GET['id']."'";
 			$result = mysql_query($sql);
 
 			$actionDelete = mysql_fetch_array($result);
 			//to do: remove echo "<script>alert('".serialize($actionDelete)."')</script>";
 
-			if($actionDelete['HistoryID'] == FALSE){
+			if($actionDelete['TransactionID'] == FALSE){
 				// If this current subcategory isn't associated with transaction
 				$sql="DELETE FROM subcategory WHERE subcategory.ID ='". $_GET['id']."'";
 				mysql_query($sql) or die("cannot delete category: ".mysql_error());
@@ -64,7 +64,7 @@
 				$desc = $_POST['desc'];
 				mysql_query("UPDATE subcategory SET Name='".$name."', Description='".$desc."' ".
 							"WHERE subcategory.ID=".$id) or die(mysql_error());
-				echo "<script>alert('Category successfully updated')</script>";
+				echo "<script>alert('Subcategory was successfully updated')</script>";
 				echo "<meta http-equiv='Refresh' content='0; URL=subcategory.php?id=". $id ."'>";
 			}
 
