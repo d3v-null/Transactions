@@ -50,9 +50,9 @@
 			while($SubCatListIDs = mysql_fetch_array($SubCatList))
 			{
 				// Check if there is any Categorization associated with it
-				$sql = "SELECT HistoryID FROM Categorization WHERE SubCategoryID = '". $SubCatListIDs['id'] ."'";
+				$sql = "SELECT TransactionID FROM Categorization WHERE SubCategoryID = '". $SubCatListIDs['id'] ."'";
 				$CategList = mysql_query($sql);
-
+						
 				while($CategListIDs = mysql_fetch_array($CategList))
 				{
 					// If it exists at least one matching on Categorization table
