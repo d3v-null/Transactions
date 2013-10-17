@@ -130,7 +130,7 @@
 			if ($canDelete) {
 				mysql_query("UPDATE category SET Name='".$name."', Description='".$desc."' ".
 							"WHERE category.ID=".$id) or die("".mysql_error());
-				echo "<script>alert('Successfully updated category')</script>";
+				echo "<script>alert('Modifications were successfully completed.')</script>";
 			} else {
 				echo "<script>alert('ERROR: This name already exists on database. Please specify other.')</script>";
 				echo "<meta http-equiv='Refresh' content='0; URL=category.php?id=". $id ."'>";
