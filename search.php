@@ -235,7 +235,7 @@
                         <?php
                             echo "<tr>";
                             foreach($cols as $v){
-                                echo "<td>".((isset($lbls[$v[0]]))?$lbls[$v[0]]:$v[0])."</td>";
+                                echo "<th>".((isset($lbls[$v[0]]))?$lbls[$v[0]]:$v[0])."</th>";
                             }
                             echo "</tr>";
                         ?>
