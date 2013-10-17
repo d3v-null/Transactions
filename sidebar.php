@@ -125,7 +125,8 @@ $checked   = (isset($checked))?$checked:[];
     <div class="panel-heading">
       <h4 class="panel-title">
         <a href="category.php?new" class='accordion-toggle' data-parent='#accordion'>
-          Create New Category
+          Create New Category 
+          <img src='images/add.png' border='0' align='right' />
         </a>
       </h4>
     </div><!--end panel-heading-->
