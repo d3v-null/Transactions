@@ -89,7 +89,7 @@
         <div id="box">
             <?php include 'subheader.php' ?>
                 <div id="search">
-                    <h2>Search</h2>
+                    <div id="title">Search<img hspace="10px" width="15px" height="15px" src="images/search_icon.png"/></div>
                     <input type="submit" name="search" value="Update">
 
                     <table id="options-basic">

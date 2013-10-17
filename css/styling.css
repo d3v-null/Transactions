@@ -2,12 +2,6 @@
 /*******************************************************************/
 /* Pagination */
 
-ul
-{
-	border:0;
-	margin:0;
-	padding:0;
-}
 
 #pagination
 {
@@ -63,12 +57,22 @@ ul
 
 /* Search */
 
-
 #search{
   background-color:white;/**#E6F5F5;**/
   border:1px solid RoyalBlue;
   width:90%;
   margin:0 auto;
+}
+
+#title {
+    text-align:right;
+    font-weight:bold;
+    text-transform: uppercase;
+    color:#ACACAA;
+    text-shadow:#fff 0px 1px 0, #7A7A78 0 -1.5px 0;
+    font-family:Arial;
+    padding-bottom:10px;
+    font-size:12pt;
 }
 
 /* Tables */
