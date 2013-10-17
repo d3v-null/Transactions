@@ -75,7 +75,7 @@
     font-size:12pt;
 }
 
-/* Tables */
+/**** Tables *****/
 
 #categTable>tbody>tr>td, #transaction-list>tbody>tr>td
 {
@@ -89,12 +89,84 @@
 }
 
 
-#box,#sidebar,#search,#transaction-list,#categTable{
+#box,#sidebar,#search,#transaction-list{
 	-webkit-border-radius: 9px;
 	-moz-border-radius: 9px;
 	border-radius: 9px;
 	padding: 15px;
 }
+
+/* ~~ Category Table ~~ */
+
+#categTable {
+    table-layout:fixed;
+    background-color:white;
+}
+
+.catBod {
+    max-height:200px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    display:block;
+    font-size:10pt;
+}
+
+.catBod>tr>td {
+    text-overflow:ellipsis;
+    overflow:hidden;
+}
+
+#categTable >thead >tr{
+	display: block;
+}
+
+#categTable >thead>tr{
+    border-bottom: 2px solid #6678b1;
+    text-align: center;
+    color: black;
+    background-color:;
+    border-top: 1px solid #6678b1;
+    border-top-width:1.5px;
+}
+
+#categTable>tbody>tr>td {
+    color: #1F5881;
+}
+
+#categTable>tbody>tr:hover, #categTable>tbody>tr:hover a, #categTable>tbody>tr:last-child:hover{
+	color: #00001D;
+	background-color: #D6EBEB;
+    border-radius:9px;
+}
+
+#categTable>tbody tr:hover td
+{
+	color: #00001D;
+}
+
+
+
+ #categName {
+    min-width:138px;
+    min-width:138px;
+    font-weight:bold;
+    text-align:left;
+}
+
+#categDesc {
+    min-width:430px;
+    max-width:430px;
+
+}
+
+#editCol {
+    width:70px;
+}
+/*
+#categTable tbody tr:nth-child(odd) {
+  background-color:red;
+}*/
+
 
 /* ~~ Transaction Table ~~ */
 
@@ -155,97 +227,6 @@
 	<![endif]-->
 
 }
-
-/* ~~ Category Table ~~ */
-#categTable {
-    table-layout:fixed;
-    width:90%;
-    background-color:white;
-}
-
-.catBod {
-    max-height:200px;
-    overflow-y:auto;
-    border:2px solid black;
-    display:block;
-    font-size:10pt;
-}
-
-.catBod>tr>td {
-    text-overflow:ellipsis;
-    overflow:hidden;
-}
-
-#categTable >thead >tr{
-	display: block;
-}
-
-#categTable >thead> tr>th {
-	width: 100px
-}
-
-#categTable >thead> tr>th+  th {
-	width: 250px
-}
-
-#categTable >thead> tr>th+th+th {
-	width: 350px
-}
-
-
-
-#categTable >thead>tr>th{
-    border-bottom: 2px solid #6678b1;
-    text-align: center;
-    color: black;
-    background-color:;
-    border-top: 1px solid #6678b1
-}
-
-#categTable>tbody>tr>td {
-    color: #1F5881;
-    width:auto;
-}
-
-#categTable>tbody>tr:hover, #categTable>tbody>tr:hover a, #categTable>tbody>tr:last-child:hover{
-	color: #00001D;
-	background-color: #D6EBEB;
-    border-radius:9px;
-}
-
-#categTable>tbody tr:hover td
-{
-	color: #00001D;
-}
-
-#categTable>tbody>tr:last-child{
-   -moz-border-radius: 0px;
-    -webkit-border-radius: 0px;
-    border-radius: 0px;
-    background-color: white;
-}
-
-
-#categName {
-    min-width:138px;
-    max-width:138px;
-    font-weight:bold;
-    text-align:left;
-}
-
-#categDesc {
-    min-width:435px;
-    max-width:435px;
-}
-
-#editCol {
-    width:50px;
-}
-/*
-#categTable tbody tr:nth-child(odd) {
-  background-color:red;
-}*/
-
 
 
 /*******************************************************************/
