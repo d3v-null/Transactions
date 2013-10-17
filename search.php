@@ -230,7 +230,7 @@
 
                 ?>
 
-                <table id="transaction-list" summary = "List of Transactions">
+                <table class="categTable" id="transaction-list" summary = "List of Transactions">
                     <thead>
                         <?php
                             echo "<tr>";
@@ -240,7 +240,7 @@
                             echo "</tr>";
                         ?>
                     </thead>
-                    <tbody>
+                    <tbody class="tableBod">
                     <?php
                         while($row = mysql_fetch_array($page))
                         {

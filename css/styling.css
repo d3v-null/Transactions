@@ -35,22 +35,21 @@
 
 /**** Tables *****/
 
-#categTable {
+.categTable {
     table-layout:fixed;
 }
 
-#categTable>thead>tr {
+.categTable>thead>tr {
 	display: block;
 }
 
-#categTable>tbody>tr>td, #transaction-list>tbody>tr>td
-{
+.categTable>tbody>tr>td{
     height:30px;
     padding: 10px;
 }
 
 
-#categTable>thead>tr>th, #transaction-list>thead>tr>th {
+.categTable>thead>tr>th {
     padding:10px 9px;
     
 }
@@ -65,11 +64,11 @@
 
 /* ~~ Category Table ~~ */
 
-#categTable {
+.categTable {
     background-color:white;
 }
 
-.catBod {
+.tableBod {
     max-height:200px;
     overflow-y:auto;
     overflow-x:hidden;
@@ -77,12 +76,12 @@
     font-size:10pt;
 }
 
-.catBod>tr>td {
+.tableBod>tr>td {
     text-overflow:ellipsis;
     overflow:hidden;
 }
 
-#categTable >thead >tr{
+.categTable >thead >tr{
     text-align: center;
     color:#484846;
     text-shadow: #fff 0 -1px 0;
@@ -102,17 +101,17 @@
  
 }
 
-#categTable>tbody>tr>td, #categTable>tbody>tr>td a {
+.categTable>tbody>tr>td, .categTable>tbody>tr>td a {
     color: #0D47CE;
 }
 
-#categTable>tbody>tr:hover, #categTable>tbody>tr:hover a, #categTable>tbody>tr:last-child:hover{
+.categTable>tbody>tr:hover, .categTable>tbody>tr:hover a, .categTable>tbody>tr:last-child:hover{
 	color: #000;
 	background-color: #D6EBEB;
     border-radius:9px;
 }
 
-#categTable>tbody tr:hover td
+.categTable>tbody tr:hover td
 {
 	color: #00001D;
 }
@@ -139,7 +138,7 @@
 
 #transaction-list
 {
-    width: 100%;
+    max-width:700px;
     margin: 50px 0;
     text-align: left;
     background-color: white;
@@ -148,8 +147,16 @@
     box-shadow: 0px 0px 0pt 2pt #4380D3;
 }
 
+#transaction-list>tbody>tr>td
+{
+    max-width:390px;
+}
 
-#transaction-list>thead
+#transaction-list>tbody{
+    max-height:500px;
+}
+
+#transaction-list>thead>tr
 {
     color:white;
     text-shadow: #7A7A78 0 -1px 0;
@@ -169,7 +176,7 @@
 }
 
 
-#transaction-list>tbody>tr, #transaction-list>tbody>tr a, #categTable>tbody>tr>td, #categTable>tbody>tr a
+.categTable>tbody>tr>td, .categTable>tbody>tr a
 {
     -o-transition:.5s;
     -ms-transition:.5s;
@@ -184,7 +191,7 @@
 	background-color: #FFF380;
 }
 
-
+/* 
 #transaction-list>tbody>tr>td
 {
 	overflow: hidden;
@@ -196,7 +203,7 @@
     width: 100px;
 	<![endif]-->
 
-}
+} */
 
 
 /*******************************************************************/

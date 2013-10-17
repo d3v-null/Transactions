@@ -179,7 +179,7 @@
 				<br><br>
 
 				<h4>Subcategory List</h4>
-				<table id="categTable">
+				<table class="categTable">
                     <thead>
                         <tr>
                             <th id="categName">Name</th>
@@ -187,7 +187,7 @@
                             <th id="editCol"></th>
                         </tr>
                     </thead>
-                    <tbody class="catBod">
+                    <tbody class="tableBod">
                         <?php
                             $sql = mysql_query("SELECT * FROM Subcategory WHERE CategoryID = '". $_GET['id']."' ORDER BY Name ASC");
                             // For each row of Category
