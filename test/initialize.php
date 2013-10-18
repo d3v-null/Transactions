@@ -213,7 +213,7 @@
                 (
                     SELECT SubCategory.ID FROM SubCategory 
                     INNER JOIN Category ON Subcategory.CategoryID = Category.ID
-                    WHERE Category.Name = 'Membership' AND SubCategory.Name = 'Single'
+                    WHERE Category.Name = 'Membership' AND SubCategory.Name = 'Family'
                 )
             );            
     ") or die(mysql_error()); 
