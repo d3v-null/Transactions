@@ -78,7 +78,7 @@ if(key_exists('new', $_POST) or key_exists('new', $_GET)){ //If new button was p
     if (!$user->isTreasurer()){
         echo "<script>alert('You must have treasurer privileges to create a transaction')</script>";
     } else {                
-        $fieldGen->vals['ModificationDate'] = date('Y-m-d h:m:s');
+        $fieldGen->vals['ModificationDate'] = date('Y-m-d H:i:s');
         $fieldGen->vals['ModificationPersonID'] =
             (isset($_SESSION['loginid']))?$_SESSION['loginid']:die("No login available");
         mysql_query("INSERT INTO Transaction () VALUES()");
@@ -121,7 +121,7 @@ if(key_exists('new', $_POST) or key_exists('new', $_GET)){ //If new button was p
             echo "<script>alert('You must have treasurer privileges to modify a transaction')</script>";
         } else {
             $fieldGen->parse($_POST);
-            $fieldGen->vals['ModificationDate'] = date('Y-m-d h:m:s');
+            $fieldGen->vals['ModificationDate'] = date('Y-m-d H:i:s');
             $fieldGen->vals['ModificationPersonID'] =
                 (isset($_SESSION['loginid']))?$_SESSION['loginid']:die("No login available");
             $fieldGen->vals['Amount'] *= 100;
