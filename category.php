@@ -132,7 +132,7 @@
 							"WHERE category.ID=".$id) or die("".mysql_error());
 				echo "<script>alert('Category modifications were successfully completed.')</script>";
 			} else {
-				echo "<script>alert('ERROR: This name already exists on database. Please specify other.')</script>";
+				echo "<script>alert('ERROR: '".$name."' already exists on database. Please specify other.')</script>";
 				echo "<meta http-equiv='Refresh' content='0; URL=category.php?id=". $id ."'>";
 			}
         }
