@@ -82,6 +82,19 @@
         <link rel="stylesheet" type="text/css" href="css/style2.css">
         <link rel="stylesheet" type="text/css" href="css/styling.css">
         <script src="js/expander.js"></script>
+
+        <script language="JavaScript" type="text/javascript">
+            function showHide (ID) {
+            if (document.getElementById(ID).style.display == "none") {
+               document.getElementById(ID).style.display= "";
+               document.getElementById(ID + "span").innerHTML= " [-] ";
+            }
+            else {
+               document.getElementById(ID).style.display = "none";
+               document.getElementById(ID + "span").innerHTML= " [+] ";
+            }
+            }
+        </script>
     </head>
 
     <body id="main">
@@ -104,6 +117,7 @@
                             <td><input type='date' name='td' value='<?php echo ($pars['td']) ?>'></td>
                         </tr>
                     </table>
+                    <div id= "advanced-options">
                     <table id="options-advanced">
                         <tr>
                             <td><label for='st'>Status</label></td>
@@ -160,7 +174,8 @@
                             </td>
                         </tr>
                     </table>
-                    <a id="search-expander">Show advanced options</a>
+                </div>
+                    <a id="search-expander" onclick="showHide('advanced-options');" >Show advanced options</a>
                     <a id="search-hider" style="display:none">Hide advanced options</a>
                 </div><!-- end search-->
 
