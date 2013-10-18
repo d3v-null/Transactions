@@ -51,7 +51,7 @@ $fieldGen->add_rule(
     new FieldRule(
         'A valid payment type must be chosen',
         function($a){
-            return in_array($a, [1,2]);
+            return in_array($a, [0,1]);
         }
     )
 );
