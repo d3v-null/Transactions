@@ -255,17 +255,17 @@ while($row = mysql_fetch_array($rslt)){
                 <input type='submit' name='update' value='Update'>            
             </div><!-- end box -->        
 
+            <div id='sidebar'>
+                <?php
+                    $showRadios=true;
+                    $checked = $subcategories;
+                    include_once 'sidebar.php';
+                ?>
+            </div><!-- end sidebar-->
         </form>
         <div class='slide-out-div'>
             <?php include_once 'modhistory.php' ?>
         </div><!-- end slide out-->
 
-        <div id='sidebar'>
-            <?php
-                $showRadios=true;
-                $checked = $subcategories;
-                include_once 'sidebar.php';
-            ?>
-        </div><!-- end sidebar-->
     </body>
 </html>

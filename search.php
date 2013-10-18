@@ -266,7 +266,6 @@
                 </div><!-- end pagination -->
             
         </div><!-- end box -->
-      </form>
         <div id="sidebar">
             <?php
                 $showBoxes = true;
@@ -274,5 +273,6 @@
                 include_once("sidebar.php");
             ?>
         </div>
+      </form>
     </body>
 </html>
