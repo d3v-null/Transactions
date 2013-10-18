@@ -118,64 +118,64 @@
                         </tr>
                     </table>
                     <div id= "advanced-options">
-                    <table id="options-advanced">
-                        <tr>
-                            <td><label for='st'>Status</label></td>
-                            <td><label for='oc'>Order by</label></td>
-                            <td><label for='od'>Order direction</label></td>
-                            <td><label for='tn'>Transactions per page</label></td>
-                            <td><label for='fs'>Filter by Subcategories</label></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <select name="st">
-                                    <option value=0>-- Select --</option>
-                                    <?php
-                                        $statuses = mysql_query("SELECT * FROM Status") or die(mysql_error());
-                                        while($row = mysql_fetch_array($statuses)){
-                                            $sel = ($row['ID']==$pars['st'])?"selected":"";
-                                            echo "<option value=".$row['ID']." ".$sel." >".$row['Name']."</option>";
-                                        }
-                                    ?>
-                                </select>
-                            </td>
-                            <td>
-                                <select name="oc">
-                                    <?php
-                                        foreach($cols as $k => $v){
-                                            $sel = ($k==$pars['oc'])?"selected":"";
-                                            echo "<option value=".$k." ".$sel." >".$v[0]."</option>";
-                                        }
-                                    ?>
-                                </select>
-                            </td>
-                            <td>
-                                <select name='od'>
-                                    <?php
-                                        foreach($ords as $k => $v){
-                                            $sel = ($k==$pars['od'])?"selected":"";
-                                            echo "<option value=".$k." ".$sel." >".$v[0]."</option>";
-                                        }
-                                    ?>
-                                </select>
-                            </td>
-                            <td>
-                                <select name='tn'>
-                                    <?php
-                                        foreach($view as $v){
-                                            $sel = ($v==$pars['tn'])?"selected":"";
-                                            echo "<option value=".$v." ".$sel." >".$v."</option>";
-                                        }
-                                    ?>
-                                </select>
-                            </td>
-                            <td>
-                                <input name='fs' type='checkbox' <?php echo (($pars['fs'])?"checked":"") ?> >
-                            </td>
-                        </tr>
-                    </table>
+                        <table id="options-advanced">
+                            <tr>
+                                <td><label for='st'>Status</label></td>
+                                <td><label for='oc'>Order by</label></td>
+                                <td><label for='od'>Order direction</label></td>
+                                <td><label for='tn'>Transactions per page</label></td>
+                                <td><label for='fs'>Filter by Subcategories</label></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select name="st">
+                                        <option value=0>-- Select --</option>
+                                        <?php
+                                            $statuses = mysql_query("SELECT * FROM Status") or die(mysql_error());
+                                            while($row = mysql_fetch_array($statuses)){
+                                                $sel = ($row['ID']==$pars['st'])?"selected":"";
+                                                echo "<option value=".$row['ID']." ".$sel." >".$row['Name']."</option>";
+                                            }
+                                        ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="oc">
+                                        <?php
+                                            foreach($cols as $k => $v){
+                                                $sel = ($k==$pars['oc'])?"selected":"";
+                                                echo "<option value=".$k." ".$sel." >".$v[0]."</option>";
+                                            }
+                                        ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name='od'>
+                                        <?php
+                                            foreach($ords as $k => $v){
+                                                $sel = ($k==$pars['od'])?"selected":"";
+                                                echo "<option value=".$k." ".$sel." >".$v[0]."</option>";
+                                            }
+                                        ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name='tn'>
+                                        <?php
+                                            foreach($view as $v){
+                                                $sel = ($v==$pars['tn'])?"selected":"";
+                                                echo "<option value=".$v." ".$sel." >".$v."</option>";
+                                            }
+                                        ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input name='fs' type='checkbox' <?php echo (($pars['fs'])?"checked":"") ?> >
+                                </td>
+                            </tr>
+                        </table>
                 </div>
-                    <a id="search-expander" onclick="showHide('advanced-options');" >Show advanced options</a>
+                    <a id="search-expander" onclick="showHide('advanced-options');" >Show/Hide Advanced Options</a>
                     <a id="search-hider" style="display:none">Hide advanced options</a>
                 </div><!-- end search-->
 
