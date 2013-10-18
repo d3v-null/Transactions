@@ -189,7 +189,7 @@
                         array_push($whrs, "TransactionDate BETWEEN ".$pars['fd']." AND ".$pars['td']);
                     }
                     if ($pars['kw'] != "") {
-                        array_push($whrs, "History.Description LIKE '%".$pars['kw']."%' OR Comment LIKE '%".$pars['kw']);
+                        array_push($whrs, "History.Description LIKE '%".$pars['kw']."%' OR Comment LIKE '%".$pars['kw']."%'");
                     }
                     
                     if($pars['fs']){
