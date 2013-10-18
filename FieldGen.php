@@ -209,11 +209,15 @@ class FieldGen{
         // $out .= "</table>";
     
     public function mysql_insert(){
-        mysql_query("INSERT INTO history (".
-                        implode(", ", array_keys($this->vals)).
-                    ") VALUES (".
-                        implode(", ", array_map(['self', 'sqlFormat'], array_values($this->vals))).
-                    ") ") or $this::exit_gracefully("Could not insert row: ".mysql_error());
+        $sql = "
+            INSERT INTO history (".
+                    implode(", ", array_keys($this->vals)).
+                ") VALUES (".
+                    implode(", ", array_map(['self', 'sqlFormat'], array_values($this->vals))).
+                ") ";
+        //echo "<script>alert(".$sql.")</script>";
+        mysql_query( $sql ) or $this::exit_gracefully("Could not insert row: ".mysql_error());
+        
     }
     
     public function __toString(){
