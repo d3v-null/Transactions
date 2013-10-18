@@ -117,17 +117,18 @@
 			// Check if there is any Categorization associated with it
 			$sql = "SELECT Name FROM Category WHERE Name = '". $name ."'";
 			$CategList = mysql_query($sql);
-			$canDelete = TRUE;
+			$canDelete = 0;
+			
 			while($CategListNames = mysql_fetch_array($CategList))
 			{
+				
 				// If it exists at least one matching on Categorization table
 				if ($CategListNames != FALSE)
 				{
-					// Can't delete
-					$canDelete = FALSE;
+					$canDelete = $canDelete + 1;
 				}
 			}
-			if ($canDelete) {
+			if ($canDelete == 1) {
 				mysql_query("UPDATE category SET Name='".$name."', Description='".$desc."' ".
 							"WHERE category.ID=".$id) or die("".mysql_error());
 				echo "<script>alert('Category modifications were successfully completed.')</script>";
