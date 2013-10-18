@@ -38,7 +38,7 @@
     
     $lbls = [
         'TransactionID'   => 'ID',
-        'TransactionDate' => 'Date'
+        'TransactionDate' => 'Transaction<br>Date'
     ];
         
 
@@ -246,7 +246,8 @@
                 ?>
 
                 <table class="categTable" id="transaction-list" summary = "List of Transactions">
-                    <thead>
+                    <tbody class="tableBod">
+                      <div id="thead">
                         <?php
                             echo "<tr>";
                             foreach($cols as $v){
@@ -254,8 +255,7 @@
                             }
                             echo "</tr>";
                         ?>
-                    </thead>
-                    <tbody class="tableBod">
+                      </div>
                     <?php
                         while($row = mysql_fetch_array($page))
                         {
